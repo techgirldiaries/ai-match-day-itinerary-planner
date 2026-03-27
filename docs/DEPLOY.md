@@ -18,6 +18,7 @@ npm run build
 ```
 
 This creates:
+
 - `frontend/dist/` — Optimized frontend bundle
 - `backend/dist/` — Node.js backend bundle
 
