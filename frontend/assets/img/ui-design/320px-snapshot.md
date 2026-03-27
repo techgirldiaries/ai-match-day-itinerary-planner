@@ -1,0 +1,249 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - paragraph [ref=e7]: Menu
+        - button "Close menu" [ref=e8]:
+          - img [ref=e9]
+      - paragraph [ref=e12]: Navigation
+      - navigation "Mobile sidebar navigation" [ref=e13]:
+        - button "Plan" [ref=e14]:
+          - generic [ref=e15]: 🏟️
+          - generic [ref=e16]: Plan COYH
+        - button "All Agents" [ref=e17]:
+          - generic [ref=e18]: 🤖
+          - generic [ref=e19]: All Agents COYH
+        - button "Save Draft" [disabled] [ref=e20]:
+          - img [ref=e21]
+          - generic [ref=e25]: Save Draft COYH
+        - button "Send Email" [disabled] [ref=e26]:
+          - img [ref=e27]
+          - generic [ref=e30]: Send Email COYH
+        - button "Share Link" [disabled] [ref=e31]:
+          - img [ref=e32]
+          - generic [ref=e38]: Share Link COYH
+        - button "Download" [disabled] [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e43]: Download COYH
+        - button "Saved Drafts (0)" [ref=e44]:
+          - img [ref=e45]
+          - generic [ref=e49]: Saved Drafts (0) COYH
+      - generic [ref=e50]:
+        - button "Coming Soon" [ref=e51]:
+          - img [ref=e52]
+          - generic [ref=e55]: Coming Soon
+        - button "Switch to dark mode" [ref=e56]:
+          - img [ref=e57]
+          - generic [ref=e59]: Dark mode
+  - banner [ref=e60]:
+    - generic [ref=e61]:
+      - link "Skip to main content" [ref=e62] [cursor=pointer]:
+        - /url: "#main-content"
+      - generic [ref=e63]:
+        - generic [ref=e64]:
+          - button "Open menu" [ref=e65]:
+            - img [ref=e66]
+          - img "Luton Town FC badge" [ref=e67]
+          - generic [ref=e68]:
+            - heading "LTFC AI Match-Day Itinerary Planner" [level=1] [ref=e69]
+            - paragraph [ref=e70]: Come On You Hatters! (COYH) 🟠⚪
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - img [ref=e73]
+            - combobox "Select language" [ref=e77] [cursor=pointer]:
+              - option "English" [selected]
+              - option "Español"
+              - option "Français"
+              - option "Polski"
+              - option "العربية"
+              - option "বাংলা"
+              - option "Português"
+              - option "Deutsch"
+              - option "Italiano"
+              - option "हिन्दी"
+              - option "中文(简体)"
+          - generic "Connected" [ref=e78]:
+            - img [ref=e79]
+  - main [ref=e85]:
+    - generic [ref=e87]:
+      - generic [ref=e88]:
+        - generic [ref=e89]: 🏟️
+        - heading "Plan Your Itinerary" [level=2] [ref=e90]
+        - paragraph [ref=e91]: Tell us about your match day and we'll create the perfect itinerary for you
+      - form "Plan Your Itinerary" [ref=e92]:
+        - group "Trip Details" [ref=e93]:
+          - generic [ref=e94]: Trip Details
+          - generic [ref=e95]:
+            - generic [ref=e96]: Where are you travelling from? *
+            - textbox "Where are you travelling from?" [ref=e97]:
+              - /placeholder: Enter your city
+          - generic [ref=e98]:
+            - paragraph [ref=e99]: Match Type
+            - generic [ref=e100]:
+              - generic [ref=e101] [cursor=pointer]:
+                - radio "Home" [checked] [ref=e102]
+                - generic [ref=e103]: 🏟️
+                - text: Home
+              - generic [ref=e104] [cursor=pointer]:
+                - radio "Away" [ref=e105]
+                - generic [ref=e106]: 🚌
+                - text: Away
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Match Date *
+              - textbox "Match Date" [ref=e110]
+            - generic [ref=e111]:
+              - generic [ref=e112]: Match Time *
+              - textbox "Match Time" [ref=e113]
+        - group "Group & Budget" [ref=e114]:
+          - generic [ref=e115]: Group & Budget
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - generic [ref=e118]: Group Size
+              - spinbutton "Group Size" [ref=e119]: "1"
+              - paragraph [ref=e120]: How many people are you travelling with as a group or family?
+            - generic [ref=e121]:
+              - generic [ref=e122]: Budget per Person
+              - generic [ref=e123]:
+                - generic [ref=e124]: £
+                - spinbutton "Budget in pounds per person" [ref=e125]: "100"
+          - generic [ref=e126]:
+            - paragraph [ref=e127]: Travel Style
+            - generic [ref=e128]:
+              - generic [ref=e129] [cursor=pointer]:
+                - radio "Budget" [ref=e130]
+                - generic [ref=e131]: 💰
+                - text: Budget
+              - generic [ref=e132] [cursor=pointer]:
+                - radio "Standard" [checked] [ref=e133]
+                - generic [ref=e134]: ⭐
+                - text: Standard
+              - generic [ref=e135] [cursor=pointer]:
+                - radio "Premium" [ref=e136]
+                - generic [ref=e137]: ✨
+                - text: Premium
+              - generic [ref=e138] [cursor=pointer]:
+                - radio "Luxury" [ref=e139]
+                - generic [ref=e140]: 👑
+                - text: Luxury
+        - group "Fan Profile" [ref=e141]:
+          - generic [ref=e142]: Fan Profile
+          - generic [ref=e143]:
+            - generic [ref=e144]: Fan Type
+            - combobox "Fan Type" [ref=e145]:
+              - option "The \"Loyal Hatter\"" [selected]
+              - option "The Kenilworth Road Faithful"
+              - option "The Supporters' Trust/Owner Supporters"
+              - option "International/Modern Hatters"
+              - option "The Away Day Specialists (Bobbers Travel Club)"
+              - option "Multicultural Town Supporters"
+              - option "Men in Gear (MIGs)"
+              - option "Other Fan Type"
+          - group "Interests Select all that apply" [ref=e147]:
+            - generic [ref=e148]: Interests Select all that apply
+            - generic [ref=e149]:
+              - generic [ref=e150] [cursor=pointer]:
+                - checkbox "Pubs" [checked] [ref=e151]
+                - generic [ref=e152]: 🍺
+                - text: Pubs
+              - generic [ref=e153] [cursor=pointer]:
+                - checkbox "Shopping" [ref=e154]
+                - generic [ref=e155]: 🛍️
+                - text: Shopping
+              - generic [ref=e156] [cursor=pointer]:
+                - checkbox "Attractions" [ref=e157]
+                - generic [ref=e158]: 🎡
+                - text: Attractions
+              - generic [ref=e159] [cursor=pointer]:
+                - checkbox "History" [ref=e160]
+                - generic [ref=e161]: 🏛️
+                - text: History
+              - generic [ref=e162] [cursor=pointer]:
+                - checkbox "Food" [checked] [ref=e163]
+                - generic [ref=e164]: 🍽️
+                - text: Food
+        - group "Options" [ref=e165]:
+          - generic [ref=e166]: Options
+          - group "Preferred Transport Modes Select all that apply" [ref=e168]:
+            - generic [ref=e169]: Preferred Transport Modes Select all that apply
+            - generic [ref=e170]:
+              - generic [ref=e171] [cursor=pointer]:
+                - checkbox "Train" [checked] [ref=e172]
+                - generic [ref=e173]: 🚂
+                - text: Train
+              - generic [ref=e174] [cursor=pointer]:
+                - checkbox "Coach" [checked] [ref=e175]
+                - generic [ref=e176]: 🚌
+                - text: Coach
+              - generic [ref=e177] [cursor=pointer]:
+                - checkbox "Car" [checked] [ref=e178]
+                - generic [ref=e179]: 🚗
+                - text: Car
+              - generic [ref=e180] [cursor=pointer]:
+                - checkbox "Taxi" [checked] [ref=e181]
+                - generic [ref=e182]: 🚕
+                - text: Taxi
+              - generic [ref=e183] [cursor=pointer]:
+                - checkbox "Fly" [checked] [ref=e184]
+                - generic [ref=e185]: ✈️
+                - text: Fly
+              - generic [ref=e186] [cursor=pointer]:
+                - checkbox "Bus" [checked] [ref=e187]
+                - generic [ref=e188]: 🚌
+                - text: Bus
+              - generic [ref=e189] [cursor=pointer]:
+                - checkbox "Cycling" [checked] [ref=e190]
+                - generic [ref=e191]: 🚴
+                - text: Cycling
+              - generic [ref=e192] [cursor=pointer]:
+                - checkbox "Walking" [checked] [ref=e193]
+                - generic [ref=e194]: 🚶
+                - text: Walking
+          - generic [ref=e195]:
+            - generic [ref=e196]:
+              - paragraph [ref=e197]: Overnight Stay
+              - paragraph [ref=e198]: Include accommodation suggestions in your itinerary
+            - button "Overnight Stay" [ref=e199] [cursor=pointer]
+          - generic [ref=e200]:
+            - generic [ref=e201]:
+              - paragraph [ref=e202]: Community tips
+              - paragraph [ref=e203]: Get tips from fellow fans in your community
+            - button "Community tips" [ref=e204] [cursor=pointer]
+        - group "Advanced Options" [ref=e205]:
+          - generic [ref=e206]: Advanced Options
+          - generic [ref=e207]:
+            - generic [ref=e208]:
+              - paragraph [ref=e209]: Group Coordination
+              - paragraph [ref=e210]: Let us help coordinate plans with your group
+            - button "Group Coordination" [ref=e211] [cursor=pointer]
+          - generic [ref=e212]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Loyalty Member
+              - paragraph [ref=e215]: Are you a member of the official loyalty program?
+            - button "Loyalty Member" [ref=e216] [cursor=pointer]
+          - group "Accessibility Needs Optional — Select all that apply" [ref=e218]:
+            - generic [ref=e219]: Accessibility Needs Optional — Select all that apply
+            - generic [ref=e220]:
+              - generic [ref=e221] [cursor=pointer]:
+                - checkbox "Wheelchair Access" [ref=e222]
+                - generic [ref=e223]: ♿
+                - text: Wheelchair Access
+              - generic [ref=e224] [cursor=pointer]:
+                - checkbox "Lift Required" [ref=e225]
+                - generic [ref=e226]: 🛗
+                - text: Lift Required
+              - generic [ref=e227] [cursor=pointer]:
+                - checkbox "Companion Support" [ref=e228]
+                - generic [ref=e229]: 🧑‍🤝‍🧑
+                - text: Companion Support
+              - generic [ref=e230] [cursor=pointer]:
+                - checkbox "Other" [ref=e231]
+                - generic [ref=e232]: ➕
+                - text: Other
+        - group "Preferences" [ref=e233]:
+          - generic [ref=e234]: Preferences
+          - generic [ref=e235]: Preferences Optional
+          - textbox "Preferences Optional" [ref=e236]:
+            - /placeholder: Tell us any special requests or preferences...
+          - paragraph [ref=e237]: Let us know what makes your matching experience special or your day special
+        - button "Plan My Itinerary" [ref=e238]

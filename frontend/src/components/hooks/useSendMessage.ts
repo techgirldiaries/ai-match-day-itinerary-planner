@@ -1,0 +1,265 @@
+import {
+  agent,
+  draftMessage,
+  isAgentTyping,
+  messages,
+  task,
+  workforce,
+  type ChatMessage,
+} from "@/core/signals";
+import {
+  getCachedRoute,
+  getVenuesByCategory,
+} from "@/components/pages/app-routes/cache-routes-venues";
+import { useRef } from "preact/hooks";
+
+const AGENT_TIMEOUT_MS = 28000; // 28 seconds (safe buffer from 30s platform limit)
+
+/**
+ * Extracts key travel details from user message for quick processing
+ */
+function extractTravelDetails(message: string): {
+  origin?: string;
+  date?: string;
+  fromCache?: boolean;
+} {
+  const dateMatch = message.match(/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}/);
+  const originMatch = message.match(/from\s+([A-Za-z\s]+)(?:\s|,|$)/i);
+
+  return {
+    date: dateMatch ? dateMatch[0] : undefined,
+    origin: originMatch ? originMatch[1].trim() : undefined,
+  };
+}
+
+/**
+ * Detects which advanced features should be enabled based on message content
+ */
+function detectAdvancedFeatures(message: string): {
+  group?: boolean;
+  loyalty?: boolean;
+  international?: boolean;
+  powerCourt?: boolean;
+  realTime?: boolean;
+  booking?: boolean;
+} {
+  const lowerMsg = message.toLowerCase();
+
+  return {
+    group:
+      /group|friends|split|invite|coordination|team|supporters|colleagues/.test(
+        lowerMsg,
+      ),
+    loyalty: /loyalty|member|privilege|discount|vip|exclusive/.test(lowerMsg),
+    international:
+      /international|visa|abroad|foreign|worldwide|overseas|passport/.test(
+        lowerMsg,
+      ),
+    powerCourt:
+      /power court|stadium development|expansion|new stadium|renovation|kenilworth/.test(
+        lowerMsg,
+      ),
+    realTime:
+      /update|live|notification|alert|reminder|notification|subscribe/.test(
+        lowerMsg,
+      ),
+    booking: /book|reserve|payment|split payment|installment/.test(lowerMsg),
+  };
+}
+
+/**
+ * Checks if we have cached data for this request
+ */
+function canUseCachedData(origin?: string): boolean {
+  if (!origin) return false;
+  const route = getCachedRoute(origin, "Luton");
+  return !!route;
+}
+
+/**
+ * Creates context prefix to hint which features to prioritize
+ */
+function createFeatureContext(
+  features: ReturnType<typeof detectAdvancedFeatures>,
+): string {
+  const enabled = Object.entries(features)
+    .filter(([_, val]) => val)
+    .map(([key]) => key);
+
+  if (enabled.length === 0) return "";
+
+  return `\n[Enable features: ${enabled.join(", ")}]`;
+}
+
+/**
+ * Creates a simplified retry message when first request times out
+ */
+function simplifyMessage(original: string, attemptNumber: number): string {
+  if (attemptNumber === 2) {
+    return (
+      original +
+      "\n\n[Quick response needed - provide essential travel & cost details only]"
+    );
+  }
+  return original;
+}
+
+export function useSendMessage() {
+  const input = useRef<HTMLInputElement>(null);
+  const retryCount = useRef<Record<string, number>>({});
+
+  const sendMessage = async (message: string, initialAttempt = true) => {
+    if (isAgentTyping.value) return;
+    if (!message?.trim()) return;
+
+    draftMessage.value = "";
+
+    // Track retry attempts per message
+    const msgHash = message.substring(0, 30);
+    if (!retryCount.current[msgHash]) {
+      retryCount.current[msgHash] = 1;
+    }
+    const attemptNumber = retryCount.current[msgHash];
+
+    // Only add user message on first attempt
+    if (initialAttempt) {
+      messages.value = [
+        ...messages.value,
+        {
+          id: "optimistic",
+          type: "user-message",
+          text: message,
+          createdAt: new Date(),
+          isAgent: () => false,
+        } as ChatMessage,
+      ];
+    }
+
+    if (!workforce.value && !agent.value) return;
+
+    try {
+      // Detect which advanced features to enable based on message content
+      const features = detectAdvancedFeatures(message);
+      const featureContext = createFeatureContext(features);
+      const messageWithContext = message + featureContext;
+
+      // Create timeout promise that rejects after AGENT_TIMEOUT_MS
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(
+          () => reject(new Error("Agent response timeout")),
+          AGENT_TIMEOUT_MS,
+        );
+      });
+
+      // Race between agent response and timeout
+      const agentPromise = workforce.value
+        ? task.value
+          ? workforce.value.sendMessage(messageWithContext, task.value)
+          : workforce.value.sendMessage(messageWithContext)
+        : task.value
+          ? agent.value?.sendMessage(messageWithContext, task.value)
+          : agent.value?.sendMessage(messageWithContext);
+
+      const task_signal = await Promise.race([agentPromise, timeoutPromise]);
+
+      if (task.value !== task_signal) {
+        task.value = task_signal as typeof task.value;
+      }
+
+      // Clear retry count on success
+      retryCount.current[msgHash] = 0;
+    } catch (error) {
+      const isTimeout =
+        error instanceof Error && error.message.includes("timeout");
+
+      if (isTimeout && attemptNumber < 2) {
+        // Timeout on first attempt - retry with simplified message
+        console.warn(
+          "⏱️ Agent timeout (attempt 1), retrying with simplified request...",
+        );
+
+        retryCount.current[msgHash] = 2;
+        const simplifiedMsg = simplifyMessage(message, 2);
+
+        // Add info message about retry
+        messages.value = [
+          ...messages.value,
+          {
+            id: `system-retry-${Date.now()}`,
+            type: "agent-message" as const,
+            text: "⏱️ Request taking longer than expected. Retrying with streamlined approach...",
+            createdAt: new Date(),
+            isAgent: () => true,
+          } as ChatMessage,
+        ];
+
+        isAgentTyping.value = true;
+        try {
+          await sendMessage(simplifiedMsg, false);
+        } finally {
+          isAgentTyping.value = false;
+        }
+      } else if (isTimeout && attemptNumber >= 2) {
+        // Timeout on retry - provide cached fallback data
+        console.error("❌ Agent timeout on retry, using cached data fallback");
+
+        const details = extractTravelDetails(message);
+        let fallbackMessage =
+          "⚠️ Response taking too long. Here's quick info from our cached data:\n\n";
+
+        if (details.origin) {
+          const route = getCachedRoute(details.origin, "Luton");
+          if (route) {
+            fallbackMessage += `**Route from ${details.origin}:**\n`;
+            route.options.slice(0, 2).forEach((opt) => {
+              fallbackMessage += `- ${opt.name}: ${opt.duration}, ${opt.cost}\n`;
+            });
+          }
+        }
+
+        fallbackMessage +=
+          "\n**Popular venues near stadium:**\n" +
+          "- Bricklayers Arms (fan pub)\n" +
+          "- Painters Arms (match day atmosphere)\n\n" +
+          "📱 For full details, try refreshing or asking again in a moment.";
+
+        messages.value = [
+          ...messages.value,
+          {
+            id: `fallback-${Date.now()}`,
+            type: "agent-message" as const,
+            text: fallbackMessage,
+            createdAt: new Date(),
+            isAgent: () => true,
+          } as ChatMessage,
+        ];
+
+        retryCount.current[msgHash] = 0;
+      } else {
+        // Non-timeout error
+        console.error("❌ Error sending message:", error);
+        const errorMsg = error instanceof Error ? error.message : String(error);
+
+        messages.value = [
+          ...messages.value,
+          {
+            id: `error-${Date.now()}`,
+            type: "agent-message" as const,
+            text: `❌ Error: ${errorMsg}\n\nPlease try again.`,
+            createdAt: new Date(),
+            isAgent: () => true,
+          } as ChatMessage,
+        ];
+
+        retryCount.current[msgHash] = 0;
+      }
+    } finally {
+      if (input.current) {
+        input.current.value = "";
+        input.current.focus();
+      }
+    }
+  };
+
+  return { input, sendMessage };
+}

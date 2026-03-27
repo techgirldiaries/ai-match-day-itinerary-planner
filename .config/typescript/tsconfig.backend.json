@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "../../backend/src/*"
+      ],
+      "~types": [
+        "../../backend/src/types/index.ts"
+      ],
+      "~db": [
+        "../../backend/src/db/index.ts"
+      ],
+      "~services": [
+        "../../backend/src/services/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "../../backend/src"
+  ]
+}

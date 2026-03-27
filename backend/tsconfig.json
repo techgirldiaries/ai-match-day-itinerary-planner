@@ -1,0 +1,29 @@
+{
+  "extends": "../.config/typescript/tsconfig.backend.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ],
+      "~types": [
+        "./src/types/index.ts"
+      ],
+      "~db": [
+        "./src/db/index.ts"
+      ],
+      "~services": [
+        "./src/services/index.ts"
+      ]
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

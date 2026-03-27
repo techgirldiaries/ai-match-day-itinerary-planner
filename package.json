@@ -1,0 +1,16 @@
+{
+  "name": "match-day-itinerary-planner",
+  "version": "1.0.0",
+  "description": "Match-Day Itinerary Planner - Full Stack Application",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend"
+  }
+}
