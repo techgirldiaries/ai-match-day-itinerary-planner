@@ -107,10 +107,16 @@ function simplifyMessage(original: string, attemptNumber: number): string {
 export function useSendMessage() {
   const input = useRef<HTMLInputElement>(null);
   const retryCount = useRef<Record<string, number>>({});
+  const retryMessageAdded = useRef<Set<string>>(new Set()); // Track added retry messages
 
   const sendMessage = async (message: string, initialAttempt = true) => {
     if (isAgentTyping.value) return;
     if (!message?.trim()) return;
+
+    // Set flag to block concurrent calls (only for initial user-initiated attempts)
+    if (initialAttempt) {
+      isAgentTyping.value = true;
+    }
 
     draftMessage.value = "";
 
@@ -181,24 +187,40 @@ export function useSendMessage() {
         retryCount.current[msgHash] = 2;
         const simplifiedMsg = simplifyMessage(message, 2);
 
-        // Add info message about retry
-        messages.value = [
-          ...messages.value,
-          {
-            id: `system-retry-${Date.now()}`,
-            type: "agent-message" as const,
-            text: "⏱️ Request taking longer than expected. Retrying with streamlined approach...",
-            createdAt: new Date(),
-            isAgent: () => true,
-          } as ChatMessage,
-        ];
+        // Add info message about retry (only once per message)
+        const retryKeyId = `system-retry-${msgHash}`;
+        if (!retryMessageAdded.current.has(retryKeyId)) {
+          retryMessageAdded.current.add(retryKeyId);
 
-        isAgentTyping.value = true;
-        try {
-          await sendMessage(simplifiedMsg, false);
-        } finally {
-          isAgentTyping.value = false;
+          messages.value = [
+            ...messages.value,
+            {
+              id: retryKeyId,
+              type: "agent-message" as const,
+              text: "⏱️ Request taking longer than expected. Retrying with streamlined approach...",
+              createdAt: new Date(),
+              isAgent: () => true,
+            } as ChatMessage,
+          ];
+
+          // Add visible retry attempt as new "ME" user message bubble (only once)
+          const retryUserMsgId = `retry-user-${msgHash}`;
+          if (!retryMessageAdded.current.has(retryUserMsgId)) {
+            retryMessageAdded.current.add(retryUserMsgId);
+            messages.value = [
+              ...messages.value,
+              {
+                id: retryUserMsgId,
+                type: "user-message",
+                text: simplifiedMsg,
+                createdAt: new Date(),
+                isAgent: () => false,
+              } as ChatMessage,
+            ];
+          }
         }
+
+        await sendMessage(simplifiedMsg, false);
       } else if (isTimeout && attemptNumber >= 2) {
         // Timeout on retry - provide cached fallback data
         console.error("❌ Agent timeout on retry, using cached data fallback");
@@ -254,6 +276,10 @@ export function useSendMessage() {
         retryCount.current[msgHash] = 0;
       }
     } finally {
+      // Clear flag only for initial attempts
+      if (initialAttempt) {
+        isAgentTyping.value = false;
+      }
       if (input.current) {
         input.current.value = "";
         input.current.focus();
