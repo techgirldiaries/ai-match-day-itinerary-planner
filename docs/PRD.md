@@ -63,7 +63,7 @@ LTFC fans and international supporters face challenges in planning comprehensive
 
 - Modular, component-based frontend (Preact, Signals)
 - Multi-agent architecture for itinerary generation
-- Internationalization (i18n) and localization support
+- Internationalisation (i18n) and localisation support
 - Secure, privacy-respecting data handling
 - Extensible for new agent types and integrations
 - Automated testing and CI/CD for reliability

@@ -19,7 +19,7 @@ npm run build
 
 This creates:
 
-- `frontend/dist/` — Optimized frontend bundle
+- `frontend/dist/` — Optimised frontend bundle
 - `backend/dist/` — Node.js backend bundle
 
 ### Build Individual Workspaces
@@ -65,6 +65,7 @@ Deploy frontend and backend to independent services:
 ```
 
 **Benefits:**
+
 - Independent scaling
 - Frontend cacheable globally
 - Backend auto-restarts work without re-serving frontend
@@ -86,11 +87,13 @@ node backend/dist/index.js
 ```
 
 Backend can serve frontend via middleware:
+
 ```typescript
 app.use(serveStatic("./public"));
 ```
 
 **Benefits:**
+
 - Single deployment unit
 - Simpler infrastructure
 - Lower hosting costs
@@ -100,7 +103,8 @@ app.use(serveStatic("./public"));
 
 ### Frontend Scaling
 
-**Option 1: CDN (Recommended for production)**
+**Option 1: CDN (Recommended for production):**
+
 ```bash
 # Build frontend
 npm run build:frontend
@@ -114,6 +118,7 @@ npm run build:frontend
 ```
 
 Configuration for Cloudflare Pages:
+
 ```toml
 # wrangler.toml
 name = "match-day-itinerary"
@@ -125,7 +130,8 @@ cwd = "frontend"
 upload.dir = "dist"
 ```
 
-**Option 2: Static Web Server**
+**Option 2: Static Web Server:**
+
 ```nginx
 # nginx example
 server {
@@ -133,11 +139,11 @@ server {
     server_name example.com;
     root /var/www/frontend/dist;
     index index.html;
-    
+
     location / {
         try_files $uri /index.html;
     }
-    
+
     location /api/ {
         proxy_pass http://backend:3000;
     }
@@ -146,7 +152,8 @@ server {
 
 ### Backend Scaling
 
-**Option 1: Containerized (Docker)**
+**Option 1: Containerised (Docker):**
+
 ```dockerfile
 FROM node:22-alpine
 
@@ -163,6 +170,7 @@ CMD ["node", "dist/index.js"]
 ```
 
 Deploy with:
+
 - Docker Compose (development)
 - Kubernetes (large scale)
 - AWS ECS / EKS
@@ -171,11 +179,13 @@ Deploy with:
 
 **Option 2: Serverless (Node.js)**
 Not recommended for this project since sql.js needs file persistence, but possible with:
+
 - AWS Lambda + EFS
 - Google Cloud Functions + Firestore
 - Vercel serverless functions (with database connection)
 
-**Option 3: Traditional VPS**
+**Option 3: Traditional VPS:**
+
 ```bash
 # SSH into server
 ssh user@server.com
@@ -202,7 +212,7 @@ Currently uses sql.js with JSON file persistence (`data/ltfc.json`).
 // Option 1: PostgreSQL (recommended)
 import { Pool } from "pg";
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
 });
 
 // Option 2: MongoDB
@@ -233,18 +243,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm install
-      
+
       - name: Build frontend
         run: npm run build:frontend
-      
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
@@ -257,29 +267,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm install
-      
+
       - name: Build backend
         run: npm run build:backend
-      
+
       - name: Build Docker image
         run: |
           docker build -f Dockerfile.backend -t $REGISTRY/$IMAGE_NAME:latest .
           docker tag $REGISTRY/$IMAGE_NAME:latest $REGISTRY/$IMAGE_NAME:${{ github.sha }}
-      
+
       - name: Push to Container Registry
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login $REGISTRY -u ${{ github.actor }} --password-stdin
           docker push $REGISTRY/$IMAGE_NAME:latest
           docker push $REGISTRY/$IMAGE_NAME:${{ github.sha }}
-      
+
       - name: Deploy to server
         run: |
           ssh deploy@api.example.com "cd /app && git pull && npm install && npm run build:backend && npx pm2 restart api"
@@ -313,6 +323,7 @@ jobs:
 ### Manual Deployment Steps
 
 **For frontend:**
+
 ```bash
 # 1. Build
 npm run build:frontend
@@ -325,6 +336,7 @@ wrangler pages deploy frontend/dist
 ```
 
 **For backend:**
+
 ```bash
 # 1. Build
 npm run build:backend
@@ -346,6 +358,7 @@ curl http://localhost:3000/health
 ## Environment Variables for Deployment
 
 **Frontend (.env for build time):**
+
 ```dotenv
 VITE_REGION=production_region
 VITE_PROJECT=production_project_uuid
@@ -353,6 +366,7 @@ VITE_AGENT_ID=production_agent_uuid
 ```
 
 **Backend (runtime environment):**
+
 ```dotenv
 NODE_ENV=production
 PORT=3000
@@ -363,6 +377,7 @@ DATABASE_URL=./data/ltfc.json
 ## Health Checks & Monitoring
 
 ### Frontend Health
+
 ```bash
 # Check if serving
 curl https://example.com
@@ -372,6 +387,7 @@ curl -w "Time: %{time_total}s\n" https://example.com
 ```
 
 ### Backend Health
+
 ```bash
 # Add health endpoint to Hono
 app.get("/health", (c) => c.json({ status: "ok" }));
@@ -383,6 +399,7 @@ curl http://api.example.com:3000/health
 ### Monitoring (Production)
 
 Recommended services:
+
 - **Error tracking**: Sentry, Rollbar
 - **Performance**: New Relic, DataDog, Grafana
 - **Uptime**: Pingdom, UptimeRobot
@@ -404,6 +421,7 @@ app.use(Sentry.Handlers.errorHandler());
 ## Rollback Strategy
 
 ### Frontend Rollback
+
 ```bash
 # CDN-based: point DNS/origin to previous build
 # Git-based: redeploy previous commit
@@ -413,6 +431,7 @@ wrangler pages deploy frontend/dist
 ```
 
 ### Backend Rollback
+
 ```bash
 # Docker: use previous image tag
 docker-compose pull api:v1.2.3
@@ -460,11 +479,11 @@ pm2 restart api
 
 ## Summary
 
-| Aspect | Setup |
-|--------|-------|
-| **Frontend** | Build → CDN (Cloudflare/Vercel/Netlify) |
-| **Backend** | Build → Docker → Kubernetes/VPS/Serverless |
-| **Database** | sql.js (development) → PostgreSQL (production) |
-| **CI/CD** | GitHub Actions (auto-deploy on push) |
-| **Monitoring** | Error tracking + health checks |
-| **Backup** | Automated snapshots to cloud storage |
+| Aspect         | Setup                                          |
+| -------------- | ---------------------------------------------- |
+| **Frontend**   | Build → CDN (Cloudflare/Vercel/Netlify)        |
+| **Backend**    | Build → Docker → Kubernetes/VPS/Serverless     |
+| **Database**   | sql.js (development) → PostgreSQL (production) |
+| **CI/CD**      | GitHub Actions (auto-deploy on push)           |
+| **Monitoring** | Error tracking + health checks                 |
+| **Backup**     | Automated snapshots to cloud storage           |
