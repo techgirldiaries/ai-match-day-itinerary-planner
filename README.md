@@ -211,3 +211,7 @@ npm run lint:fix                 # Auto-fix linting issues
 **"Dev server crashes on npm install"** → Run `npm install` in root to install monorepo dependencies  
 **TypeScript import path errors on Windows** → Configs now include `forceConsistentCasingInFileNames: true` for Windows compatibility. If errors persist, restart the dev server.  
 **Lint or type-check not picking up changes** → Stop and restart `npm run dev` (dev server caches environment variables on startup)
+
+## License
+
+See [LICENSE]([https://github.com/techgirldiaries/ai-match-day-itinerary-planner/License.md](https://github.com/techgirldiaries/ai-match-day-itinerary-planner/blob/main/LICENSE.md))
