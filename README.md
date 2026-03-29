@@ -137,7 +137,7 @@ src/
 ├── shims/                         # Cross-platform shims
 │   └── crypto.ts                  # Crypto polyfill for browsers
 │
-├── i18n/                          # Internationalization
+├── i18n/                          # Internationalisation
 │   ├── t.ts                       # Translation function
 │   ├── translations.ts            # Translation key mappings
 │   ├── types.ts                   # Translation interface
@@ -148,8 +148,7 @@ src/
 │       └── [other languages]
 │
 ├── index.tsx                      # App entry point
-├── style.css                      # Global Tailwind styles
-└── types.ts (deprecated)          # Old location - use core/types.ts instead
+└── style.css                      # Global Tailwind styles
 ```
 
 **Key Design Principles:**
