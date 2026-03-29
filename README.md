@@ -2,7 +2,7 @@
 
 > AI-powered match day planning for LTFC football fans ⚽
 
-A monorepo chat application that generates personalized match-day itineraries using Relevance AI agents. Supports real-time pricing, group sharing, push notifications, and live updates.
+A monorepo chat application that generates personalised match-day itineraries using Relevance AI agents. Supports real-time pricing, group sharing, push notifications and live updates.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ A monorepo chat application that generates personalized match-day itineraries us
 ### 1. Install Dependencies
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### 2. Set Up Environment Variables
@@ -26,11 +26,11 @@ Create `.env` in root with your Relevance AI credentials:
 ```dotenv
 # Relevance AI Configuration (required)
 VITE_REGION=your_region_code          # From Relevance AI dashboard
-VITE_PROJECT=your_project_uuid        # From Relevance AI dashboard
-VITE_AGENT_ID=your_agent_uuid         # From your deployed agent
+VITE_PROJECT=your_project        # From Relevance AI dashboard
+VITE_AGENT_ID=your_agent_id         # From your deployed agent
 
 # Optional: Use VITE_WORKFORCE_ID if you prefer workforce-based routing
-# VITE_WORKFORCE_ID=your_workforce_uuid
+# VITE_WORKFORCE_ID=your_workforce_id
 ```
 
 Get these values from your [Relevance AI dashboard](https://relevanceai.com) → Settings → API Keys.
@@ -45,24 +45,24 @@ npm run dev:backend      # Backend only (http://localhost:3000)
 
 ## Key Features
 
-- **Relevance AI Integration**: AI-powered multi-agent itinerary planning
+- **Relevance AI Integration**: AI-driven multi-agent itinerary planning
 - **Group Sharing**: Base62-encoded share links with expiry
 - **Pure JavaScript Database**: sql.js SQLite (no native compilation needed)
-- **Full-Stack TypeScript**: Frontend + backend type safety with Windows compatibility
-- **Monorepo Structure**: Centralized configs with workspace separation
+- **Full-Stack TypeScript**: Frontend and backend type safety with Windows compatibility
+- **Monorepo Structure**: Centralised configs with workspace separation
 
 ## Tech Stack
 
-- **Frontend**: Preact + Preact Signals, Tailwind CSS 4.1, Vite 7
+- **Frontend**: Preact and Preact Signals, Tailwind CSS 4.1, Vite 7
 - **Backend**: Hono.js, sql.js (pure JavaScript SQLite), TypeScript 5.9
 - **Database**: sql.js with JSON file persistence
 - **Testing**: Jest, Vitest, Playwright
 - **Linting**: Biome 2.2.4
-- **Type Checking**: TypeScript with Windows path alias optimization
+- **Type Checking**: TypeScript with Windows path alias optimisation
 
 ## Frontend Architecture
 
-The frontend `src/` directory is organized by responsibility for clarity and scalability:
+The frontend `src/` directory is organised by responsibility for clarity and scalability:
 
 ```text
 src/
@@ -156,7 +156,7 @@ src/
 
 - **Separation of Concerns**: Core state → Services → Storage → Config → Components
 - **Single Responsibility**: Each module has one clear purpose
-- **Centralized Configuration**: All form options/styles in `formConfig.ts`, compliance settings in `relevance-ai-config.ts`
+- **Centralised Configuration**: All form options/styles in `formConfig.ts`, compliance settings in `relevance-ai-config.ts`
 - **Reusable Utilities**: Generic helpers in `utils/`, component-specific ones in `components/utils/`
 - **Type Safety**: All types in `core/types.ts`, shared across app
 - **Easy Testing**: Isolated utilities and hooks for unit testing
@@ -164,7 +164,7 @@ src/
 
 ## Project Configuration
 
-This is a **monorepo** using centralized configuration files in `.config/`:
+This is a **monorepo** using centralised configuration files in `.config/`:
 
 ```text
 .config/
@@ -203,7 +203,7 @@ npm run lint                     # Lint both workspaces
 npm run lint:fix                 # Auto-fix linting issues
 ```
 
-**Windows Optimization:** TypeScript configs include `skipLibCheck`, `forceConsistentCasingInFileNames`, and `resolveJsonModule` for reliable cross-platform import resolution.
+**Windows Optimisation:** TypeScript configs include `skipLibCheck`, `forceConsistentCasingInFileNames` and `resolveJsonModule` for reliable cross-platform import resolution.
 
 ## Troubleshooting
 
