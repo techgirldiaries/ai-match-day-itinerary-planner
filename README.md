@@ -1,6 +1,6 @@
 # Match-Day Itinerary Planner
 
-> AI-powered match day planning for LTFC football fans ⚽
+> AI-driven match day planning for LTFC football fans ⚽
 
 A monorepo chat application that generates personalised match-day itineraries using Relevance AI agents. Supports real-time pricing, group sharing, push notifications and live updates.
 
