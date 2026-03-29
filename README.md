@@ -132,7 +132,7 @@ src/
 │       └── validateIntakeForm.ts  # Form validation rules
 │
 ├── prompts/                       # AI prompts
-│   └── system-prompt-optimized.ts # Main system prompt for LTFC agent
+│   └── system-prompt-optimised.ts # Main system prompt for LTFC agent
 │
 ├── shims/                         # Cross-platform shims
 │   └── crypto.ts                  # Crypto polyfill for browsers
