@@ -48,9 +48,9 @@ cp .env.example .env
 
 ```dotenv
 # Relevance AI Configuration (required)
-VITE_REGION=your_region_code      # From Relevance AI dashboard
-VITE_PROJECT=your_project          # From Relevance AI dashboard
-VITE_AGENT_ID=your_agent_id        # From your deployed agent
+VITE_REGION=your_region
+VITE_PROJECT=your_project
+VITE_AGENT_ID=your_agent_id
 
 # Optional: Use VITE_WORKFORCE_ID if you prefer workforce-based routing
 # VITE_WORKFORCE_ID=your_workforce_id
