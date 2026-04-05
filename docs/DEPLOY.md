@@ -663,5 +663,5 @@ pm2 restart api
 | **Backend**    | Build → Docker → Kubernetes/VPS/Serverless     |
 | **Database**   | sql.js (development) → PostgreSQL (production) |
 | **CI/CD**      | GitHub Actions (auto-deploy on push)           |
-| **Monitoring** | Error tracking and health checks                 |
+| **Monitoring** | Error tracking and health checks               |
 | **Backup**     | Automated snapshots to cloud storage           |
