@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide explains how to build, deploy, and scale the Match-Day Itinerary Planner monorepo in production environments.
+This guide explains how to build, deploy and scale the Match-Day Itinerary Planner monorepo in production environments.
 
 ## Overview
 
@@ -38,13 +38,191 @@ npm run build:backend
 - **Backend**: Compiled TypeScript and bundled dependencies
 - **Size**: Frontend ~50-100KB gzipped, Backend ~2-5MB depending on dependencies
 
+## Pre-Deployment Checklist
+
+Before deploying to production, verify the following:
+
+### Code Quality
+
+- [ ] All tests pass: `npm test`
+- [ ] Type-check succeeds: `npm run type-check`
+- [ ] Linting passes: `npm run lint`
+- [ ] No console errors or warnings
+- [ ] No hardcoded secrets or credentials in code
+- [ ] All environment variables documented
+
+### Build Verification
+
+- [ ] Frontend builds without errors: `npm run build:frontend`
+- [ ] Backend builds without errors: `npm run build:backend`
+- [ ] Build output files exist and are correct size
+- [ ] Source maps generated (for debugging in production)
+
+### Environment Setup
+
+- [ ] All required environment variables defined
+- [ ] Sensitive variables stored in secret management (not in repo)
+- [ ] CORS origins configured correctly
+- [ ] API endpoints and URLs updated for production
+- [ ] Database connection string verified
+- [ ] Logging level appropriate for production
+
+### Security
+
+- [ ] HTTPS/TLS certificates configured
+- [ ] API authentication enabled (JWT, OAuth, etc.)
+- [ ] Rate limiting configured
+- [ ] CORS headers properly set
+- [ ] Secrets scanning: `npm audit`
+- [ ] Dependencies up to date with no critical vulnerabilities
+
+### Testing
+
+- [ ] Smoke tests pass in staging environment
+- [ ] E2E tests pass: `npm run test:e2e`
+- [ ] Performance benchmarks acceptable
+- [ ] Database backup tested and verified
+- [ ] Rollback procedure documented and tested
+
+### Monitoring & Observability
+
+- [ ] Error tracking service configured (Sentry, etc.)
+- [ ] Health check endpoint available
+- [ ] Logging aggregation setup (CloudWatch, ELK, etc.)
+- [ ] Performance monitoring configured
+- [ ] Uptime monitoring configured
+- [ ] Alert channels configured (email, Slack, etc.)
+
+### Documentation
+
+- [ ] Deployment runbook created and shared
+- [ ] Rollback procedure documented
+- [ ] Post-deployment verification steps documented
+- [ ] Emergency contacts listed
+- [ ] Known issues and limitations documented
+
+## Production Environment Setup
+
+### Creating Production Environment Variables
+
+**Frontend (.env.production for build):**
+
+```bash
+# .env.production in frontend/
+VITE_REGION=<your_production_region>
+VITE_PROJECT=<your_production_project_uuid>
+VITE_AGENT_ID=<your_production_agent_uuid>
+
+# Optional
+VITE_WORKFORCE_ID=<optional_workforce_id>
+```
+
+Build with production environment:
+
+```bash
+NODE_ENV=production npm run build:frontend
+```
+
+**Backend (.env or systemd envs for runtime):**
+
+```bash
+# .env in backend/ (or system environment)
+NODE_ENV=production
+PORT=3000
+LOG_LEVEL=info
+DATABASE_URL=./data/ltfc.json
+
+# Optional: For database migration
+# DATABASE_URL=postgres://user:pass@db.example.com:5432/ltfc
+```
+
+### Quick Production Deployment
+
+#### Using Docker Compose (VPS/On-Premises)
+
+1. **Create docker-compose.prod.yml:**
+
+```yaml
+version: "3.8"
+services:
+  api:
+    image: api:latest
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      LOG_LEVEL: info
+    volumes:
+      - ./data:/app/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+    depends_on:
+      - api
+    restart: always
+```
+
+1. **Deploy:**
+
+```bash
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+#### Using Heroku (Simple)
+
+```bash
+# 1. Install Heroku CLI
+# 2. Login
+heroku login
+
+# 3. Create app
+heroku create match-day-itinerary
+
+# 4. Add buildpacks
+heroku buildpacks:add heroku/nodejs
+
+# 5. Set environment variables
+heroku config:set VITE_REGION=production_region
+heroku config:set NODE_ENV=production
+
+# 6. Deploy
+git push heroku main
+```
+
+#### Using Vercel (Frontend Only)
+
+```bash
+# 1. Install Vercel CLI
+npm i -g vercel
+
+# 2. Deploy frontend
+cd frontend
+vercel --prod
+
+# 3. Configure environment in Vercel dashboard
+# Settings → Environment Variables → Add VITE_*
+```
+
 ## Deployment Patterns
 
 ### Pattern 1: Separate Infrastructure (Recommended)
 
 Deploy frontend and backend to independent services:
 
-```
+```diagram
 ┌─────────────────────────────────────────┐
 │          Cloudflare CDN / S3             │
 │        (Serves Frontend /dist/)          │
@@ -113,7 +291,7 @@ npm run build:frontend
 # - Cloudflare Pages
 # - Vercel
 # - Netlify
-# - AWS CloudFront + S3
+# - AWS CloudFront and S3
 # - GitHub Pages
 ```
 
@@ -180,8 +358,8 @@ Deploy with:
 **Option 2: Serverless (Node.js)**
 Not recommended for this project since sql.js needs file persistence, but possible with:
 
-- AWS Lambda + EFS
-- Google Cloud Functions + Firestore
+- AWS Lambda and EFS
+- Google Cloud Functions and Firestore
 - Vercel serverless functions (with database connection)
 
 **Option 3: Traditional VPS:**
@@ -218,7 +396,7 @@ const pool = new Pool({
 // Option 2: MongoDB
 import { MongoClient } from "mongodb";
 
-// Option 3: Supabase (PostgreSQL + features)
+// Option 3: Supabase (PostgreSQL and features)
 // Already has node SDK integration
 ```
 
@@ -485,5 +663,5 @@ pm2 restart api
 | **Backend**    | Build → Docker → Kubernetes/VPS/Serverless     |
 | **Database**   | sql.js (development) → PostgreSQL (production) |
 | **CI/CD**      | GitHub Actions (auto-deploy on push)           |
-| **Monitoring** | Error tracking + health checks                 |
+| **Monitoring** | Error tracking and health checks                 |
 | **Backup**     | Automated snapshots to cloud storage           |

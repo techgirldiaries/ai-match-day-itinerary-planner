@@ -1,129 +1,85 @@
-# AI Match-Day Itinerary Planner
+# Development Workflow
 
-> Agentic AI match day planning for LTFC football fans ⚽
+## Project Structure
 
-A monorepo chat application that generates personalised match-day itineraries using Relevance AI agents. Supports real-time pricing, group sharing, push notifications and live updates.
+This is a **monorepo** with two independent workspaces:
 
-## Prerequisites
+- **`frontend/`** — Preact UI app served on <http://localhost:5173>
+- **`backend/`** — Hono.js API server on <http://localhost:3000>
 
-- Node.js 22+
-- [Relevance AI](https://relevanceai.com) account with deployed agent
+## Adding Features
 
-> **Note:** No C++ build tools required! This project uses pure JavaScript SQLite (sql.js) instead of native modules for maximum cross-platform compatibility.
+### Frontend Features
 
-## Quick Start
+1. **Create components** in `frontend/src/components/` following existing patterns
+2. **Add types** to `frontend/src/core/types.ts`
+3. **Add form config** to `frontend/src/config/formConfig.ts` if needed
+4. **Use existing utilities** from `frontend/src/utils/` or create new ones following the naming convention
+5. **Test in browser** — dev server auto-reloads on changes
 
-### 1. Clone & Install Dependencies
-
-```bash
-# Clone the repository
-git clone https://github.com/techgirldiaries/ai-match-day-itinerary-planner.git
-cd ai-match-day-itinerary-planner
-
-# Install all workspace dependencies
-npm install
-
-# Or if you encounter peer dependency issues, use legacy resolution:
-npm install --legacy-peer-deps
-```
-
-**Workspace-specific installation** (optional):
+Example workflow:
 
 ```bash
-npm install -w frontend   # Install frontend deps only
-npm install -w backend    # Install backend deps only
+# 1. Start dev server
+npm run dev:frontend
+
+# 2. Create new component
+# frontend/src/components/my-feature.tsx
+
+# 3. Import and use in Parent component
+# Changes appear instantly in browser
 ```
 
-### 2. Configure Environment Variables
+### Backend Features
+
+1. **Create routes** in `backend/src/routes/`
+2. **Add database operations** in `backend/src/db/`
+3. **Create services** in `backend/src/services/` for business logic
+4. **Add types** to `backend/src/types/`
+5. **Test endpoints** with fetch or curl
+
+Example workflow:
 
 ```bash
-# Copy the example environment file
-cd frontend
-cp .env.example .env
-# Or on Windows:
-# copy .env.example .env
+# 1. Create route file
+# backend/src/routes/my-feature.ts
+
+# 2. Register route in backend/src/index.ts
+# app.route('/api/my-feature', myFeatureRoutes)
+
+# 3. Dev server restarts on changes
 ```
 
-**Edit `frontend/.env`** and add your Relevance AI credentials:
-
-```dotenv
-# Relevance AI Configuration (required)
-VITE_REGION=your_region_code      # From Relevance AI dashboard
-VITE_PROJECT=your_project          # From Relevance AI dashboard
-VITE_AGENT_ID=your_agent_id        # From your deployed agent
-
-# Optional: Use VITE_WORKFORCE_ID if you prefer workforce-based routing
-# VITE_WORKFORCE_ID=your_workforce_id
-```
-
-**Get these values from:** [Relevance AI dashboard](https://relevanceai.com) → Settings → API Keys
-
-### 3. Start Development Servers
-
-From the root directory:
+## Monorepo Commands
 
 ```bash
-npm run dev              # Start both frontend & backend
+npm run dev                    # Start both workspaces
+npm run dev:frontend           # Frontend only
+npm run dev:backend            # Backend only
+
+npm run build                  # Build both workspaces
+npm run build -w frontend      # Build frontend only
+npm run build -w backend       # Build backend only
+
+npm run type-check             # Type-check all workspaces
+npm run type-check -w frontend # Type-check frontend only
+
+npm run lint                   # Lint both workspaces
+npm run lint:fix               # Auto-fix linting issues
+
+npm install -w frontend        # Install deps in frontend only
+npm install -w backend         # Install deps in backend only
 ```
 
-Or run individually:
+## Code Quality Standards
 
-```bash
-npm run dev:frontend     # Frontend only (http://localhost:5173)
-npm run dev:backend      # Backend only (http://localhost:3000)
-```
-
-**What you should see:**
-
-- Frontend: `VITE v7.x.x ready in XXX ms` + Open <http://localhost:5173>
-- Backend: Hono server running on <http://localhost:3000>
-- No errors about missing `vite` or environment variables
-
-### 4. Verify Everything Works
-
-```bash
-# ✓ Check Node.js version (should be 22+)
-node --version
-
-# ✓ Verify .env file exists with credentials
-cat frontend/.env
-
-# ✓ Open http://localhost:5173 in browser
-# ✓ Check browser console (F12) for any errors
-# ✓ Try asking the matching day itinerary planner a question
-```
-
-**If you see issues:**
-
-- **Missing dependencies**: Run `npm install` from root
-- **Black screen**: Check browser console (F12) for errors, verify `.env` has credentials
-- **Port conflicts**: Change ports in `frontend/vite.config.ts` and `backend/src/index.ts`
-- **Please refer to [Troubleshooting](#troubleshooting) for more help**
-
-## Documentation
-
-See dedicated guides for detailed information:
-
-- **[Development Workflow](docs/DEVELOPMENT.md)** — Adding features, monorepo commands, code standards, and architecture overview
-- **[Testing Procedures](docs/TESTING.md)** — Unit tests, component tests, E2E tests, coverage reports, and best practices
-- **[Deployment Guide](docs/DEPLOY.md)** — Production setup, CI/CD pipelines, scaling options, monitoring, and security
-
-## Key Features
-
-- **Relevance AI Integration**: AI-driven multi-agent itinerary planning
-- **Group Sharing**: Base62-encoded share links with expiry
-- **Pure JavaScript Database**: sql.js SQLite (no native compilation needed)
-- **Full-Stack TypeScript**: Frontend and backend type safety with Windows compatibility
-- **Monorepo Structure**: Centralised configs with workspace separation
-
-## Tech Stack
-
-- **Frontend**: Preact and Preact Signals, Tailwind CSS 4.1, Vite 7
-- **Backend**: Hono.js, sql.js (pure JavaScript SQLite), TypeScript 5.9
-- **Database**: sql.js with JSON file persistence
-- **Testing**: Jest, Vitest, Playwright
-- **Linting**: Biome 2.2.4
-- **Type Checking**: TypeScript with Windows path alias optimisation
+- **TypeScript**: All code must be properly typed
+- **Component naming**: Use kebab-case for file names (e.g., `user-message.tsx`)
+- **Utility naming**: Descriptive, grouped by function (e.g., `dateHelpers.ts`)
+- **Configuration**: Centralise options in `config/` and `core/`
+- **No hardcoded values**: Use constants from `core/constant.ts`
+- **Accessibility**: All interactive components must be keyboard accessible
+- **Performance**: Use Preact signals for state, avoid unnecessary re-renders
 
 ## Frontend Architecture
 
@@ -133,7 +89,7 @@ The frontend `src/` directory is organised by responsibility for clarity and sca
 src/
 ├── core/                          # App state, types, and configuration
 │   ├── signals.ts                 # Preact signals (messages, UI state, etc.)
-│   ├── types.ts                   # TypeScript types (IntakeFormData, ItineraryResponse, etc.)
+│   ├── types.ts                   # TypeScript types
 │   ├── constant.ts                # Relevance AI credentials from .env
 │   └── user.ts                    # Anonymous user session management
 │
@@ -146,12 +102,12 @@ src/
 │   └── preferenceStorage.ts       # User preferences (dark mode, language)
 │
 ├── config/                        # Feature configuration
-│   ├── formConfig.ts              # Form fields, options, CSS classes (centralized)
+│   ├── formConfig.ts              # Form fields, options, CSS classes
 │   ├── relevance-ai-config.ts     # Tool IDs, strategy, compliance, feature flags
 │   └── i18n.ts                    # Translations interface & English translations
 │
 ├── utils/                         # Reusable utilities
-│   ├── formUtils.ts               # Generic form utilities (toggleArrayItem, sanitizeInput)
+│   ├── formUtils.ts               # Generic form utilities
 │   ├── formHelpers.ts             # Form validation and helpers
 │   ├── formThemes.ts              # CSS class builders for form styling
 │   ├── dateHelpers.ts             # Date/time utilities
@@ -268,22 +224,3 @@ npm run lint:fix                 # Auto-fix linting issues
 ```
 
 **Windows Optimisation:** TypeScript configs include `skipLibCheck`, `forceConsistentCasingInFileNames` and `resolveJsonModule` for reliable cross-platform import resolution.
-
-## Troubleshooting
-
-**"Connection setup needed"** → Add required Relevance AI credentials to `.env` and restart dev server (`npm run dev`)  
-**"Dev server crashes on npm install"** → Run `npm install` in root to install monorepo dependencies  
-**TypeScript import path errors on Windows** → Configs now include `forceConsistentCasingInFileNames: true` for Windows compatibility. If errors persist, restart the dev server.  
-**Lint or type-check not picking up changes** → Stop and restart `npm run dev` (dev server caches environment variables on startup)
-
-## Authors
-
-- [Oluwakemi](https://github.com/techgirldiaries)
-- [Abimbola](https://github.com/Abimbola06)
-- [Ibukun Shalom](https://github.com/)
-- [Kwesi](https://github.com/serKwesi)
-- [Mawuli](https://github.com/mdzidulla)
-
-## License
-
-See [LICENSE](<[https://github.com/techgirldiaries/ai-match-day-itinerary-planner/License.md](https://github.com/techgirldiaries/ai-match-day-itinerary-planner/blob/main/LICENSE.md)>)
