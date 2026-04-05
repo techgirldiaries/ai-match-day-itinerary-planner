@@ -2,7 +2,7 @@
 
 > Agentic AI match day planning for LTFC football fans ⚽
 
-A monorepo chat application that generates personalised match-day itineraries using Relevance AI agents. Supports real-time pricing, group sharing, push notifications and live updates.
+A monorepo chat application that generates personalised match-day itineraries using multi-agent built on Relevance AI platform. Supports real-time pricing, group sharing, push notifications and live updates.
 
 ## Prerequisites
 
