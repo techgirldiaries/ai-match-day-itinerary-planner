@@ -214,15 +214,15 @@ export function IntakeForm() {
       {/* Hero */}
       <div class="text-center mb-4 sm:mb-6 md:mb-8">
         <div
-          class="inline-flex items-center justify-center w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 rounded-full bg-[#F5820D] mb-2 sm:mb-3 md:mb-4 text-lg sm:text-xl md:text-2xl"
+          class="inline-flex items-center justify-center w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 rounded-full bg-orange-500 mb-2 sm:mb-3 md:mb-4 text-lg sm:text-xl md:text-2xl"
           aria-hidden="true"
         >
           🏟️
         </div>
-        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-zinc-900 dark:text-white mb-1">
+        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
           {t("planYourItinerary")}
         </h2>
-        <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           {t("formSubtitle")}
         </p>
       </div>
@@ -276,7 +276,7 @@ export function IntakeForm() {
               aria-describedby={
                 errors.origin_city ? "origin_city_error" : undefined
               }
-              class={`${buildFieldClass(Boolean(errors.origin_city))} placeholder-zinc-400 dark:placeholder-zinc-500`}
+              class={`${buildFieldClass(Boolean(errors.origin_city))} placeholder-gray-500`}
             />
             {errors.origin_city && (
               <p
@@ -419,7 +419,7 @@ export function IntakeForm() {
               </label>
               <div class="relative">
                 <span
-                  class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 font-medium"
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium"
                   aria-hidden="true"
                 >
                   £
@@ -499,9 +499,9 @@ export function IntakeForm() {
           {/* Interests */}
           <div>
             <fieldset class="border-0 p-0 m-0">
-              <legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+              <legend class="text-sm font-medium text-gray-300 mb-2">
                 {t("interests")}{" "}
-                <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                <span class="text-xs font-normal text-gray-400">
                   {t("selectAll")}
                 </span>
               </legend>
@@ -534,14 +534,14 @@ export function IntakeForm() {
           {/* Transport modes */}
           <div class="mb-5">
             <fieldset class="border-0 p-0 m-0">
-              <legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+              <legend class="text-sm font-medium text-gray-300 mb-2">
                 {t("transportModes")}{" "}
-                <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                <span class="text-xs font-normal text-gray-400">
                   {t("selectAll")}
                 </span>
               </legend>
               <div class="flex flex-wrap gap-2 pb-2">
-                {TRANSPORT_OPTIONS.map(({ value, emoji }) => {
+                {TRANSPORT_OPTIONS.map(({ value, emoji, label }) => {
                   const checked = transportModes.includes(value);
                   return (
                     <label
@@ -556,7 +556,7 @@ export function IntakeForm() {
                         class="sr-only"
                       />
                       <span aria-hidden="true">{emoji}</span>
-                      {t(value)}
+                      {label}
                     </label>
                   );
                 })}
@@ -575,14 +575,11 @@ export function IntakeForm() {
             <div>
               <p
                 id="overnight_label"
-                class="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                class="text-sm font-semibold text-gray-300"
               >
                 {t("overnightStay")}
               </p>
-              <p
-                id="overnight_hint"
-                class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5"
-              >
+              <p id="overnight_hint" class="text-xs text-gray-400 mt-0.5">
                 {t("overnightHint")}
               </p>
             </div>
@@ -605,14 +602,11 @@ export function IntakeForm() {
             <div>
               <p
                 id="community_label"
-                class="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                class="text-sm font-semibold text-gray-300"
               >
                 {t("communityTips")}
               </p>
-              <p
-                id="community_hint"
-                class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5"
-              >
+              <p id="community_hint" class="text-xs text-gray-400 mt-0.5">
                 {t("communityHint")}
               </p>
             </div>
@@ -640,14 +634,11 @@ export function IntakeForm() {
             <div>
               <p
                 id="group_coord_label"
-                class="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+                class="text-sm font-semibold text-gray-300"
               >
                 {t("groupCoordination")}
               </p>
-              <p
-                id="group_coord_hint"
-                class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5"
-              >
+              <p id="group_coord_hint" class="text-xs text-gray-400 mt-0.5">
                 {t("groupCoordinationDescription")}
               </p>
             </div>
@@ -668,16 +659,10 @@ export function IntakeForm() {
           {/* Loyalty member */}
           <div class="flex items-start justify-between gap-4 py-4 mb-4">
             <div>
-              <p
-                id="loyalty_label"
-                class="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
-              >
+              <p id="loyalty_label" class="text-sm font-semibold text-gray-300">
                 {t("loyaltyMember")}
               </p>
-              <p
-                id="loyalty_hint"
-                class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5"
-              >
+              <p id="loyalty_hint" class="text-xs text-gray-400 mt-0.5">
                 {t("loyaltyMemberDescription")}
               </p>
             </div>
@@ -698,9 +683,9 @@ export function IntakeForm() {
           {/* Accessibility needs */}
           <div class="mb-5">
             <fieldset class="border-0 p-0 m-0">
-              <legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+              <legend class="text-sm font-medium text-gray-300 mb-2">
                 {t("accessibilityNeeds")}{" "}
-                <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                <span class="text-xs font-normal text-gray-400">
                   {t("preferencesOptional")}
                 </span>
               </legend>
@@ -727,11 +712,11 @@ export function IntakeForm() {
         </fieldset>
 
         {/* ── Preferences ── */}
-        <fieldset class="w-full box-border mb-6 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-5">
+        <fieldset class="w-full box-border mb-6 border border-gray-700 rounded-2xl p-5">
           <legend class="sr-only">{t("preferences")}</legend>
           <label for="preferences" class={CSS_CLASSES.formLabel}>
             {t("preferences")}{" "}
-            <span class="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+            <span class="text-xs font-normal text-gray-400">
               {t("preferencesOptional")}
             </span>
           </label>
@@ -745,7 +730,7 @@ export function IntakeForm() {
             rows={3}
             maxlength={FORM_CONSTRAINTS.preferencesMaxLength}
             aria-describedby="preferences_hint"
-            class={`${CSS_CLASSES.inputBase} ${CSS_CLASSES.inputBorder} placeholder-zinc-400 dark:placeholder-zinc-500 resize-none`}
+            class={`${CSS_CLASSES.inputBase} ${CSS_CLASSES.inputBorder} placeholder-gray-500 resize-none`}
           />
           <p id="preferences_hint" class={CSS_CLASSES.helpText}>
             {t("preferencesHint")}

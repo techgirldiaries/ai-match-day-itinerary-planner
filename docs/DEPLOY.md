@@ -34,7 +34,7 @@ npm run build:backend
 
 ### Rebuild Outputs
 
-- **Frontend**: HTML, CSS, JavaScript bundles optimized with Vite
+- **Frontend**: HTML, CSS, JavaScript bundles optimised with Vite
 - **Backend**: Compiled TypeScript and bundled dependencies
 - **Size**: Frontend ~50-100KB gzipped, Backend ~2-5MB depending on dependencies
 

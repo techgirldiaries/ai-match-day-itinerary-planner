@@ -15,6 +15,7 @@ import {
   currentRoute,
 } from "../../core/signals";
 import { validateIntakeForm } from "../../core/intake-validation";
+import { TRANSPORT_OPTIONS } from "../../config/formConfig";
 
 // Default empty form state — all fields explicit, no 'any':
 const defaultFormState: IntakeFormDataNew = {
@@ -25,7 +26,7 @@ const defaultFormState: IntakeFormDataNew = {
   fanType: "loyal-hatter",
   groupType: "solo",
   groupSize: 1,
-  travelMode: "train",
+  travelModes: ["train"],
   departureLocation: "",
   prefersPubPreMatch: false,
   prefersFood: false,
@@ -62,6 +63,15 @@ export const IntakeForm: FunctionComponent = () => {
     return validationErrors.find((e) => e.field === field)?.message;
   };
 
+  const toggleTravelMode = (mode: TravelModeNew) => {
+    updateField(
+      "travelModes",
+      formState.travelModes.includes(mode)
+        ? formState.travelModes.filter((m) => m !== mode)
+        : [...formState.travelModes, mode],
+    );
+  };
+
   const handleSubmit = (): void => {
     // Mutex — prevent double submission:
     if (isIntakeSubmitting.value) return;
@@ -87,11 +97,11 @@ export const IntakeForm: FunctionComponent = () => {
 
   return (
     <div
-      class="min-h-screen bg-gray-950 flex items-center 
+      class="min-h-screen bg-white dark:bg-gray-950 flex items-center 
                 justify-center px-4 py-8"
     >
       <div
-        class="w-full max-w-2xl bg-gray-900 rounded-2xl 
+        class="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl 
                   border border-orange-500/20 p-6 sm:p-8"
       >
         {/* Header */}
@@ -99,16 +109,46 @@ export const IntakeForm: FunctionComponent = () => {
           <h1 class="text-2xl font-bold text-orange-500 mb-1">
             Plan Your Match Day
           </h1>
-          <p class="text-sm text-gray-400">
+          <p class="text-sm text-gray-600 dark:text-gray-400">
             Come On You Hatters! Tell us about your visit to Kenilworth Road
           </p>
         </div>
 
         {/* Form fields — no HTML form tag per Preact rules */}
         <div class="flex flex-col gap-5">
+          {/* Departure Location */}
+          <div class="flex flex-col gap-1">
+            <label
+              for="departureLocation"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Departure Location *
+            </label>
+            <input
+              id="departureLocation"
+              type="text"
+              value={formState.departureLocation}
+              placeholder="e.g. Luton Town Centre"
+              onInput={(e) =>
+                updateField(
+                  "departureLocation",
+                  (e.target as HTMLInputElement).value,
+                )
+              }
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                     rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                     focus:border-orange-500 dark:focus:border-orange-400 outline-none"
+            />
+            {getFieldError("departureLocation") !== undefined && (
+              <span class="text-xs text-red-600 dark:text-red-400">
+                {getFieldError("departureLocation")}
+              </span>
+            )}
+          </div>
+
           {/* Match Date */}
           <div class="flex flex-col gap-1">
-            <label for="matchDate" class="text-sm font-medium text-gray-300">
+            <label for="matchDate" class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Match Date *
             </label>
             <input
@@ -118,12 +158,12 @@ export const IntakeForm: FunctionComponent = () => {
               onInput={(e) =>
                 updateField("matchDate", (e.target as HTMLInputElement).value)
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             />
             {getFieldError("matchDate") !== undefined && (
-              <span class="text-xs text-red-400">
+              <span class="text-xs text-red-600 dark:text-red-400">
                 {getFieldError("matchDate")}
               </span>
             )}
@@ -131,7 +171,7 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Kickoff Time */}
           <div class="flex flex-col gap-1">
-            <label for="kickoffTime" class="text-sm font-medium text-gray-300">
+            <label for="kickoffTime" class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Kickoff Time *
             </label>
             <input
@@ -141,12 +181,12 @@ export const IntakeForm: FunctionComponent = () => {
               onInput={(e) =>
                 updateField("kickoffTime", (e.target as HTMLInputElement).value)
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             />
             {getFieldError("kickoffTime") !== undefined && (
-              <span class="text-xs text-red-400">
+              <span class="text-xs text-red-600 dark:text-red-400">
                 {getFieldError("kickoffTime")}
               </span>
             )}
@@ -154,7 +194,9 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Opponent */}
           <div class="flex flex-col gap-1">
-            <label for="opponent" class="text-sm font-medium text-gray-300">Opponent *</label>
+            <label for="opponent" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Opponent *
+            </label>
             <input
               id="opponent"
               type="text"
@@ -163,12 +205,12 @@ export const IntakeForm: FunctionComponent = () => {
               onInput={(e) =>
                 updateField("opponent", (e.target as HTMLInputElement).value)
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             />
             {getFieldError("opponent") !== undefined && (
-              <span class="text-xs text-red-400">
+              <span class="text-xs text-red-600 dark:text-red-400">
                 {getFieldError("opponent")}
               </span>
             )}
@@ -176,7 +218,7 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Ticket Type */}
           <div class="flex flex-col gap-1">
-            <label for="ticketType" class="text-sm font-medium text-gray-300">
+            <label for="ticketType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Ticket Type *
             </label>
             <select
@@ -189,9 +231,9 @@ export const IntakeForm: FunctionComponent = () => {
                   (e.target as HTMLSelectElement).value as MatchTicketType,
                 )
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             >
               <option value="home">Home (Kenilworth Road)</option>
               <option value="away">Away Ground</option>
@@ -202,7 +244,7 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Fan Type */}
           <div class="flex flex-col gap-1">
-            <label for="fanType" class="text-sm font-medium text-gray-300">
+            <label for="fanType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Your Fan Story *
             </label>
             <select
@@ -215,9 +257,9 @@ export const IntakeForm: FunctionComponent = () => {
                   (e.target as HTMLSelectElement).value as IntakeFanType,
                 )
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             >
               <option value="loyal-hatter">Loyal Hatter</option>
               <option value="heritage-fan">Heritage Fan</option>
@@ -237,7 +279,7 @@ export const IntakeForm: FunctionComponent = () => {
           {/* Group Type + Size — side by side on sm+ */}
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-1">
-              <label for="groupType" class="text-sm font-medium text-gray-300">
+              <label for="groupType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Group Type *
               </label>
               <select
@@ -250,9 +292,9 @@ export const IntakeForm: FunctionComponent = () => {
                     (e.target as HTMLSelectElement).value as GroupType,
                   )
                 }
-                class="bg-gray-800 border border-gray-700 
-                       rounded-lg px-3 py-2 text-white text-sm
-                       focus:border-orange-500 outline-none"
+                class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                       rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                       focus:border-orange-500 dark:focus:border-orange-400 outline-none"
               >
                 <option value="solo">Solo</option>
                 <option value="couple">Couple</option>
@@ -269,7 +311,7 @@ export const IntakeForm: FunctionComponent = () => {
             </div>
 
             <div class="flex flex-col gap-1">
-              <label for="groupSize" class="text-sm font-medium text-gray-300">
+              <label for="groupSize" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Group Size *
               </label>
               <input
@@ -284,79 +326,24 @@ export const IntakeForm: FunctionComponent = () => {
                     parseInt((e.target as HTMLInputElement).value, 10),
                   )
                 }
-                class="bg-gray-800 border border-gray-700 
-                       rounded-lg px-3 py-2 text-white text-sm
-                       focus:border-orange-500 outline-none"
+                class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                       rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                       focus:border-orange-500 dark:focus:border-orange-400 outline-none"
               />
               {getFieldError("groupSize") !== undefined && (
-                <span class="text-xs text-red-400">
+                <span class="text-xs text-red-600 dark:text-red-400">
                   {getFieldError("groupSize")}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Travel Mode */}
-          <div class="flex flex-col gap-1">
-            <label for="travelMode" class="text-sm font-medium text-gray-300">
-              Travel Mode *
-            </label>
-            <select
-              id="travelMode"
-              aria-label="Travel Mode"
-              value={formState.travelMode}
-              onChange={(e) =>
-                updateField(
-                  "travelMode",
-                  (e.target as HTMLSelectElement).value as TravelModeNew,
-                )
-              }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
-            >
-              <option value="train">Train</option>
-              <option value="bus">Bus</option>
-              <option value="coach">Coach</option>
-              <option value="car">Car</option>
-              <option value="taxi">Taxi</option>
-              <option value="flight">Flight</option>
-              <option value="walking">Walking</option>
-              <option value="cycling">Cycling</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          {/* Departure Location */}
-          <div class="flex flex-col gap-1">
-            <label for="departureLocation" class="text-sm font-medium text-gray-300">
-              Departure Location *
-            </label>
-            <input
-              id="departureLocation"
-              type="text"
-              value={formState.departureLocation}
-              placeholder="e.g. Luton Town Centre"
-              onInput={(e) =>
-                updateField(
-                  "departureLocation",
-                  (e.target as HTMLInputElement).value,
-                )
-              }
-              class="bg-gray-800 border border-gray-700 
-                     rounded-lg px-3 py-2 text-white text-sm
-                     focus:border-orange-500 outline-none"
-            />
-            {getFieldError("departureLocation") !== undefined && (
-              <span class="text-xs text-red-400">
-                {getFieldError("departureLocation")}
-              </span>
-            )}
-          </div>
-
           {/* Budget */}
           <div class="flex flex-col gap-1">
-            <label for="budgetPerPerson" class="text-sm font-medium text-gray-300">
+            <label
+              for="budgetPerPerson"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Budget Per Person (£) *
             </label>
             <input
@@ -370,26 +357,66 @@ export const IntakeForm: FunctionComponent = () => {
                   parseFloat((e.target as HTMLInputElement).value),
                 )
               }
-              class="bg-gray-800 border border-gray-700 
-                    rounded-lg px-3 py-2 text-white text-sm
-                    focus:border-orange-500 outline-none"
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                    rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                    focus:border-orange-500 dark:focus:border-orange-400 outline-none"
             />
             {getFieldError("budgetPerPerson") !== undefined && (
-              <span class="text-xs text-red-400">
+              <span class="text-xs text-red-600 dark:text-red-400">
                 {getFieldError("budgetPerPerson")}
+              </span>
+            )}
+          </div>
+
+          {/* Travel Mode */}
+          <div class="flex flex-col gap-1">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Travel Mode *{" "}
+              <span class="text-xs text-gray-500 dark:text-gray-400">(Select all that apply)</span>
+            </label>
+            <div class="flex flex-wrap gap-2">
+              {TRANSPORT_OPTIONS.map(({ value, emoji, label }) => {
+                const checked = formState.travelModes.includes(
+                  value as TravelModeNew,
+                );
+                return (
+                  <label
+                    key={value}
+                    class={`flex items-center gap-1.5 px-3 py-2 rounded-lg border cursor-pointer transition-colors select-none text-sm font-medium ${
+                      checked
+                        ? "border-orange-500 bg-orange-950/30 text-white dark:bg-orange-950/50"
+                        : "border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      value={value}
+                      checked={checked}
+                      onChange={() => toggleTravelMode(value as TravelModeNew)}
+                      class="sr-only"
+                    />
+                    <span aria-hidden="true">{emoji}</span>
+                    {label}
+                  </label>
+                );
+              })}
+            </div>
+            {getFieldError("travelModes") !== undefined && (
+              <span class="text-xs text-red-600 dark:text-red-400">
+                {getFieldError("travelModes")}
               </span>
             )}
           </div>
 
           {/* Preferences — 2 column grid */}
           <div class="flex flex-col gap-4">
-            <label class="text-sm font-medium text-gray-300">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
               Match Day Preferences
             </label>
             <div class="grid grid-cols-2 gap-3">
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -406,7 +433,7 @@ export const IntakeForm: FunctionComponent = () => {
               </label>
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -423,7 +450,7 @@ export const IntakeForm: FunctionComponent = () => {
               </label>
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -440,7 +467,7 @@ export const IntakeForm: FunctionComponent = () => {
               </label>
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -457,7 +484,7 @@ export const IntakeForm: FunctionComponent = () => {
               </label>
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -474,7 +501,7 @@ export const IntakeForm: FunctionComponent = () => {
               </label>
               <label
                 class="flex items-center gap-3 
-                            cursor-pointer text-sm text-gray-300"
+                            cursor-pointer text-sm text-gray-700 dark:text-gray-300"
               >
                 <input
                   type="checkbox"
@@ -494,7 +521,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Accessibility Needs */}
           <div class="flex flex-col gap-1">
-            <label for="accessibilityNeeds" class="text-sm font-medium text-gray-300">
+            <label
+              for="accessibilityNeeds"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Accessibility Needs
             </label>
             <textarea
@@ -508,16 +538,19 @@ export const IntakeForm: FunctionComponent = () => {
                 )
               }
               rows={2}
-              class="bg-gray-800 border border-gray-700 
-                     rounded-lg px-3 py-2 text-white text-sm
-                     focus:border-orange-500 outline-none 
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                     rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                     focus:border-orange-500 dark:focus:border-orange-400 outline-none 
                      resize-none"
             />
           </div>
 
           {/* Additional Notes */}
           <div class="flex flex-col gap-1">
-            <label for="additionalNotes" class="text-sm font-medium text-gray-300">
+            <label
+              for="additionalNotes"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Additional Notes
             </label>
             <textarea
@@ -531,9 +564,9 @@ export const IntakeForm: FunctionComponent = () => {
                 )
               }
               rows={3}
-              class="bg-gray-800 border border-gray-700 
-                     rounded-lg px-3 py-2 text-white text-sm
-                     focus:border-orange-500 outline-none 
+              class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
+                     rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                     focus:border-orange-500 dark:focus:border-orange-400 outline-none 
                      resize-none"
             />
           </div>
@@ -541,15 +574,15 @@ export const IntakeForm: FunctionComponent = () => {
           {/* Global validation error summary */}
           {validationErrors.length > 0 && (
             <div
-              class="bg-red-950 border border-red-500/30 
+              class="bg-red-100 dark:bg-red-950 border border-red-400 dark:border-red-500/30 
                         rounded-lg p-3"
             >
-              <p class="text-xs text-red-400 font-medium mb-1">
+              <p class="text-xs text-red-700 dark:text-red-400 font-medium mb-1">
                 Please fix the following:
               </p>
               <ul class="list-disc list-inside">
                 {validationErrors.map((error) => (
-                  <li key={error.field} class="text-xs text-red-300">
+                  <li key={error.field} class="text-xs text-red-600 dark:text-red-300">
                     {error.message}
                   </li>
                 ))}
@@ -566,7 +599,7 @@ export const IntakeForm: FunctionComponent = () => {
               "w-full py-3 px-6 rounded-xl font-semibold",
               "text-sm transition-all duration-200",
               isIntakeSubmitting.value
-                ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                ? "bg-gray-400 dark:bg-gray-700 text-gray-600 dark:text-gray-500 cursor-not-allowed"
                 : "bg-orange-500 hover:bg-orange-400 text-white",
             ].join(" ")}
           >

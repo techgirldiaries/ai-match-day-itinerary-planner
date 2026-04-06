@@ -28,7 +28,7 @@ And once your itinerary is ready, you have full control over what you do with it
 
 **Scope:**
 
-- Multi-agent AI system for generating personalized itineraries
+- Multi-agent AI system for generating personalised itineraries
 - Intake form for user trip details and preferences
 - Modular UI with real-time feedback and itinerary rendering
 - Support for multiple languages and accessibility

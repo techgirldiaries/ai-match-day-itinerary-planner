@@ -210,7 +210,7 @@ Workspace-specific configs (in `frontend/` and `backend/`):
 - Single source of truth in `.config/`
 - Clean root directory (no stub files)
 - Easy monorepo maintenance
-- Windows-optimized TypeScript paths with case sensitivity checks
+- Windows-optimised TypeScript paths with case sensitivity checks
 
 **Available commands:**
 

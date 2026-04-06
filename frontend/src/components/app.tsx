@@ -80,7 +80,7 @@ export function App() {
 
   return (
     <div
-      class={`flex flex-col min-h-dvh dark:bg-zinc-950 ${desktopOffsetClass}`}
+      class={`flex flex-col min-h-dvh bg-white dark:bg-gray-950 ${desktopOffsetClass}`}
     >
       {page !== "shared-itinerary" && <Nav />}
       {page !== "shared-itinerary" && <Header />}

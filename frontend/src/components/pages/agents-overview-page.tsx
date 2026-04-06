@@ -142,7 +142,7 @@ function AgentGridCard({
   const content = (
     <>
       <div class="flex items-start gap-3 mb-2">
-        <span class="text-2xl flex-shrink-0 mt-0.5" aria-hidden="true">
+        <span class="text-2xl shrink-0 mt-0.5" aria-hidden="true">
           {icon}
         </span>
         <div class="flex-1 min-w-0">
@@ -266,7 +266,7 @@ export function AgentsOverviewPage() {
           onClick={() => {
             currentPage.value = "chat";
           }}
-          class="px-4 py-2 rounded-xl bg-[#F5820D] text-[#1a1f3c] font-semibold text-sm hover:bg-orange-500 active:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-2 flex-shrink-0"
+          class="px-4 py-2 rounded-xl bg-[#F5820D] text-[#1a1f3c] font-semibold text-sm hover:bg-orange-500 active:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-2 shrink-0"
         >
           Plan My Match Day 🧡
         </button>

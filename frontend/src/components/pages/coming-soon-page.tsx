@@ -115,7 +115,85 @@ export function ComingSoonPage() {
         ))}
       </div>
 
-      <p class="text-xs text-[#f5820d] dark:text-orange-300 mt-5 font-semibold">
+      {/* Gamification & Rewards Section */}
+      <div class="mt-10 pt-8 border-t-2 border-orange-200 dark:border-orange-800">
+        {/* Header */}
+        <div class="mb-6">
+          <h3 class="text-2xl font-extrabold text-[#f5820d] dark:text-orange-300 mb-2">
+            🎯 Earn Rewards & Power Your Matchday
+          </h3>
+          <p class="text-sm text-[#1a1f3c] dark:text-orange-200 leading-relaxed max-w-2xl">
+            <strong>
+              We're building a gamification system to reward our supporters and
+              drive engagement with LTFC. Take quizzes, earn points and unlock
+              exclusive rewards!
+            </strong>
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Quizzes Card */}
+          <article class="rounded-xl border-2 border-[#f5820d] dark:border-orange-400 bg-linear-to-br from-white to-orange-50 dark:from-[#1a1f3c] dark:to-orange-950/30 p-5 shadow-md hover:shadow-lg transition-shadow">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-3xl" aria-hidden="true">
+                📝
+              </span>
+              <h4 class="text-sm font-bold text-[#f5820d] dark:text-orange-300">
+                Match-Day Quizzes
+              </h4>
+            </div>
+            <p class="text-xs text-[#1a1f3c] dark:text-orange-200 leading-relaxed mb-3">
+              Test your knowledge with quizzes about heritage, tactics, family
+              fun and more. Earn points for each quiz you complete.
+            </p>
+            <div class="inline-block px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-xs font-semibold text-[#f5820d] dark:text-orange-300">
+              +20-100 pts
+            </div>
+          </article>
+
+          {/* Rewards Card */}
+          <article class="rounded-xl border-2 border-[#f5820d] dark:border-orange-400 bg-linear-to-br from-white to-orange-50 dark:from-[#1a1f3c] dark:to-orange-950/30 p-5 shadow-md hover:shadow-lg transition-shadow">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-3xl" aria-hidden="true">
+                🏆
+              </span>
+              <h4 class="text-sm font-bold text-[#f5820d] dark:text-orange-300">
+                Exclusive Rewards
+              </h4>
+            </div>
+            <p class="text-xs text-[#1a1f3c] dark:text-orange-200 leading-relaxed mb-3">
+              Redeem your points for merchandise, digital content, stadium
+              tours, VIP hospitality packages and season ticket discounts.
+            </p>
+            <div class="inline-block px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-xs font-semibold text-[#f5820d] dark:text-orange-300">
+              4 Tiers
+            </div>
+          </article>
+
+          {/* Lead Generation Card */}
+          <article class="rounded-xl border-2 border-[#f5820d] dark:border-orange-400 bg-linear-to-br from-white to-orange-50 dark:from-[#1a1f3c] dark:to-orange-950/30 p-5 shadow-md hover:shadow-lg transition-shadow">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-3xl" aria-hidden="true">
+                ✨
+              </span>
+              <h4 class="text-sm font-bold text-[#f5820d] dark:text-orange-300">
+                Smart Targeting & Revenue Growth
+              </h4>
+            </div>
+            <p class="text-xs text-[#1a1f3c] dark:text-orange-200 leading-relaxed mb-3">
+              Your quiz responses help us understand your interests better.
+              We'll use this to offer you truly personalised experiences and
+              exclusive deals that matter to you.
+            </p>
+            <div class="inline-block px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-xs font-semibold text-[#f5820d] dark:text-orange-300">
+              Personalized
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <p class="text-xs text-[#f5820d] dark:text-orange-300 mt-6 font-semibold">
         {t("comingSoonHint")}
         <br />
         <span class="block mt-2">

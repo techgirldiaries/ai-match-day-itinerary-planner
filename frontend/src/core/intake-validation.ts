@@ -109,10 +109,11 @@ export function validateIntakeForm(
     "other",
   ] as const;
   if (
-    data.travelMode === undefined ||
-    !validTravelModes.includes(data.travelMode)
+    data.travelModes === undefined ||
+    data.travelModes.length === 0 ||
+    !data.travelModes.every((mode) => validTravelModes.includes(mode))
   ) {
-    addError("travelMode", "Please select a travel mode");
+    addError("travelModes", "Please select at least one travel mode");
   }
 
   // Departure location — required:
@@ -152,7 +153,7 @@ export function buildIntakePrompt(data: IntakeFormDataNew): string {
     - Fan story: ${data.fanType}
     - Group: ${data.groupType} (${data.groupSize} 
       ${data.groupSize === 1 ? "person" : "people"})
-    - Travel: ${data.travelMode} from ${data.departureLocation}
+    - Travel modes: ${data.travelModes.join(", ")} from ${data.departureLocation}
     - Budget: £${data.budgetPerPerson.toFixed(2)} per person
 
     PREFERENCES:

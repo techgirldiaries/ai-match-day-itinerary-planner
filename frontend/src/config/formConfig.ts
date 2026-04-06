@@ -140,52 +140,52 @@ export const LANGUAGES = [
 /** Layout and styling constants */
 export const CSS_CLASSES = {
   header:
-    "px-3 sm:px-4 py-2 sm:py-4 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-10 bg-zinc-100 dark:bg-zinc-900 transition-colors",
+    "px-3 sm:px-4 py-2 sm:py-4 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 bg-white dark:bg-gray-900 transition-colors",
   skipLink:
-    "sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#F5820D] focus:text-[#1a1f3c] focus:font-semibold focus:rounded-lg",
+    "sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-orange-500 focus:text-white focus:font-semibold focus:rounded-lg",
   sidebarButton:
-    "p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D]",
-  focusRing: "focus:outline-none focus:ring-2 focus:ring-[#f5820d]",
+    "p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500",
+  focusRing: "focus:outline-none focus:ring-2 focus:ring-orange-500",
   primaryButton:
-    "px-4 py-2 bg-[#F5820D] text-white rounded-lg font-semibold hover:bg-[#e07500] transition-colors",
+    "px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors",
   avatarFallback:
-    "size-10 rounded-full border border-zinc-200 dark:border-zinc-700 flex items-center justify-center bg-[#1a1f3c] text-white text-sm font-semibold",
+    "size-10 rounded-full border border-gray-300 dark:border-gray-700 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-semibold",
   messageRowContainer:
     "flex items-start gap-x-2 pr-12 md:pr-0 md:max-w-4/6 self-start",
   failedMessageBubble:
     "py-3 px-4 rounded-3xl rounded-tl-xs bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800",
   messageBubble:
-    "py-3 px-4 rounded-3xl rounded-tl-xs bg-zinc-200 dark:bg-zinc-800 transition-colors w-full overflow-hidden",
+    "py-3 px-4 rounded-3xl rounded-tl-xs bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white transition-colors w-full overflow-hidden",
   retryButton:
-    "text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#1a1f3c] text-white hover:bg-[#252d57] transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-1",
+    "text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1",
   // Form-specific styles
   formCard:
-    "w-full box-border mb-2 sm:mb-3 md:mb-5 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-3 sm:p-4 md:p-5",
+    "w-full box-border mb-2 sm:mb-3 md:mb-5 border border-gray-300 dark:border-gray-700 rounded-2xl p-3 sm:p-4 md:p-5 bg-white dark:bg-transparent",
   formLegend:
-    "text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 px-1",
+    "text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 px-1",
   formLabel:
-    "block text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1",
+    "block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1",
   inputBase:
-    "w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border bg-zinc-50 dark:bg-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-1",
-  inputBorder: "border-zinc-300 dark:border-zinc-600",
-  inputError: "border-red-500",
-  helpText: "mt-1 text-xs text-zinc-500 dark:text-zinc-400",
+    "w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs sm:text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-950",
+  inputBorder: "border-gray-300 dark:border-gray-700",
+  inputError: "border-red-500 dark:border-red-500",
+  helpText: "mt-1 text-xs text-gray-600 dark:text-gray-400",
   errorText:
     "mt-1 text-xs sm:text-sm text-red-600 dark:text-red-400 flex items-center gap-1",
   submitButton:
-    "w-full py-3 sm:py-3.5 px-6 rounded-2xl font-semibold text-sm sm:text-base bg-[#1a1f3c] text-white hover:bg-[#252d57] active:bg-[#131828] disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-2 flex items-center justify-center gap-2",
+    "w-full py-3 sm:py-3.5 px-6 rounded-2xl font-semibold text-sm sm:text-base bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 dark:focus:ring-offset-gray-950 flex items-center justify-center gap-2",
   spinner:
     "inline-block w-3 sm:w-4 h-3 sm:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin",
   transportOption:
     "flex items-center gap-1.5 px-3 py-2 rounded-xl border cursor-pointer transition-colors select-none text-sm font-medium",
   transportOptionSelected:
-    "border-[#F5820D] bg-orange-50 dark:bg-orange-950/30 text-zinc-900 dark:text-white",
+    "border-orange-500 bg-orange-950/30 text-gray-900 dark:text-white",
   transportOptionUnselected:
-    "border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-500",
+    "border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600",
   switchContainer:
-    "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-2",
-  switchOn: "bg-[#F5820D]",
-  switchOff: "bg-zinc-300 dark:bg-zinc-600",
+    "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950",
+  switchOn: "bg-orange-500",
+  switchOff: "bg-gray-400 dark:bg-gray-600",
   switchThumb:
     "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200",
   switchThumbOn: "translate-x-5",

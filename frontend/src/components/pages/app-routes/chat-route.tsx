@@ -89,7 +89,7 @@ export const ChatRoute: FunctionComponent = () => {
     <>
       <div class="flex flex-1 min-h-0 flex-col">
         <main
-          class="flex-1 min-h-0 p-3 sm:p-4 md:p-5 bg-zinc-100 dark:bg-zinc-950 transition-colors overflow-x-hidden overflow-y-auto"
+          class="flex-1 min-h-0 p-3 sm:p-4 md:p-5 bg-white dark:bg-gray-950 transition-colors overflow-x-hidden overflow-y-auto"
           id="main-content"
         >
           <div class="w-full max-w-4xl mx-auto flex flex-col gap-y-3 sm:gap-y-4 md:gap-y-5 pb-4">

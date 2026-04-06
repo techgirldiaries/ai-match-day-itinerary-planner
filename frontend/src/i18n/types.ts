@@ -117,4 +117,30 @@ export interface Translations {
   multiculturalTownSupporters: string;
   menInGearMIGs: string;
   otherFanType: string;
+  interests: string;
+  pubs: string;
+  shopping: string;
+  attractions: string;
+  history: string;
+  food: string;
+  transportModes: string;
+  advancedOptions: string;
+  groupCoordination: string;
+  groupCoordinationDescription: string;
+  loyaltyMember: string;
+  loyaltyMemberDescription: string;
+  accessibilityNeeds: string;
+  wheelchairAccess: string;
+  liftRequired: string;
+  companionSupport: string;
+  accessibilityOther: string;
+  // Gamification & Rewards
+  gamificationTitle: string;
+  gamificationDesc: string;
+  quizzesTitle: string;
+  quizzesDesc: string;
+  rewardsTitle: string;
+  rewardsDesc: string;
+  leadsTitle: string;
+  leadsDesc: string;
 }

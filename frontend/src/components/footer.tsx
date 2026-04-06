@@ -14,18 +14,18 @@ import {
 } from "@/core/signals";
 
 const FOOTER_CLASS =
-  "p-2 sm:p-3 md:p-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] border-t border-[#f5820d] dark:border-orange-400 sticky bottom-0 " +
-  "bg-white dark:bg-[#1a1f3c] transition-colors shadow-lg";
+  "p-2 sm:p-3 md:p-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] border-t sticky bottom-0 " +
+  "bg-white dark:bg-gray-900 border-gray-200 dark:border-orange-500 transition-colors shadow-lg";
 const INPUT_CLASS =
-  "flex-1 bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 " +
-  "dark:border-zinc-700 px-3 sm:px-4 py-2 sm:py-3 rounded-full text-xs sm:text-sm text-zinc-800 dark:text-white " +
-  "dark:placeholder-zinc-400 transition-colors focus:outline-none " +
-  "focus:ring-2 focus:ring-[#F5820D] focus:ring-offset-1";
+  "flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 " +
+  "px-3 sm:px-4 py-2 sm:py-3 rounded-full text-xs sm:text-sm text-gray-900 dark:text-white " +
+  "placeholder-gray-400 dark:placeholder-gray-500 transition-colors focus:outline-none " +
+  "focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-900";
 const SEND_BUTTON_CLASS =
-  "bg-[#f5820d] text-white rounded-full p-2 sm:p-3 cursor-pointer " +
-  "hover:bg-orange-500 active:bg-orange-600 disabled:opacity-50 " +
+  "bg-orange-500 text-white rounded-full p-2 sm:p-3 cursor-pointer " +
+  "hover:bg-orange-600 active:bg-orange-700 disabled:opacity-50 " +
   "disabled:cursor-not-allowed transition-colors focus:outline-none " +
-  "focus:ring-2 focus:ring-[#f5820d] focus:ring-offset-2 font-bold shadow-md";
+  "focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 font-bold shadow-md";
 
 export function Footer() {
   const { input, sendMessage } = useSendMessage();

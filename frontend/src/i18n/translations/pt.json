@@ -120,5 +120,13 @@
   "wheelchairAccess": "Acesso para Cadeiras de Rodas",
   "liftRequired": "Elevador Necessário",
   "companionSupport": "Apoio de Acompanhante",
-  "accessibilityOther": "Outro"
+  "accessibilityOther": "Outro",
+  "gamificationTitle": "🎯 Earn Rewards & Power Your Matchday",
+  "gamificationDesc": "We're building a gamification system to reward our supporters and drive engagement with LTFC. Take quizzes, earn points, and unlock exclusive rewards!",
+  "quizzesTitle": "Match-Day Quizzes",
+  "quizzesDesc": "Test your knowledge with agent-powered quizzes about heritage, tactics, family fun, and more. Earn points for each quiz you complete.",
+  "rewardsTitle": "Exclusive Rewards",
+  "rewardsDesc": "Redeem your points for merchandise, digital content, stadium tours, VIP hospitality packages, and season ticket discounts.",
+  "leadsTitle": "Smart Targeting & Revenue Growth",
+  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you."
 }

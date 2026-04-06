@@ -169,7 +169,7 @@ export interface IntakeFormDataNew {
   fanType: IntakeFanType; // e.g. "loyal-hatter"
   groupType: GroupType;
   groupSize: number; // min 1, max 50
-  travelMode: TravelModeNew;
+  travelModes: TravelModeNew[]; // Multiple transport modes
   departureLocation: string; // free text e.g. "Luton Town Centre"
 
   // Preferences:

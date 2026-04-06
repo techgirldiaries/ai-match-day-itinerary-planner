@@ -28,9 +28,9 @@ import {
 } from "@/core/signals";
 
 const SIDEBAR_BUTTON_CLASS =
-  "p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 " +
-  "dark:hover:bg-zinc-800 transition-colors focus:outline-none " +
-  "focus:ring-2 focus:ring-[#F5820D]";
+  "p-2 rounded-lg text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 " +
+  "transition-colors focus:outline-none " +
+  "focus:ring-2 focus:ring-orange-500";
 
 interface NavItem {
   page: AppPage;
@@ -84,11 +84,11 @@ function NavTab({
       }}
       class={[
         "w-full min-h-11 flex items-center rounded-lg text-sm font-bold transition-colors shadow-sm",
-        "focus:outline-none focus:ring-2 focus:ring-[#f5820d] focus:ring-offset-1",
+        "focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-900",
         collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
         isActive
-          ? "bg-[#f5820d] text-white border-2 border-[#f5820d]"
-          : "text-[#1a1f3c] dark:text-orange-200 hover:bg-orange-50 dark:hover:bg-[#1a1f3c] hover:text-[#f5820d] dark:hover:text-orange-300 border border-[#f5820d] dark:border-orange-400",
+          ? "bg-orange-500 text-white border-2 border-orange-500"
+          : "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400 border border-orange-500",
       ].join(" ")}
       aria-current={isActive ? "page" : undefined}
       title={collapsed ? label : undefined}
@@ -118,11 +118,11 @@ function DraftsTab({ collapsed }: { collapsed: boolean }) {
       }}
       class={[
         "w-full min-h-11 flex items-center rounded-lg text-sm font-bold transition-colors shadow-sm",
-        "focus:outline-none focus:ring-2 focus:ring-[#f5820d] focus:ring-offset-1",
+        "focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-900",
         collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
         isActive
-          ? "bg-[#f5820d] text-white border-2 border-[#f5820d]"
-          : "text-[#1a1f3c] dark:text-orange-200 hover:bg-orange-50 dark:hover:bg-[#1a1f3c] hover:text-[#f5820d] dark:hover:text-orange-300 border border-[#f5820d] dark:border-orange-400",
+          ? "bg-orange-500 text-white border-2 border-orange-500"
+          : "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400 border border-orange-500",
       ].join(" ")}
       title={collapsed ? label : undefined}
       aria-label={label}
@@ -213,9 +213,9 @@ function ActionTab({
       disabled={disabled}
       class={[
         "w-full min-h-11 flex items-center rounded-lg text-sm font-bold transition-colors shadow-sm",
-        "focus:outline-none focus:ring-2 focus:ring-[#f5820d] focus:ring-offset-1",
+        "focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-900",
         collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
-        "text-[#1a1f3c] dark:text-orange-200 hover:bg-orange-50 dark:hover:bg-[#1a1f3c] hover:text-[#f5820d] dark:hover:text-orange-300 border border-[#f5820d] dark:border-orange-400",
+        "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400 border border-orange-500",
         disabled ? "opacity-50 cursor-not-allowed" : "",
       ].join(" ")}
       title={collapsed ? label : undefined}
@@ -281,8 +281,8 @@ function DesktopSidebar() {
   return (
     <aside
       class={[
-        "hidden lg:flex fixed left-0 top-0 bottom-0 border-r border-zinc-200 dark:border-zinc-800",
-        "bg-zinc-100 dark:bg-zinc-900 z-20 transition-[width] duration-200",
+        "hidden lg:flex fixed left-0 top-0 bottom-0 border-r border-gray-300 dark:border-gray-800",
+        "bg-gray-50 dark:bg-gray-900 z-20 transition-[width] duration-200",
         collapsed ? "w-16" : "w-64",
       ].join(" ")}
     >
@@ -308,7 +308,7 @@ function DesktopSidebar() {
         {/* Navigation block */}
         <div>
           {!collapsed && (
-            <p class="text-lg tracking-wider text-[#f5820d] dark:text-orange-300 mb-5 font-extrabold px-1">
+            <p class="text-lg tracking-wider text-orange-500 dark:text-orange-400 mb-5 font-extrabold px-1">
               Navigation Menu
             </p>
           )}
@@ -365,16 +365,16 @@ function DesktopSidebar() {
           </nav>
         </div>
 
-        <div class="mt-auto pt-2 border-t border-zinc-200 dark:border-zinc-800">
+        <div class="mt-auto pt-2 border-t border-gray-200 dark:border-gray-800">
           <button
             type="button"
             class={[
               "w-full min-h-11 flex items-center rounded-lg text-sm font-medium transition-colors",
-              "focus:outline-none focus:ring-2 focus:ring-[#F5820D]",
-              "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+              "focus:outline-none focus:ring-2 focus:ring-orange-500",
+              "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800",
               collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
               currentPage.value === "coming-soon"
-                ? "bg-[#F5820D] text-[#1a1f3c]"
+                ? "bg-orange-500 text-white"
                 : "",
             ].join(" ")}
             onClick={() => {
@@ -392,8 +392,8 @@ function DesktopSidebar() {
             type="button"
             class={[
               "w-full flex items-center rounded-lg text-sm font-medium transition-colors",
-              "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800",
-              "focus:outline-none focus:ring-2 focus:ring-[#F5820D]",
+              "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800",
+              "focus:outline-none focus:ring-2 focus:ring-orange-500",
               collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
             ].join(" ")}
             onClick={() => {
@@ -444,14 +444,14 @@ function MobileSidebar() {
       <aside
         class={[
           "lg:hidden fixed top-0 left-0 bottom-0 w-72 max-w-[85vw]",
-          "border-r border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 z-40",
+          "border-r border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 z-40",
           "transform transition-transform duration-200",
           isSidebarOpen.value ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
       >
         <div class="p-4 h-full overflow-y-auto">
           <div class="flex items-center justify-between mb-4">
-            <p class="text-sm font-semibold text-zinc-900 dark:text-white">
+            <p class="text-sm font-semibold text-gray-900 dark:text-white">
               Menu
             </p>
             <button
@@ -466,7 +466,7 @@ function MobileSidebar() {
             </button>
           </div>
 
-          <p class="text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2 font-semibold px-1">
+          <p class="text-xs uppercase tracking-wider text-gray-700 dark:text-gray-400 mb-2 font-semibold px-1">
             Navigation
           </p>
           <nav class="space-y-1" aria-label="Mobile sidebar navigation">
@@ -521,15 +521,15 @@ function MobileSidebar() {
             <DraftsTab collapsed={false} />
           </nav>
 
-          <div class="mt-4 pt-3 border-t border-zinc-200 dark:border-zinc-800">
+          <div class="mt-4 pt-3 border-t border-gray-800">
             <button
               type="button"
               class={[
                 "w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-[#F5820D]",
+                "focus:outline-none focus:ring-2 focus:ring-orange-500",
                 currentPage.value === "coming-soon"
-                  ? "bg-[#F5820D] text-[#1a1f3c]"
-                  : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                  ? "bg-orange-500 text-white"
+                  : "text-gray-300 hover:bg-gray-800",
               ].join(" ")}
               onClick={() => {
                 currentPage.value = "coming-soon";
@@ -543,7 +543,7 @@ function MobileSidebar() {
 
             <button
               type="button"
-              class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D]"
+              class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500"
               onClick={() => {
                 isDarkMode.value = !isDarkMode.value;
               }}
