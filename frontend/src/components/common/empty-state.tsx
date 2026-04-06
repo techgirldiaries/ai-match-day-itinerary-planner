@@ -24,7 +24,7 @@ export function EmptyState() {
           alt={agentName.value}
         />
         <Avatar.Fallback class={EMPTY_FALLBACK_CLASS}>
-          {agentInitials.value ?? "ðŸ "}
+          {agentInitials.value ?? "🤖"}
         </Avatar.Fallback>
       </Avatar.Root>
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-2 transition-colors">

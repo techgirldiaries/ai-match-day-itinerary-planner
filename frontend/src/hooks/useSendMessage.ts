@@ -325,7 +325,7 @@ export function useProcessIntakeOnMount(): void {
 
     const intakePrompt = buildIntakePrompt(intakeFormData.value);
 
-    // Add intake as a user message so it appears in chat:
+    // Add intake as a user message to intakeMessages so it appears in chat:
     const intakeUserMessage: IntakeMessage = {
       id: crypto.randomUUID(),
       role: "user" satisfies IntakeMessageRole,
@@ -341,23 +341,13 @@ export function useProcessIntakeOnMount(): void {
       intakeMessages.value = [...intakeMessages.value, intakeUserMessage];
     }
 
-    // Call agent API with the full intake prompt:
+    // Call agent API with the full intake prompt
+    // This now waits for the actual agent response before resolving
     callAgentAPINew(intakePrompt)
-      .then((responseContent: string): void => {
-        const agentMessage: IntakeMessage = {
-          id: crypto.randomUUID(),
-          role: "agent" satisfies IntakeMessageRole,
-          content: responseContent,
-          timestamp: Date.now(),
-          isItinerary: true, // Flags for ItineraryOutput renderer
-        };
-
-        const currentIds = new Set(
-          intakeMessages.value.map((m: IntakeMessage) => m.id),
-        );
-        if (!currentIds.has(agentMessage.id)) {
-          intakeMessages.value = [...intakeMessages.value, agentMessage];
-        }
+      .then((): void => {
+        // Response is now in the messages signal via the task event listener
+        // The syncing effect will mirror it to intakeMessages automatically
+        console.log("✅ Intake processing complete");
       })
       .catch((error: Error): void => {
         const errorMessage: IntakeMessage = {
@@ -370,6 +360,7 @@ export function useProcessIntakeOnMount(): void {
         intakeMessages.value = [...intakeMessages.value, errorMessage];
       })
       .finally((): void => {
+        // Now we only clear the flag after the agent has actually responded
         isAgentThinking.value = false;
         isProcessingIntake.value = false;
         isSending.value = false;
@@ -463,9 +454,27 @@ async function callAgentAPINew(prompt: string): Promise<string> {
       task.value = task_signal as typeof task.value;
     }
 
-    // For now, return a placeholder response
-    // The actual response will be handled by the task event listener
-    return Promise.resolve("Processing your intake form...");
+    // Wait for the actual agent response from the task
+    // The task will emit "message" events with the response
+    return await new Promise<string>((resolve, reject) => {
+      const RESPONSE_TIMEOUT = 35000; // 35 seconds (safe buffer from 30s API limit)
+      const timeout = setTimeout(
+        () => reject(new Error("Agent response timeout waiting for itinerary")),
+        RESPONSE_TIMEOUT,
+      );
+
+      const handleMessage = (msg: any) => {
+        // Check if this is the final itinerary response
+        if (msg.content && typeof msg.content === "string") {
+          clearTimeout(timeout);
+          (task_signal as any).removeEventListener("message", handleMessage);
+          resolve(msg.content);
+        }
+      };
+
+      // Listen for message events on the task
+      (task_signal as any).addEventListener("message", handleMessage);
+    });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     throw new Error(`Agent API error: ${errorMsg}`);

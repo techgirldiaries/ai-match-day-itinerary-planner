@@ -8,6 +8,8 @@ import { getAllDrafts } from "@/storage/draft-storage";
 import {
   getStoredSessionMessages,
   saveSessionMessages,
+  getStoredIntakeMessages,
+  saveIntakeMessages,
 } from "@/storage/messageStorage";
 import {
   getDarkModePreference,
@@ -209,7 +211,7 @@ export type AppPage =
   | "weather"
   | "shared-itinerary";
 
-export const currentPage = signal<AppPage>("chat");
+export const currentPage = signal<AppPage>("intake");
 export const currentShareId = signal<string>("");
 
 // ── Session & Draft Management ──────────────────────────────────────────────
@@ -258,7 +260,7 @@ import type {
   IntakeFormDataNew,
   IntakeMessage,
   ItineraryOutputNew,
-} from "./types";
+} from "../types";
 
 // Routing — controls which screen renders — 'intake' or 'chat':
 export const currentRoute = signal<AppRoute>("intake");
@@ -274,7 +276,14 @@ export const isIntakeComplete = signal<boolean>(false);
 
 // New message interface for the intake flow (separate from ChatMessage):
 // NEVER mutate with .push() — always replace array reference:
-export const intakeMessages = signal<IntakeMessage[]>([]);
+export const intakeMessages = signal<IntakeMessage[]>(
+  getStoredIntakeMessages(),
+);
+
+// Persist intake flow messages to localStorage for continuity
+effect(() => {
+  saveIntakeMessages(intakeMessages.value);
+});
 
 // Transport mutex — blocks duplicate send calls:
 export const isSending = signal<boolean>(false);
@@ -299,3 +308,33 @@ export const isChatInputEnabled = computed<boolean>(
     !isProcessingIntake.value &&
     isIntakeComplete.value,
 );
+
+/**
+ * Mirror agent responses from legacy messages to intakeMessages during intake processing
+ * Converts ChatMessage responses to IntakeMessage format for the intake flow
+ */
+effect(() => {
+  // Only sync when processing intake form data
+  if (!isProcessingIntake.value) return;
+
+  const lastMessage = messages.value[messages.value.length - 1];
+  const lastIntakeMessage =
+    intakeMessages.value[intakeMessages.value.length - 1];
+
+  // Check if there's a new agent message that hasn't been synced yet
+  if (
+    lastMessage &&
+    lastMessage.type === "agent-message" &&
+    (!lastIntakeMessage || lastIntakeMessage.role !== "agent")
+  ) {
+    const intakeMessage: IntakeMessage = {
+      id: crypto.randomUUID(),
+      role: "agent" satisfies IntakeMessageRole,
+      content: lastMessage.text,
+      timestamp: Date.now(),
+      isItinerary: true, // Mark as itinerary output for rendering
+    };
+
+    intakeMessages.value = [...intakeMessages.value, intakeMessage];
+  }
+});

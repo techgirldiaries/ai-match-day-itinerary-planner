@@ -1,2 +1,2 @@
 // Re-export for backward compatibility
-export * from "./types";
+export * from "./types/types";

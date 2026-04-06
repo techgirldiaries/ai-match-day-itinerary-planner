@@ -65,11 +65,11 @@ export function App() {
     return <ConnectionErrorScreen />;
   }
 
-  if (
-    !agent.value &&
-    !workforce.value &&
-    currentPage.value !== "shared-itinerary"
-  ) {
+  // Show loading only if we need agent/workforce AND we're not on a page that doesn't need it
+  const pageNeedsAgent =
+    currentPage.value !== "shared-itinerary" && currentPage.value !== "intake";
+
+  if (!agent.value && !workforce.value && pageNeedsAgent) {
     debugLog("Showing loading screen");
     return <LoadingScreen />;
   }
@@ -84,6 +84,7 @@ export function App() {
       {page !== "shared-itinerary" && <Nav />}
       {page !== "shared-itinerary" && <Header />}
 
+      {page === "intake" && <IntakeForm />}
       {page === "chat" && <ChatRoute />}
       {page === "agents" && <AgentsRoute />}
       {page === "drafts" && <DraftsRoute />}

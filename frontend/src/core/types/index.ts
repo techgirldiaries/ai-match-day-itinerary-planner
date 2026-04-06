@@ -1,2 +1,2 @@
 // Re-export types from original location
-export * from "../types";
+export * from "./types";
