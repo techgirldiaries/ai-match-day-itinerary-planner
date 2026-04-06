@@ -7,6 +7,7 @@
   Moon,
   PanelLeftClose,
   PanelLeftOpen,
+  Plus,
   Save,
   Share2,
   Sun,
@@ -18,6 +19,7 @@ import {
   draftMessage,
   hasMessages,
   isDarkMode,
+  intakeMessages,
   isSidebarCollapsed,
   isSidebarOpen,
   messages,
@@ -27,6 +29,10 @@ import {
 } from "@/core/state";
 import { type Translations, t } from "@/i18n";
 import { saveDraft } from "@/storage/draft-storage";
+import {
+  clearSessionMessages,
+  clearIntakeMessages,
+} from "@/storage/messageStorage";
 
 const SIDEBAR_BUTTON_CLASS =
   "p-2 rounded-lg text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 " +
@@ -40,7 +46,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { page: "chat", icon: "🟧", labelKey: "navPlan" },
+  { page: "intake", icon: "🟧", labelKey: "navPlan" },
   { page: "agents", icon: "🤖", labelKey: "navAllAgents" },
 ];
 
@@ -75,11 +81,13 @@ function NavTab({
     <button
       type="button"
       onClick={() => {
+        // Only clear messages when navigating to chat
         if (page === "chat") {
           messages.value = [];
           draftMessage.value = "";
           showEmailExportModal.value = false;
         }
+        // When navigating to intake, don't clear messages
         currentPage.value = page;
         isSidebarOpen.value = false;
       }}
@@ -96,11 +104,38 @@ function NavTab({
       aria-label={label}
     >
       <span aria-hidden="true">{icon}</span>
-      {!collapsed && (
-        <span class="truncate">
-          {label} <span class="ml-1">COYH</span>
-        </span>
-      )}
+      {!collapsed && <span class="truncate">{label}</span>}
+    </button>
+  );
+}
+
+function NewChatTab({ collapsed }: { collapsed: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        messages.value = [];
+        intakeMessages.value = [];
+        draftMessage.value = "";
+        showEmailExportModal.value = false;
+        clearSessionMessages();
+        clearIntakeMessages();
+        currentPage.value = "chat";
+        isSidebarOpen.value = false;
+      }}
+      class={[
+        "w-full min-h-11 flex items-center rounded-lg text-sm font-bold transition-colors shadow-sm",
+        "focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 dark:focus:ring-offset-gray-900",
+        collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
+        currentPage.value === "chat" && !hasMessages.value
+          ? "bg-orange-500 text-white border-2 border-orange-500"
+          : "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 hover:text-orange-600 dark:hover:text-orange-400 border border-orange-500",
+      ].join(" ")}
+      aria-label={t("newConversation")}
+      title={collapsed ? t("newConversation") : undefined}
+    >
+      <Plus size={16} aria-hidden="true" />
+      {!collapsed && <span class="truncate">{t("newConversation")}</span>}
     </button>
   );
 }
@@ -129,11 +164,7 @@ function DraftsTab({ collapsed }: { collapsed: boolean }) {
       aria-label={label}
     >
       <History size={16} aria-hidden="true" />
-      {!collapsed && (
-        <span class="truncate">
-          {label} <span class="ml-1">COYH</span>
-        </span>
-      )}
+      {!collapsed && <span class="truncate">{label}</span>}
     </button>
   );
 }
@@ -223,11 +254,7 @@ function ActionTab({
       aria-label={label}
     >
       <Icon size={16} aria-hidden="true" />
-      {!collapsed && (
-        <span class="truncate">
-          {label} <span class="ml-1">COYH</span>
-        </span>
-      )}
+      {!collapsed && <span class="truncate">{label}</span>}
     </button>
   );
 }
@@ -312,6 +339,7 @@ function DesktopSidebar() {
             {NAV_ITEMS.map((item) => (
               <NavTab key={item.page} {...item} collapsed={collapsed} />
             ))}
+            <NewChatTab collapsed={collapsed} />
             <ActionTab
               collapsed={collapsed}
               icon={Save}
@@ -488,6 +516,7 @@ function MobileSidebar() {
             {NAV_ITEMS.map((item) => (
               <NavTab key={item.page} {...item} collapsed={false} />
             ))}
+            <NewChatTab collapsed={false} />
             <ActionTab
               collapsed={false}
               icon={Save}

@@ -13,7 +13,7 @@ import {
   workforce,
 } from "@/core/state";
 
-const AGENT_TIMEOUT_MS = 28000; // 28 seconds (safe buffer from 30s platform limit)
+const AGENT_TIMEOUT_MS = 120000; // 120 seconds (agent timeout disabled on Relevance AI plan)
 
 /**
  * Extracts key travel details from user message for quick processing

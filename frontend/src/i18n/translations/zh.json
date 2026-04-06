@@ -8,7 +8,8 @@
 	"connected": "已连接",
 	"connecting": "连接中",
 	"offline": "离线",
-	"connectingAgents": "正在连接到规划代理...",
+	"newConversation": "新对话",
+	"connectingAgents": "正在连接规划助手..."
 	"connectionSetupNeeded": "需要连接设置",
 	"retryConnection": "重试连接",
 	"envKeysExpected": "预期的环境密钥",

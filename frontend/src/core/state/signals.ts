@@ -198,6 +198,7 @@ effect(() => {
 // ── Page navigation ──────────────────────────────────────────────────────────
 
 export type AppPage =
+  | "intake"
   | "chat"
   | "drafts"
   | "coming-soon"

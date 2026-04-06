@@ -1,10 +1,10 @@
 ﻿import { Languages, Menu, Wifi, WifiOff } from "lucide-preact";
 import { CSS_CLASSES, LANGUAGES } from "@/config/formConfig";
 import {
-  agent,
   connectionError,
   isSidebarOpen,
   preferredLanguage,
+  agent,
   workforce,
 } from "@/core/state";
 import { t } from "@/i18n";
