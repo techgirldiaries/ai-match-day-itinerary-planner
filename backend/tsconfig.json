@@ -1,7 +1,6 @@
 {
   "extends": "../.config/typescript/tsconfig.backend.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "~/*": [
         "./src/*"

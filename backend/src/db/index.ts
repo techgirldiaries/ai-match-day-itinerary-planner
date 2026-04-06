@@ -19,8 +19,9 @@ const dataDir = path.dirname(dbPath);
 
 let dbInstance: SqlJsDatabase | null = null;
 
-// Ensure data directory exists
-if (!fs.existsSync(dataDir)) {
+// Ensure data directory exists (skip in build environments)
+const isInBuildEnv = process.env.VERCEL || process.env.CI;
+if (!isInBuildEnv && !fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
