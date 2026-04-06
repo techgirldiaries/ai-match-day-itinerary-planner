@@ -3,90 +3,105 @@
  * Handles serialization, deserialization, and localStorage operations for chat messages
  */
 
-import type { Message } from "@/core/types";
 import { STORAGE_KEYS } from "@/config/formConfig";
+import type { ChatMessage, StorageMessage } from "@/core/types";
+
+/**
+ * Convert storage format to ChatMessage
+ */
+function storageToChatMessage(data: StorageMessage): ChatMessage {
+	return {
+		id: data.id,
+		type: data.role === "user" ? "user-message" : "agent-message",
+		text: data.content,
+		createdAt: new Date(data.timestamp),
+		agentName: data.agentName,
+		isAgent: () => data.role === "agent",
+	};
+}
+
+/**
+ * Convert ChatMessage to storage format
+ */
+function chatMessageToStorage(msg: ChatMessage): StorageMessage {
+	return {
+		id: msg.id,
+		role: msg.isAgent() ? "agent" : "user",
+		content: msg.text,
+		timestamp: msg.createdAt.getTime(),
+		agentName: msg.agentName,
+	};
+}
 
 /**
  * Hydrate a chat message from stored JSON format
- * Reconstructs a Message object from parsed JSON data
+ * Reconstructs a ChatMessage object from parsed JSON data
  * @param data - Raw message data from storage
- * @returns Reconstructed Message object
+ * @returns Reconstructed ChatMessage object
  */
 export function hydrateMessage(data: {
-  id: string;
-  role: "user" | "agent";
-  content: string;
-  timestamp: number;
-  agentName?: string;
-}): Message {
-  return {
-    id: data.id,
-    role: data.role,
-    content: data.content,
-    timestamp: data.timestamp,
-    agentName: data.agentName,
-  };
+	id: string;
+	role: "user" | "agent";
+	content: string;
+	timestamp: number;
+	agentName?: string;
+}): ChatMessage {
+	return storageToChatMessage(data as StorageMessage);
 }
 
 /**
  * Retrieve stored session messages from localStorage
  * Safely handles missing or corrupted data with error recovery
- * @returns Array of hydrated Message objects
+ * @returns Array of hydrated ChatMessage objects
  */
-export function getStoredSessionMessages(): Message[] {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEYS.sessionMessages);
-    if (!stored) return [];
+export function getStoredSessionMessages(): ChatMessage[] {
+	try {
+		const stored = localStorage.getItem(STORAGE_KEYS.sessionMessages);
+		if (!stored) return [];
 
-    const parsed = JSON.parse(stored);
-    if (!Array.isArray(parsed)) return [];
+		const parsed = JSON.parse(stored);
+		if (!Array.isArray(parsed)) return [];
 
-    return parsed.map(hydrateMessage);
-  } catch (error) {
-    console.error(
-      `Failed to load session messages from localStorage: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
-    return [];
-  }
+		return parsed.map(hydrateMessage);
+	} catch (error) {
+		console.error(
+			`Failed to load session messages from localStorage: ${error instanceof Error ? error.message : "Unknown error"}`,
+		);
+		return [];
+	}
 }
 
 /**
  * Save messages to localStorage
  * Handles serialization and error handling for persistence
- * @param messages - Array of Message objects to save
+ * @param messages - Array of ChatMessage objects to save
  */
-export function saveSessionMessages(messages: Message[]): void {
-  try {
-    const serialized = messages.map((msg) => ({
-      id: msg.id,
-      role: msg.role,
-      content: msg.content,
-      timestamp: msg.timestamp,
-      agentName: msg.agentName,
-    }));
+export function saveSessionMessages(messages: ChatMessage[]): void {
+	try {
+		const serialized = messages.map(chatMessageToStorage);
 
-    localStorage.setItem(
-      STORAGE_KEYS.sessionMessages,
-      JSON.stringify(serialized),
-    );
-  } catch (error) {
-    console.error(
-      `Failed to save session messages to localStorage: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
-  }
+		localStorage.setItem(
+			STORAGE_KEYS.sessionMessages,
+			JSON.stringify(serialized),
+		);
+	} catch (error) {
+		console.error(
+			`Failed to save session messages to localStorage: ${error instanceof Error ? error.message : "Unknown error"}`,
+		);
+	}
 }
 
 /**
  * Clear all stored session messages from localStorage
  */
 export function clearSessionMessages(): void {
-  try {
-    localStorage.removeItem(STORAGE_KEYS.sessionMessages);
-  } catch (error) {
-    console.error(
-      `Failed to clear session messages: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
-  }
+	try {
+		localStorage.removeItem(STORAGE_KEYS.sessionMessages);
+	} catch (error) {
+		console.error(
+			`Failed to clear session messages: ${error instanceof Error ? error.message : "Unknown error"}`,
+		);
+	}
 }
 
 /**
@@ -94,6 +109,6 @@ export function clearSessionMessages(): void {
  * @returns Number of stored messages
  */
 export function getStoredMessageCount(): number {
-  const messages = getStoredSessionMessages();
-  return messages.length;
+	const messages = getStoredSessionMessages();
+	return messages.length;
 }

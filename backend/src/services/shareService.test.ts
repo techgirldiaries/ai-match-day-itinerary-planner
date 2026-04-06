@@ -2,15 +2,15 @@
  * Unit Tests - Share Service
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
-import { shareExists } from "~/db/index.ts";
+import { v4 as uuidv4 } from "uuid";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { initDb, initializeDatabase, shareExists } from "~/db/index.ts";
 import {
   createShareLink,
-  fetchShare,
   deleteShareLink,
+  fetchShare,
   generateQrCodeUrl,
 } from "~/services/shareService.ts";
-import { v4 as uuidv4 } from "uuid";
 
 const mockItinerary = {
   id: "match-123",
@@ -35,6 +35,11 @@ const mockItinerary = {
 };
 
 describe("Share Service", () => {
+  beforeAll(async () => {
+    await initDb();
+    initializeDatabase();
+  });
+
   describe("createShareLink", () => {
     it("should create a new share link", async () => {
       const response = await createShareLink({

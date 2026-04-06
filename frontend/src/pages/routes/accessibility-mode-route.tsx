@@ -1,0 +1,12 @@
+import { AccessibilityModePage } from "@/pages/agents/accessibility-mode-page";
+
+export function AccessibilityModeRoute() {
+  return (
+    <main
+      class="flex-1 bg-zinc-100 dark:bg-zinc-950 transition-colors overflow-y-auto"
+      id="main-content"
+    >
+      <AccessibilityModePage />
+    </main>
+  );
+}

@@ -3,7 +3,7 @@
  * Simplifies form handling, state management and side effects
  */
 
-import { useState, useCallback, useEffect, useRef } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 /**
  * Hook for handling form field state with validation
@@ -16,43 +16,43 @@ import { useState, useCallback, useEffect, useRef } from "preact/hooks";
  * {field.error && <p>{field.error}</p>}
  */
 export function useField<T>(initialValue: T, validate?: (value: T) => string) {
-  const [value, setValue] = useState(initialValue);
-  const [error, setError] = useState("");
-  const [touched, setTouched] = useState(false);
+	const [value, setValue] = useState(initialValue);
+	const [error, setError] = useState("");
+	const [touched, setTouched] = useState(false);
 
-  const handleChange = useCallback(
-    (newValue: T) => {
-      setValue(newValue);
-      if (validate && touched) {
-        const validationError = validate(newValue);
-        setError(validationError);
-      }
-    },
-    [validate, touched],
-  );
+	const handleChange = useCallback(
+		(newValue: T) => {
+			setValue(newValue);
+			if (validate && touched) {
+				const validationError = validate(newValue);
+				setError(validationError);
+			}
+		},
+		[validate, touched],
+	);
 
-  const handleBlur = useCallback(() => {
-    setTouched(true);
-    if (validate) {
-      const validationError = validate(value);
-      setError(validationError);
-    }
-  }, [validate, value]);
+	const handleBlur = useCallback(() => {
+		setTouched(true);
+		if (validate) {
+			const validationError = validate(value);
+			setError(validationError);
+		}
+	}, [validate, value]);
 
-  const reset = useCallback(() => {
-    setValue(initialValue);
-    setError("");
-    setTouched(false);
-  }, [initialValue]);
+	const reset = useCallback(() => {
+		setValue(initialValue);
+		setError("");
+		setTouched(false);
+	}, [initialValue]);
 
-  return {
-    value,
-    setValue: handleChange,
-    error,
-    touched,
-    setTouched,
-    reset,
-  };
+	return {
+		value,
+		setValue: handleChange,
+		error,
+		touched,
+		setTouched,
+		reset,
+	};
 }
 
 /**
@@ -67,39 +67,39 @@ export function useField<T>(initialValue: T, validate?: (value: T) => string) {
  * {error && <p>Error: {error.message}</p>}
  */
 export function useAsync<T>(fn: () => Promise<T>, immediate: boolean = false) {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+	const [data, setData] = useState<T | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<Error | null>(null);
 
-  const execute = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+	const execute = useCallback(async () => {
+		setLoading(true);
+		setError(null);
 
-    try {
-      const result = await fn();
-      setData(result);
-      setLoading(false);
-      return result;
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      setError(error);
-      setLoading(false);
-      throw error;
-    }
-  }, [fn]);
+		try {
+			const result = await fn();
+			setData(result);
+			setLoading(false);
+			return result;
+		} catch (err) {
+			const error = err instanceof Error ? err : new Error(String(err));
+			setError(error);
+			setLoading(false);
+			throw error;
+		}
+	}, [fn]);
 
-  useEffect(() => {
-    if (immediate) {
-      execute();
-    }
-  }, [immediate, execute]);
+	useEffect(() => {
+		if (immediate) {
+			execute();
+		}
+	}, [immediate, execute]);
 
-  return {
-    data,
-    loading,
-    error,
-    execute,
-  };
+	return {
+		data,
+		loading,
+		error,
+		execute,
+	};
 }
 
 /**
@@ -112,17 +112,17 @@ export function useAsync<T>(fn: () => Promise<T>, immediate: boolean = false) {
  * {isOpen && <div>Content</div>}
  */
 export function useToggle(initialValue: boolean = false) {
-  const [value, setValue] = useState(initialValue);
+	const [value, setValue] = useState(initialValue);
 
-  const toggle = useCallback(() => {
-    setValue((prev) => !prev);
-  }, []);
+	const toggle = useCallback(() => {
+		setValue((prev) => !prev);
+	}, []);
 
-  return {
-    value,
-    toggle,
-    setValue,
-  };
+	return {
+		value,
+		toggle,
+		setValue,
+	};
 }
 
 /**
@@ -136,13 +136,13 @@ export function useToggle(initialValue: boolean = false) {
  * }, [count])
  */
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
+	const ref = useRef<T>();
 
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
+	useEffect(() => {
+		ref.current = value;
+	}, [value]);
 
-  return ref.current;
+	return ref.current;
 }
 
 /**
@@ -155,30 +155,30 @@ export function usePrevious<T>(value: T): T | undefined {
  * <input onInput={(e) => debouncedSearch(e.target.value)} />
  */
 export function useDebounce<T extends (...args: unknown[]) => unknown>(
-  callback: T,
-  delay: number,
+	callback: T,
+	delay: number,
 ): T {
-  const timeoutRef = useRef<number | null>(null);
+	const timeoutRef = useRef<number | null>(null);
 
-  const debounced = useCallback(
-    (...args: unknown[]) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = window.setTimeout(() => callback(...args), delay);
-    },
-    [callback, delay],
-  ) as T;
+	const debounced = useCallback(
+		(...args: unknown[]) => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+			timeoutRef.current = window.setTimeout(() => callback(...args), delay);
+		},
+		[callback, delay],
+	) as T;
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+		};
+	}, []);
 
-  return debounced;
+	return debounced;
 }
 
 /**
@@ -191,32 +191,32 @@ export function useDebounce<T extends (...args: unknown[]) => unknown>(
  * <button onClick={() => setDarkMode(!darkMode)}>Toggle</button>
  */
 export function useLocalStorage<T>(
-  key: string,
-  initialValue: T,
+	key: string,
+	initialValue: T,
 ): [T, (value: T) => void] {
-  const [value, setValue] = useState<T>(() => {
-    try {
-      const stored = localStorage.getItem(key);
-      return stored ? JSON.parse(stored) : initialValue;
-    } catch (error) {
-      console.error(`Failed to read from localStorage[${key}]:`, error);
-      return initialValue;
-    }
-  });
+	const [value, setValue] = useState<T>(() => {
+		try {
+			const stored = localStorage.getItem(key);
+			return stored ? JSON.parse(stored) : initialValue;
+		} catch (error) {
+			console.error(`Failed to read from localStorage[${key}]:`, error);
+			return initialValue;
+		}
+	});
 
-  const setStoredValue = useCallback(
-    (newValue: T) => {
-      try {
-        setValue(newValue);
-        localStorage.setItem(key, JSON.stringify(newValue));
-      } catch (error) {
-        console.error(`Failed to write to localStorage[${key}]:`, error);
-      }
-    },
-    [key],
-  );
+	const setStoredValue = useCallback(
+		(newValue: T) => {
+			try {
+				setValue(newValue);
+				localStorage.setItem(key, JSON.stringify(newValue));
+			} catch (error) {
+				console.error(`Failed to write to localStorage[${key}]:`, error);
+			}
+		},
+		[key],
+	);
 
-  return [value, setStoredValue];
+	return [value, setStoredValue];
 }
 
 /**
@@ -229,19 +229,19 @@ export function useLocalStorage<T>(
  * <div ref={ref}>Content</div>
  */
 export function useClickOutside(
-  ref: React.RefObject<HTMLElement>,
-  callback: () => void,
+	ref: React.RefObject<HTMLElement>,
+	callback: () => void,
 ): void {
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        callback();
-      }
-    }
+	useEffect(() => {
+		function handleClickOutside(event: MouseEvent) {
+			if (ref.current && !ref.current.contains(event.target as Node)) {
+				callback();
+			}
+		}
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [callback, ref]);
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [callback, ref]);
 }

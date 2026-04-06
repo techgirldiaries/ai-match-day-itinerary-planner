@@ -1,35 +1,32 @@
 import { For, Show } from "@preact/signals/utils";
 import { useEffect } from "preact/hooks";
-import { AgentMessage } from "@/components/agent-message";
-import { AgentTyping, TimeoutMessage } from "@/components/agent-typing";
-import { IntakeForm } from "@/components/intake-form";
-import { Header } from "@/components/header";
-import { Nav } from "@/components/nav";
-import { UserMessage } from "@/components/user-message";
-import { Footer } from "@/components/footer";
-import { EmailExportModal } from "@/components/email-export-modal";
-import { SavedDraftsPanel } from "@/components/saved-drafts-panel";
-import { ChatRoute } from "@/components/pages/app-routes/chat-route";
-import { AgentsRoute } from "@/components/pages/app-routes/agents-route";
-import { DraftsRoute } from "@/components/pages/app-routes/drafts-route";
-import { ComingSoonRoute } from "@/components/pages/app-routes/coming-soon-route";
-import { AccessibilityModeRoute } from "@/components/pages/app-routes/accessibility-mode-route";
-import { HeritageRoute } from "@/components/pages/app-routes/heritage-route";
-import { FantasyRoute } from "@/components/pages/app-routes/fantasy-route";
-import { SocialRoute } from "@/components/pages/app-routes/social-route";
-import { BiRoute } from "@/components/pages/app-routes/bi-route";
-import { YouthRoute } from "@/components/pages/app-routes/youth-route";
-import { WeatherRoute } from "@/components/pages/app-routes/weather-route";
-import { SharedItineraryPage } from "@/components/pages/shared-itinerary-page";
-import { t } from "@/i18n";
-import { LoadingScreen } from "@/components/loading-screen";
-import { ConnectionErrorScreen } from "@/components/connection-error-screen";
-import { UserDraftBubble } from "@/components/user-draft-bubble";
+import { AgentMessage } from "@/components/features/chat";
+import { AgentTyping, TimeoutMessage } from "@/components/features/chat";
+import { ConnectionErrorScreen } from "@/components/common";
+import { EmailExportModal } from "@/components/features/modals";
+import { Footer, Header, Nav } from "@/components/layout";
+import { IntakeForm } from "@/components/features/intake";
+import { LoadingScreen } from "@/components/common";
+import { AccessibilityModeRoute } from "@/pages/routes/accessibility-mode-route";
+import { AgentsRoute } from "@/pages/routes/agents-route";
+import { BiRoute } from "@/pages/routes/bi-route";
+import { ChatRoute } from "@/pages/routes/chat-route";
+import { ComingSoonRoute } from "@/pages/routes/coming-soon-route";
+import { DraftsRoute } from "@/pages/routes/drafts-route";
+import { FantasyRoute } from "@/pages/routes/fantasy-route";
+import { HeritageRoute } from "@/pages/routes/heritage-route";
+import { SocialRoute } from "@/pages/routes/social-route";
+import { WeatherRoute } from "@/pages/routes/weather-route";
+import { YouthRoute } from "@/pages/routes/youth-route";
+import { SharedItineraryPage } from "@/pages/agents/shared-itinerary-page";
+import { SavedDraftsPanel } from "@/components/features/panels";
+import { UserDraftBubble } from "@/components/features/panels";
+import { UserMessage } from "@/components/features/chat";
 import {
   agent,
   agentTypingTimedOut,
-  client,
   type ChatMessage,
+  client,
   connectionError,
   currentPage,
   currentShareId,
@@ -40,8 +37,9 @@ import {
   messages,
   showEmailExportModal,
   workforce,
-} from "@/core/signals";
-import { debugLog, debugWarn, logAppState } from "@/utils/debug";
+} from "@/core/state";
+import { t } from "@/i18n";
+import { debugLog, debugWarn, logAppState } from "@/utils/helpers";
 
 export function App() {
   useEffect(() => {

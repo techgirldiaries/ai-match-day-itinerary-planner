@@ -3,7 +3,7 @@
  * Saves and retrieves draft itineraries from localStorage
  */
 
-import type { Message } from "@/core/types";
+import type { ChatMessage, StorageMessage } from "@/core/types";
 
 const DRAFTS_STORAGE_KEY = "ltfc-draft-itineraries";
 const CURRENT_DRAFT_KEY = "ltfc-current-draft";
@@ -13,7 +13,7 @@ export interface SavedDraft {
   title: string;
   createdAt: string;
   updatedAt: string;
-  messages: Message[];
+  messages: ChatMessage[];
   exportedAt?: string;
 }
 
@@ -34,22 +34,23 @@ interface SerializedDraft {
   exportedAt?: string;
 }
 
-function hydrateMessage(raw: SerializedMessage): Message {
+function hydrateMessage(raw: SerializedMessage): ChatMessage {
   return {
     id: raw.id,
-    role: raw.role,
-    content: raw.content,
-    timestamp: raw.timestamp,
+    type: raw.role === "user" ? "user-message" : "agent-message",
+    text: raw.content,
+    createdAt: new Date(raw.timestamp),
     agentName: raw.agentName,
+    isAgent: () => raw.role === "agent",
   };
 }
 
-function serializeMessage(message: Message): SerializedMessage {
+function serializeMessage(message: ChatMessage): SerializedMessage {
   return {
     id: message.id,
-    role: message.role,
-    content: message.content,
-    timestamp: message.timestamp,
+    role: message.isAgent() ? "agent" : "user",
+    content: message.text,
+    timestamp: message.createdAt.getTime(),
     agentName: message.agentName,
   };
 }
@@ -81,7 +82,7 @@ function serializeDraft(draft: SavedDraft): SerializedDraft {
 /**
  * Save current chat conversation as a draft
  */
-export function saveDraft(messages: Message[], title?: string): SavedDraft {
+export function saveDraft(messages: ChatMessage[], title?: string): SavedDraft {
   const draftId = `draft-${Date.now()}`;
   const now = new Date().toISOString();
 

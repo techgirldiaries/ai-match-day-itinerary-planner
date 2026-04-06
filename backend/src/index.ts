@@ -14,14 +14,14 @@ import shareRoutes from "~/routes/shares.ts";
 
 // Initialize database on startup
 async function startup() {
-  try {
-    await initDb();
-    initializeDatabase();
-    console.log("✅ Database initialized and ready");
-  } catch (error) {
-    console.error("❌ Failed to initialize database:", error);
-    process.exit(1);
-  }
+	try {
+		await initDb();
+		initializeDatabase();
+		console.log("✅ Database initialized and ready");
+	} catch (error) {
+		console.error("❌ Failed to initialize database:", error);
+		process.exit(1);
+	}
 }
 
 // Create Hono app
@@ -30,38 +30,38 @@ const app = new Hono();
 // Middleware
 app.use(logger());
 app.use(
-  cors({
-    origin: (origin) => {
-      const allowedOrigins = (
-        process.env.CORS_ORIGIN || "http://localhost:5173"
-      ).split(",");
-      return allowedOrigins.includes(origin) ? origin : null;
-    },
-    credentials: true,
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "X-User-ID", "Authorization"],
-  }),
+	cors({
+		origin: (origin) => {
+			const allowedOrigins = (
+				process.env.CORS_ORIGIN || "http://localhost:5173"
+			).split(",");
+			return allowedOrigins.includes(origin) ? origin : null;
+		},
+		credentials: true,
+		allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowHeaders: ["Content-Type", "X-User-ID", "Authorization"],
+	}),
 );
 
 /**
  * Root endpoint
  */
 app.get("/", (c) => {
-  return c.json({
-    name: "LTFC Backend API",
-    version: "1.0.0",
-    status: "operational",
-    endpoints: {
-      health: "GET /api/health",
-      shares: {
-        create: "POST /api/shares",
-        fetch: "GET /api/shares/:shareId",
-        list: "GET /api/shares",
-        delete: "DELETE /api/shares/:shareId",
-        qr: "GET /api/shares/:shareId/qr",
-      },
-    },
-  });
+	return c.json({
+		name: "LTFC Backend API",
+		version: "1.0.0",
+		status: "operational",
+		endpoints: {
+			health: "GET /api/health",
+			shares: {
+				create: "POST /api/shares",
+				fetch: "GET /api/shares/:shareId",
+				list: "GET /api/shares",
+				delete: "DELETE /api/shares/:shareId",
+				qr: "GET /api/shares/:shareId/qr",
+			},
+		},
+	});
 });
 
 // Register routes
@@ -71,35 +71,35 @@ app.route("/", shareRoutes);
  * 404 Handler
  */
 app.notFound((c) => {
-  return c.json(
-    {
-      success: false,
-      error: "not_found",
-      message: "Endpoint not found",
-      path: c.req.path,
-      method: c.req.method,
-    },
-    404,
-  );
+	return c.json(
+		{
+			success: false,
+			error: "not_found",
+			message: "Endpoint not found",
+			path: c.req.path,
+			method: c.req.method,
+		},
+		404,
+	);
 });
 
 /**
  * Error handler
  */
 app.onError((err, c) => {
-  console.error("❌ Unhandled error:", err);
+	console.error("❌ Unhandled error:", err);
 
-  return c.json(
-    {
-      success: false,
-      error: "internal_server_error",
-      message:
-        process.env.NODE_ENV === "development"
-          ? err.message
-          : "Internal server error",
-    },
-    500,
-  );
+	return c.json(
+		{
+			success: false,
+			error: "internal_server_error",
+			message:
+				process.env.NODE_ENV === "development"
+					? err.message
+					: "Internal server error",
+		},
+		500,
+	);
 });
 
 // Start server
@@ -117,25 +117,25 @@ console.log(`
 `);
 
 export default {
-  port,
-  fetch: app.fetch,
+	port,
+	fetch: app.fetch,
 };
 
 // For local development with Node.js
 if (import.meta.main) {
-  const { serve } = await import("@hono/node-server");
+	const { serve } = await import("@hono/node-server");
 
-  // Initialize database before starting server
-  await startup();
+	// Initialize database before starting server
+	await startup();
 
-  serve(
-    {
-      fetch: app.fetch,
-      port,
-    },
-    (info: { port: number }) => {
-      console.log(`✅ Server running at http://localhost:${info.port}`);
-      console.log(`📡 API Documentation: http://localhost:${info.port}/`);
-    },
-  );
+	serve(
+		{
+			fetch: app.fetch,
+			port,
+		},
+		(info: { port: number }) => {
+			console.log(`✅ Server running at http://localhost:${info.port}`);
+			console.log(`📡 API Documentation: http://localhost:${info.port}/`);
+		},
+	);
 }

@@ -1,22 +1,21 @@
 @import "tailwindcss";
 
 body {
-  font-family: system-ui, sans-serif;
-  font-size: 1rem;
-  /* 16px, matches text-sm */
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  /* -moz-text-size-adjust: 100%;  
-  -ms-text-size-adjust: 100%;   */
+	font-family: system-ui, sans-serif;
+	font-size: 1rem;
+	/* 16px, matches text-sm - normalized text sizing across browsers */
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 h1,
 .font-bebas,
 .responsive-title {
-  /* Removed font-family for Bebas Neue */
-  font-size: 1.4rem;
-  /* 22px, matches text-xl */
-  letter-spacing: 0.02em;
+	/* Removed font-family for Bebas Neue */
+	font-size: 1.4rem;
+	/* 22px, matches text-xl */
+	letter-spacing: 0.02em;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -25,127 +24,126 @@ h1,
 RESPONSIVE HEADER STYLES
 ===================================== */
 @media (max-width: 320px) {
-  header {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
+	header {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+	}
 
-  header h1 {
-    font-size: 0.75rem;
-  }
+	header h1 {
+		font-size: 0.75rem;
+	}
 
-  header p {
-    font-size: 0.625rem;
-  }
+	header p {
+		font-size: 0.625rem;
+	}
 
-  header img[alt*="badge"] {
-    width: 1.75rem;
-    height: 1.75rem;
-  }
+	header img[alt*="badge"] {
+		width: 1.75rem;
+		height: 1.75rem;
+	}
 }
 
 @media (min-width: 321px) and (max-width: 375px) {
-  header h1 {
-    font-size: 0.875rem;
-  }
+	header h1 {
+		font-size: 0.875rem;
+	}
 
-  header p {
-    font-size: 0.75rem;
-  }
+	header p {
+		font-size: 0.75rem;
+	}
 }
 
 @media (min-width: 376px) and (max-width: 428px) {
-  header h1 {
-    font-size: 0.875rem;
-  }
+	header h1 {
+		font-size: 0.875rem;
+	}
 
-  header p {
-    font-size: 0.75rem;
-  }
+	header p {
+		font-size: 0.75rem;
+	}
 }
 
 @media (min-width: 429px) and (max-width: 767px) {
-  header h1 {
-    font-size: 1rem;
-  }
+	header h1 {
+		font-size: 1rem;
+	}
 
-  header p {
-    font-size: 0.875rem;
-  }
+	header p {
+		font-size: 0.875rem;
+	}
 }
 
 @media (min-width: 768px) {
-  header h1 {
-    font-size: 1.125rem;
-  }
+	header h1 {
+		font-size: 1.125rem;
+	}
 
-  header p {
-    font-size: 1rem;
-  }
+	header p {
+		font-size: 1rem;
+	}
 }
 
 /* =====================================
 LTFC Brand Palette
 ===================================== */
 :root {
-  --ltfc-orange: #f5820d;
-  --ltfc-navy: #1a1f3c;
-  --ltfc-white: #ffffff;
-  --ltfc-accent: #ffecd1;
+	--ltfc-orange: #f5820d;
+	--ltfc-navy: #1a1f3c;
+	--ltfc-white: #ffffff;
+	--ltfc-accent: #ffecd1;
 }
 
 /* Usage: Use var(--ltfc-orange), var(--ltfc-navy), var(--ltfc-white) in custom CSS or Tailwind config for consistency. */
 
 /* Confidence warning badge shown on low-confidence itinerary sections */
 .confidence-badge {
-  @apply inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700;
+	@apply inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-900/40 dark:text-amber-300 dark:border-amber-700;
 }
 
 @keyframes bounce {
+	0%,
+	50%,
+	100% {
+		transform: translateY(0);
+	}
 
-  0%,
-  50%,
-  100% {
-    transform: translateY(0);
-  }
-
-  20% {
-    transform: translateY(-1rem);
-  }
+	20% {
+		transform: translateY(-1rem);
+	}
 }
 
 .typing-dot {
-  @apply text-2xl leading-0 py-2;
-  animation: bounce 1s infinite ease-in-out;
+	@apply text-2xl leading-0 py-2;
+	animation: bounce 1s infinite ease-in-out;
 }
 
 .typing-dot-delay-1 {
-  animation-delay: 0.15s;
+	animation-delay: 0.15s;
 }
 
 .typing-dot-delay-2 {
-  animation-delay: 0.3s;
+	animation-delay: 0.3s;
 }
 
 /* Hide scrollbar for nav tabs */
 .scrollbar-hide {
-  -ms-overflow-style: none;
+	-ms-overflow-style: none;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 /* Document-like formatting for non-JSON assistant replies */
 .doc-output {
-  @apply text-zinc-800 dark:text-zinc-100 leading-relaxed space-y-3;
+	@apply text-zinc-800 dark:text-zinc-100 leading-relaxed space-y-3;
 }
 
 /* Heading Hierarchy */
 .doc-h1 {
-  @apply text-3xl font-bold text-[#1a1f3c] dark:text-white mb-4 mt-6 pb-2 border-b-2 border-[#f5820d];
+	@apply text-3xl font-bold text-[#1a1f3c] dark:text-white mb-4 mt-6 pb-2 border-b-2 border-[#f5820d];
 }
 
 /* =====================================
@@ -154,43 +152,43 @@ DATE & TIME INPUT STYLING
 /* Calendar and clock picker icons visibility in light mode */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: brightness(0);
-  margin-right: 4px;
+	cursor: pointer;
+	filter: brightness(0);
+	margin-right: 4px;
 }
 
 /* Dark mode adjustment for icons */
 .dark input[type="date"]::-webkit-calendar-picker-indicator,
 .dark input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: brightness(2.5);
+	filter: brightness(2.5);
 }
 
 /* Hover and focus states for date/time inputs */
 input[type="date"]:hover::-webkit-calendar-picker-indicator,
 input[type="time"]:hover::-webkit-calendar-picker-indicator {
-  filter: brightness(0);
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  padding: 4px;
+	filter: brightness(0);
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	padding: 4px;
 }
 
 input[type="date"]:focus::-webkit-calendar-picker-indicator,
 input[type="time"]:focus::-webkit-calendar-picker-indicator {
-  filter: brightness(0);
-  background-color: rgba(0, 0, 0, 0.15);
+	filter: brightness(0);
+	background-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Dark mode hover/focus states */
 .dark input[type="date"]:hover::-webkit-calendar-picker-indicator,
 .dark input[type="time"]:hover::-webkit-calendar-picker-indicator {
-  filter: brightness(2.5);
-  background-color: rgba(255, 255, 255, 0.1);
+	filter: brightness(2.5);
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
 .dark input[type="date"]:focus::-webkit-calendar-picker-indicator,
 .dark input[type="time"]:focus::-webkit-calendar-picker-indicator {
-  filter: brightness(2.5);
-  background-color: rgba(255, 255, 255, 0.15);
+	filter: brightness(2.5);
+	background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* =====================================
@@ -198,91 +196,91 @@ CHECKBOX STYLING
 ===================================== */
 /* Make checkboxes visible in light mode */
 input[type="checkbox"] {
-  accent-color: #f5820d;
-  background-color: white;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
+	accent-color: #f5820d;
+	background-color: white;
+	border: 1px solid #d1d5db;
+	cursor: pointer;
 }
 
 input[type="checkbox"]:hover {
-  border-color: #f5820d;
-  box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.1);
+	border-color: #f5820d;
+	box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.1);
 }
 
 input[type="checkbox"]:checked {
-  background-color: #f5820d;
-  border-color: #f5820d;
+	background-color: #f5820d;
+	border-color: #f5820d;
 }
 
 /* Dark mode checkbox styling */
 .dark input[type="checkbox"] {
-  background-color: #1f2937;
-  border-color: #374151;
+	background-color: #1f2937;
+	border-color: #374151;
 }
 
 .dark input[type="checkbox"]:hover {
-  border-color: #f5820d;
-  box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.2);
+	border-color: #f5820d;
+	box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.2);
 }
 
 .dark input[type="checkbox"]:checked {
-  background-color: #f5820d;
-  border-color: #f5820d;
+	background-color: #f5820d;
+	border-color: #f5820d;
 }
 
 .doc-h2 {
-  @apply text-2xl font-bold text-[#1a1f3c] dark:text-orange-300 mb-3 mt-5;
+	@apply text-2xl font-bold text-[#1a1f3c] dark:text-orange-300 mb-3 mt-5;
 }
 
 .doc-h3 {
-  @apply text-xl font-bold text-[#1a1f3c] dark:text-orange-200 mb-2 mt-4;
+	@apply text-xl font-bold text-[#1a1f3c] dark:text-orange-200 mb-2 mt-4;
 }
 
 .doc-h4 {
-  @apply text-lg font-semibold text-[#1a1f3c] dark:text-orange-100 mb-2 mt-3;
+	@apply text-lg font-semibold text-[#1a1f3c] dark:text-orange-100 mb-2 mt-3;
 }
 
 .doc-h5 {
-  @apply text-base font-semibold text-[#1a1f3c] dark:text-gray-300 mb-2 mt-2;
+	@apply text-base font-semibold text-[#1a1f3c] dark:text-gray-300 mb-2 mt-2;
 }
 
 .doc-h6 {
-  @apply text-sm font-semibold text-[#1a1f3c] dark:text-gray-400 mb-2 mt-2;
+	@apply text-sm font-semibold text-[#1a1f3c] dark:text-gray-400 mb-2 mt-2;
 }
 
 /* Deprecated - use doc-h4 instead */
 .doc-heading {
-  @apply text-base font-semibold text-[#1a1f3c] dark:text-orange-300;
+	@apply text-base font-semibold text-[#1a1f3c] dark:text-orange-300;
 }
 
 /* Paragraphs */
 .doc-paragraph {
-  @apply text-sm leading-relaxed text-justify text-[#1a1f3c] dark:text-gray-300 mb-3;
+	@apply text-sm leading-relaxed text-justify text-[#1a1f3c] dark:text-gray-300 mb-3;
 }
 
 /* Lists */
 .doc-list {
-  @apply text-sm space-y-2 pl-6 mb-3;
+	@apply text-sm space-y-2 pl-6 mb-3;
 }
 
 .doc-list li {
-  @apply text-[#1a1f3c] dark:text-gray-300 leading-relaxed;
+	@apply text-[#1a1f3c] dark:text-gray-300 leading-relaxed;
 }
 
 .doc-list-ordered {
-  @apply list-decimal;
+	@apply list-decimal;
 }
 
 .doc-list-unordered {
-  @apply list-disc;
+	@apply list-disc;
 }
 
 /* Blockquotes */
 .doc-blockquote {
-  @apply border-l-4 border-[#f5820d] bg-orange-50 dark:bg-orange-950/20 pl-4 py-2 my-3 italic text-[#1a1f3c] dark:text-orange-100 rounded-r-sm;
+	@apply border-l-4 border-[#f5820d] bg-orange-50 dark:bg-orange-950/20 pl-4 py-2 my-3 italic text-[#1a1f3c] dark:text-orange-100 rounded-r-sm;
 }
 
 /* Output Container */
 .doc-output {
-  @apply space-y-2;
+	@apply space-y-2;
 }

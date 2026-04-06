@@ -127,90 +127,155 @@ See dedicated guides for detailed information:
 
 ## Frontend Architecture
 
-The frontend `src/` directory is organised by responsibility for clarity and scalability:
+The frontend `src/` directory is organised by feature for maximum scalability and maintainability:
 
 ```text
 src/
-├── core/                          # App state, types, and configuration
-│   ├── signals.ts                 # Preact signals (messages, UI state, etc.)
-│   ├── types.ts                   # TypeScript types (IntakeFormData, ItineraryResponse, etc.)
-│   ├── constant.ts                # Relevance AI credentials from .env
-│   └── user.ts                    # Anonymous user session management
+├── components/                    # Feature-driven UI components
+│   ├── common/                    # Shared UI components across features
+│   │   ├── Avatar.tsx             # User avatar display
+│   │   ├── ConnectionErrorScreen.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── LoadingScreen.tsx
+│   │   └── index.ts               # Barrel file for clean imports
+│   │
+│   ├── layout/                    # App layout components
+│   │   ├── Header.tsx             # Top navigation bar
+│   │   ├── Footer.tsx             # Bottom action bar (message input)
+│   │   ├── Nav.tsx                # Sidebar navigation
+│   │   └── index.ts
+│   │
+│   ├── features/                  # Feature-specific component groups
+│   │   ├── chat/                  # Chat interface
+│   │   │   ├── AgentMessage.tsx   # Agent response with itinerary
+│   │   │   ├── AgentTyping.tsx    # Typing indicator animation
+│   │   │   ├── UserMessage.tsx    # User message bubble
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── intake/                # Intake form feature
+│   │   │   ├── IntakeForm.tsx     # Multi-step form for preferences
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── itinerary/             # Itinerary display feature
+│   │   │   ├── ItineraryRenderer.tsx  # Main itinerary display
+│   │   │   ├── MatchSummaryCard.tsx
+│   │   │   ├── Timeline.tsx       # Timeline section
+│   │   │   ├── TransportSection.tsx
+│   │   │   ├── CostBreakdownSection.tsx
+│   │   │   ├── BookingLinks.tsx
+│   │   │   ├── CommunityNote.tsx
+│   │   │   ├── TopTips.tsx
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── modals/                # Modal dialogs
+│   │   │   ├── EmailExportModal.tsx
+│   │   │   ├── ShareModal.tsx
+│   │   │   └── index.ts
+│   │   │
+│   │   └── panels/                # Side panels
+│   │       ├── SavedDraftsPanel.tsx
+│   │       ├── UserDraftBubble.tsx
+│   │       └── index.ts
+│   │
+│   ├── App.tsx                    # Root app component with routing
+│   └── index.ts                   # Main export
 │
-├── services/                      # External integrations
-│   └── client.ts                  # Relevance AI SDK client initialization
+├── pages/                         # Page-level components and routing
+│   ├── agents/                    # Agent detail pages
+│   │   ├── AccessibilityModePage.tsx
+│   │   ├── AgentDetailPage.tsx
+│   │   ├── AgentsOverviewPage.tsx
+│   │   ├── BusinessIntelligenceAgentPage.tsx
+│   │   ├── FantasyAgentPage.tsx
+│   │   ├── HeritageAgentPage.tsx
+│   │   ├── SocialImpactAgentPage.tsx
+│   │   ├── WeatherAgentPage.tsx
+│   │   ├── YouthAgentPage.tsx
+│   │   └── SharedItineraryPage.tsx
+│   │
+│   ├── routes/                    # Route definitions and handlers
+│   │   ├── AppRouter.tsx          # Main router component
+│   │   ├── AccessibilityModeRoute.tsx
+│   │   ├── AgentsRoute.tsx
+│   │   ├── BiRoute.tsx
+│   │   ├── ChatRoute.tsx
+│   │   ├── ComingSoonRoute.tsx
+│   │   ├── DraftsRoute.tsx
+│   │   ├── [other routes...]
+│   │   ├── cache-routes-venues.ts # Route caching logic
+│   │   └── index.ts
+│   │
+│   └── index.ts
 │
-├── storage/                       # Data persistence
-│   ├── draft-storage.ts           # Draft itinerary CRUD operations
-│   ├── messageStorage.ts          # Chat message localStorage persistence
-│   └── preferenceStorage.ts       # User preferences (dark mode, language)
+├── core/                          # App core logic, state & types
+│   ├── state/                     # Global state management
+│   │   ├── signals.ts             # Preact signals (messages, UI state)
+│   │   └── index.ts               # Barrel export
+│   │
+│   ├── types/                     # TypeScript type definitions
+│   │   └── index.ts               # All types: ChatMessage, ItineraryResponse, etc.
+│   │
+│   ├── constants/                 # App-wide constants
+│   │   ├── constant.ts            # Relevance AI credentials from .env
+│   │   └── index.ts
+│   │
+│   ├── intake-validation.ts       # Intake form validation logic
+│   ├── user.ts                    # Anonymous user session management
+│   ├── api/                       # API client layer (future use)
+│   │
+│   # Backward compatibility re-exports ↓
+│   ├── signals.ts                 # Re-exports from core/state/
+│   ├── constant.ts                # Re-exports from core/constants/
+│   └── types.ts                   # Re-exports from core/types/
 │
 ├── config/                        # Feature configuration
-│   ├── formConfig.ts              # Form fields, options, CSS classes (centralized)
-│   ├── relevance-ai-config.ts     # Tool IDs, strategy, compliance, feature flags
-│   └── i18n.ts                    # Translations interface & English translations
+│   ├── formConfig.ts              # Form fields, options, CSS classes
+│   └── relevance-ai-config.ts     # Tool IDs, strategy, feature flags
 │
-├── utils/                         # Reusable utilities
-│   ├── formUtils.ts               # Generic form utilities (toggleArrayItem, sanitizeInput)
-│   ├── formHelpers.ts             # Form validation and helpers
-│   ├── formThemes.ts              # CSS class builders for form styling
-│   ├── dateHelpers.ts             # Date/time utilities
-│   ├── stringHelpers.ts           # String manipulation utilities
-│   └── debug.ts                   # Debug logging with environment toggle
+├── hooks/                         # Custom React/Preact hooks
+│   ├── useSendMessage.ts          # Message sending logic & UI state
+│   └── useCustomHooks.ts          # Additional custom hooks
 │
-├── components/                    # React/Preact components
-│   ├── App.tsx                    # Main app shell and routing
-│   ├── Header.tsx                 # Navigation and language selector
-│   ├── Footer.tsx                 # Message input and sender
-│   ├── IntakeForm.tsx             # Multi-step form for itinerary preferences
-│   ├── AgentMessage.tsx           # Agent response with itinerary rendering
-│   ├── UserMessage.tsx            # User message bubble
-│   ├── Nav.tsx                    # Sidebar navigation
-│   ├── ShareModal.tsx             # Group sharing modal with share link
-│   ├── SavedDraftsPanel.tsx       # Draft management UI
-│   ├── ConnectionErrorScreen.tsx  # Error state when offline
-│   ├── LoadingScreen.tsx          # Initial load state
-│   ├── EmailExportModal.tsx       # Email export functionality
-│   ├── UserDraftBubble.tsx        # Draft indicator bubble
-│   ├── AgentTyping.tsx            # Typing indicator animation
-│   ├── EmptyState.tsx             # Initial empty state
-│   ├── pages/                     # Agent detail pages
-│   │   ├── agents-overview-page.tsx
-│   │   ├── agent-detail-page.tsx
-│   │   ├── shared-itinerary-page.tsx
-│   │   └── [agent-specific pages]
-│   ├── pages/app-routes/          # Route components
-│   │   ├── chat-route.tsx
-│   │   ├── agents-route.tsx
-│   │   ├── drafts-route.tsx
-│   │   └── [other routes]
-│   ├── hooks/                     # Custom hooks
-│   │   └── useSendMessage.ts      # Message sending logic
-│   ├── itinerary-renderer/        # Itinerary display components
-│   │   ├── Timeline.tsx           # Timeline section
-│   │   ├── TransportSection.tsx   # Transport options
-│   │   ├── CostBreakdownSection.tsx
-│   │   ├── BookingLinks.tsx
-│   │   └── [other sections]
-│   └── utils/                     # Component-specific utilities
-│       ├── formatIntakeMessage.ts # Format intake form to prompt
-│       └── validateIntakeForm.ts  # Form validation rules
+├── services/                      # External service integrations
+│   └── client.ts                  # Relevance AI SDK initialization
 │
-├── prompts/                       # AI prompts
-│   └── system-prompt-optimised.ts # Main system prompt for LTFC agent
+├── storage/                       # Data persistence layer
+│   ├── draft-storage.ts           # Draft itinerary CRUD operations
+│   ├── messageStorage.ts          # Chat message localStorage sync
+│   └── preferenceStorage.ts       # User preferences (theme, language)
 │
-├── shims/                         # Cross-platform shims
-│   └── crypto.ts                  # Crypto polyfill for browsers
+├── utils/                         # Reusable utility functions
+│   ├── helpers/                   # General utilities
+│   │   ├── debug.ts               # Debug logging utilities
+│   │   ├── dateHelpers.ts         # Date/time utilities
+│   │   ├── formHelpers.ts         # Form-related helpers
+│   │   ├── formThemes.ts          # CSS class builders
+│   │   ├── formUtils.ts           # Generic form utilities
+│   │   ├── stringHelpers.ts       # String manipulation
+│   │   ├── TimeAgo.tsx            # Relative time display component
+│   │   └── index.ts               # Barrel export
+│   │
+│   ├── formatters/                # Data formatting utilities
+│   │   ├── formatIntakeMessage.ts # Format intake form to prompt
+│   │   └── index.ts
+│   │
+│   └── validators/                # Validation utilities
+│       ├── validateIntakeForm.ts  # Form validation rules
+│       └── index.ts
 │
-├── i18n/                          # Internationalisation
+├── prompts/                       # AI prompt templates
+│   ├── system-prompt-optimized.ts # Optimized system prompt
+│   └── system-prompts.ts          # Legacy prompt definitions
+│
+├── i18n/                          # Internationalization
+│   ├── i18n.ts                    # i18n setup and configuration
 │   ├── t.ts                       # Translation function
 │   ├── translations.ts            # Translation key mappings
 │   ├── types.ts                   # Translation interface
 │   └── translations/              # Translation files per language
-│       ├── en.json
-│       ├── es.json
-│       ├── fr.json
-│       └── [other languages]
+│
+├── shims/                         # Cross-platform polyfills
+│   └── crypto.ts                  # Browser crypto polyfill
 │
 ├── index.tsx                      # App entry point
 └── style.css                      # Global Tailwind styles
@@ -218,13 +283,100 @@ src/
 
 **Key Design Principles:**
 
-- **Separation of Concerns**: Core state → Services → Storage → Config → Components
-- **Single Responsibility**: Each module has one clear purpose
-- **Centralised Configuration**: All form options/styles in `formConfig.ts`, compliance settings in `relevance-ai-config.ts`
-- **Reusable Utilities**: Generic helpers in `utils/`, component-specific ones in `components/utils/`
-- **Type Safety**: All types in `core/types.ts`, shared across app
-- **Easy Testing**: Isolated utilities and hooks for unit testing
-- **Scalability**: Clear structure supports adding new features without confusion
+- **Feature-Based Organization**: Components grouped by feature (chat, intake, itinerary) for easier navigation
+- **Clear Separation of Concerns**: UI components → State management → Data persistence → Utilities
+- **Scalability**: New features can be added as isolated folders within `components/features/`
+- **Reusability**: Barrel files (index.ts) enable clean imports like `import { AgentMessage } from "@/components/features/chat"`
+- **Type Safety**: Centralized TypeScript types in `core/types/`, accessible everywhere
+- **Testability**: Each feature/utility is isolated making unit testing straightforward
+- **Maintainability**: Clear folder hierarchy helps developers find code quickly
+- **Backward Compatibility**: Re-export files maintain compatibility during transitions
+
+**Barrel Files (Clean Imports):**
+
+All major modules export via `index.ts` for convenient importing:
+
+- `import { Header } from "@/components/layout"`
+- `import { AgentMessage } from "@/components/features/chat"`
+- `import { formatIntakeMessage } from "@/utils/formatters"`
+  │ ├── constant.ts # Re-exports from core/constants/
+  │ └── types.ts # Re-exports from core/types/
+  │
+  ├── config/ # Feature configuration
+  │ ├── formConfig.ts # Form fields, options, CSS classes
+  │ └── relevance-ai-config.ts # Tool IDs, strategy, feature flags
+  │
+  ├── hooks/ # Custom React/Preact hooks
+  │ ├── useSendMessage.ts # Message sending logic & UI state
+  │ └── useCustomHooks.ts # Additional custom hooks
+  │
+  ├── services/ # External service integrations
+  │ └── client.ts # Relevance AI SDK initialization
+  │
+  ├── storage/ # Data persistence layer
+  │ ├── draft-storage.ts # Draft itinerary CRUD operations
+  │ ├── messageStorage.ts # Chat message localStorage sync
+  │ └── preferenceStorage.ts # User preferences (theme, language)
+  │
+  ├── utils/ # Reusable utility functions
+  │ ├── helpers/ # General utilities
+  │ │ ├── debug.ts # Debug logging utilities
+  │ │ ├── dateHelpers.ts # Date/time utilities
+  │ │ ├── formHelpers.ts # Form-related helpers
+  │ │ ├── formThemes.ts # CSS class builders
+  │ │ ├── formUtils.ts # Generic form utilities
+  │ │ ├── stringHelpers.ts # String manipulation
+  │ │ ├── TimeAgo.tsx # Relative time display component
+  │ │ └── index.ts # Barrel export
+  │ │
+  │ ├── formatters/ # Data formatting utilities
+  │ │ ├── formatIntakeMessage.ts # Format intake form to prompt
+  │ │ └── index.ts
+  │ │
+  │ └── validators/ # Validation utilities
+  │ ├── validateIntakeForm.ts # Form validation rules
+  │ └── index.ts
+  │
+  ├── prompts/ # AI prompt templates
+  │ ├── system-prompt-optimized.ts # Optimized system prompt
+  │ └── system-prompts.ts # Legacy prompt definitions
+  │
+  ├── i18n/ # Internationalization
+  │ ├── i18n.ts # i18n setup and configuration
+  │ ├── t.ts # Translation function
+  │ ├── translations.ts # Translation key mappings
+  │ ├── types.ts # Translation interface
+  │ └── translations/ # Translation files per language
+  │
+  ├── shims/ # Cross-platform polyfills
+  │ └── crypto.ts # Browser crypto polyfill
+  │
+  ├── index.tsx # App entry point
+  └── style.css # Global Tailwind styles
+
+````
+
+**Key Design Principles:**
+
+- **Feature-Based Organization**: Components grouped by feature (chat, intake, itinerary) for easier navigation
+- **Clear Separation of Concerns**: UI components → State management → Data persistence → Utilities
+- **Scalability**: New features can be added as isolated folders within `components/features/`
+- **Reusability**: Barrel files (index.ts) enable clean imports like `import { AgentMessage } from "@/components/features/chat"`
+- **Type Safety**: Centralized TypeScript types in `core/types/`, accessible everywhere
+- **Testability**: Each feature/utility is isolated making unit testing straightforward
+- **Maintainability**: Clear folder hierarchy helps developers find code quickly
+- **Backward Compatibility**: Re-export files maintain compatibility during transitions
+
+**Barrel Files (Clean Imports):**
+
+All major modules export via `index.ts` for convenient importing:
+- `import { Header } from "@/components/layout"`
+- `import { AgentMessage } from "@/components/features/chat"`
+- `import { formatIntakeMessage } from "@/utils/formatters"`
+
+**Recent Reorganization:**
+
+The frontend was reorganized for improved scalability and maintainability (April 2026). Features are now grouped by domain rather than file type. For detailed information about the re-architecture, see [REORGANIZATION_COMPLETE.md](REORGANIZATION_COMPLETE.md).
 
 ## Project Configuration
 
@@ -237,7 +389,7 @@ This is a **monorepo** using centralised configuration files in `.config/`:
 ├── testing/            # jest.config.js, playwright.config.js
 ├── linting/            # biome reference configs
 └── build/              # tailwind.config.js
-```
+````
 
 Root-level configs (only essentials):
 

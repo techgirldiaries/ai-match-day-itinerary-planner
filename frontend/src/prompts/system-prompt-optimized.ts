@@ -1,11 +1,11 @@
 /**
  * LTFC Fan Itinerary Planner - Optimized System Prompt
- * 
+ *
  * Performance-optimized hybrid architecture:
  * - Core response: 15-20 seconds (essential data only)
  * - Advanced features: 20-28 seconds (feature-triggered)
  * - Timeout protection: 30-second platform limit with fallback
- * 
+ *
  * Always includes UK GDPR/Data Protection Act 2018 compliance
  */
 
