@@ -250,3 +250,51 @@ effect(() => {
     }, 45_000);
   }
 });
+
+// ── New Intake Flow Signals ─────────────────────────────────────────────────
+import type {
+  IntakeMessage,
+  IntakeFormDataNew,
+  ItineraryOutputNew,
+  AppRoute,
+} from "./types";
+
+// Routing — controls which screen renders — 'intake' or 'chat':
+export const currentRoute = signal<AppRoute>("intake");
+
+// Null until form submitted and validated:
+export const intakeFormData = signal<IntakeFormDataNew | null>(null);
+
+// True while form is submitting — locks submit button:
+export const isIntakeSubmitting = signal<boolean>(false);
+
+// True after successful submission — prevents re-submission:
+export const isIntakeComplete = signal<boolean>(false);
+
+// New message interface for the intake flow (separate from ChatMessage):
+// NEVER mutate with .push() — always replace array reference:
+export const intakeMessages = signal<IntakeMessage[]>([]);
+
+// Transport mutex — blocks duplicate send calls:
+export const isSending = signal<boolean>(false);
+
+// UI indicator — controls AgentThinkingBubble only:
+export const isAgentThinking = signal<boolean>(false);
+
+// One-shot guard — prevents re-appending user message:
+export const hasUserMessageBeenAdded = signal<boolean>(false);
+
+// True only during initial intake processing on chat mount:
+export const isProcessingIntake = signal<boolean>(false);
+
+// Null until agent produces final itinerary:
+export const itineraryOutput = signal<ItineraryOutputNew | null>(null);
+
+// True when chat is ready to accept user input:
+export const isChatInputEnabled = computed<boolean>(
+  () =>
+    !isSending.value &&
+    !isAgentThinking.value &&
+    !isProcessingIntake.value &&
+    isIntakeComplete.value,
+);

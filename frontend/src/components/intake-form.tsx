@@ -13,7 +13,7 @@ import {
   agent,
   connectionError,
   currentPage,
-  type ChatMessage,
+  isAgentThinking,
   messages,
   preferredLanguage,
   task,
@@ -26,6 +26,7 @@ import type {
   MatchType,
   TransportMode,
   TravelStyle,
+  Message,
 } from "@/core/types";
 import {
   TRANSPORT_OPTIONS,
@@ -167,16 +168,20 @@ export function IntakeForm() {
     // Navigate to chat page before submitting
     currentPage.value = "chat";
 
+    // Generate message ID once and store it for potential removal on error
+    const messageId = crypto.randomUUID();
     messages.value = [
       ...messages.value,
       {
-        id: "optimistic",
-        type: "user-message",
-        text: message,
-        createdAt: new Date(),
-        isAgent: () => false,
-      } as ChatMessage,
+        id: messageId,
+        role: "user",
+        content: message,
+        timestamp: Date.now(),
+      } as Message,
     ];
+
+    // Show thinking bubble while waiting for response
+    isAgentThinking.value = true;
 
     try {
       const resultTask = workforce.value
@@ -197,9 +202,10 @@ export function IntakeForm() {
       );
       console.error("Error sending message:", error);
       // Remove the optimistic message if sending failed
-      messages.value = messages.value.filter((m) => m.id !== "optimistic");
+      messages.value = messages.value.filter((m) => m.id !== messageId);
     } finally {
       setIsSubmitting(false);
+      isAgentThinking.value = false;
     }
   }
 

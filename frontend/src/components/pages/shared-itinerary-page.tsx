@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { AlertTriangle, Home } from "lucide-react";
 import { ItineraryRenderer } from "@/components/itinerary-renderer";
-import type { ItineraryResponse } from "@/types";
+import type { ItineraryResponse, Message } from "@/core/types";
 import { saveDraft } from "@/storage/draft-storage";
 import { savedDrafts, currentPage } from "@/core/signals";
 import { t } from "@/i18n";
@@ -79,16 +79,16 @@ export function SharedItineraryPage({ shareId }: SharedItineraryPageProps) {
     setSaving(true);
     try {
       // Create a message-like structure from the itinerary
-      const draftMessages = [
+      const draftMessages: Message[] = [
         {
-          id: `msg-${Date.now()}`,
-          type: "agent-message",
-          text: JSON.stringify(itinerary),
-          createdAt: new Date().toISOString(),
+          id: crypto.randomUUID(),
+          role: "agent",
+          content: JSON.stringify(itinerary),
+          timestamp: Date.now(),
         },
       ];
 
-      const draft = saveDraft(draftMessages as any);
+      const draft = saveDraft(draftMessages);
       savedDrafts.value = [...savedDrafts.value, draft];
 
       // Show success and redirect

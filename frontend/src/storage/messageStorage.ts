@@ -3,40 +3,37 @@
  * Handles serialization, deserialization, and localStorage operations for chat messages
  */
 
-import type { ChatMessage } from "@/core/signals";
+import type { Message } from "@/core/types";
 import { STORAGE_KEYS } from "@/config/formConfig";
 
 /**
  * Hydrate a chat message from stored JSON format
- * Reconstructs a ChatMessage object with proper type methods from parsed JSON data
+ * Reconstructs a Message object from parsed JSON data
  * @param data - Raw message data from storage
- * @returns Reconstructed ChatMessage with proper isAgent method
+ * @returns Reconstructed Message object
  */
 export function hydrateMessage(data: {
   id: string;
-  type: string;
-  text: string;
-  createdAt: string;
+  role: "user" | "agent";
+  content: string;
+  timestamp: number;
   agentName?: string;
-}): ChatMessage {
+}): Message {
   return {
     id: data.id,
-    type: data.type as ChatMessage["type"],
-    text: data.text,
-    createdAt: new Date(data.createdAt),
+    role: data.role,
+    content: data.content,
+    timestamp: data.timestamp,
     agentName: data.agentName,
-    isAgent: function () {
-      return this.type === "agent-message" || this.type === "streaming-message";
-    },
   };
 }
 
 /**
  * Retrieve stored session messages from localStorage
  * Safely handles missing or corrupted data with error recovery
- * @returns Array of hydrated ChatMessage objects
+ * @returns Array of hydrated Message objects
  */
-export function getStoredSessionMessages(): ChatMessage[] {
+export function getStoredSessionMessages(): Message[] {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.sessionMessages);
     if (!stored) return [];
@@ -56,15 +53,15 @@ export function getStoredSessionMessages(): ChatMessage[] {
 /**
  * Save messages to localStorage
  * Handles serialization and error handling for persistence
- * @param messages - Array of ChatMessage objects to save
+ * @param messages - Array of Message objects to save
  */
-export function saveSessionMessages(messages: ChatMessage[]): void {
+export function saveSessionMessages(messages: Message[]): void {
   try {
     const serialized = messages.map((msg) => ({
       id: msg.id,
-      type: msg.type,
-      text: msg.text,
-      createdAt: msg.createdAt.toISOString(),
+      role: msg.role,
+      content: msg.content,
+      timestamp: msg.timestamp,
       agentName: msg.agentName,
     }));
 

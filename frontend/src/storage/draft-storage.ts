@@ -3,7 +3,7 @@
  * Saves and retrieves draft itineraries from localStorage
  */
 
-import type { ChatMessage } from "@/core/types";
+import type { Message } from "@/core/types";
 
 const DRAFTS_STORAGE_KEY = "ltfc-draft-itineraries";
 const CURRENT_DRAFT_KEY = "ltfc-current-draft";
@@ -13,15 +13,16 @@ export interface SavedDraft {
   title: string;
   createdAt: string;
   updatedAt: string;
-  messages: ChatMessage[];
+  messages: Message[];
   exportedAt?: string;
 }
 
-interface SerializedChatMessage {
+interface SerializedMessage {
   id: string;
-  type: string;
-  text: string;
-  createdAt: string;
+  role: "user" | "agent";
+  content: string;
+  timestamp: number;
+  agentName?: string;
 }
 
 interface SerializedDraft {
@@ -29,26 +30,27 @@ interface SerializedDraft {
   title: string;
   createdAt: string;
   updatedAt: string;
-  messages: SerializedChatMessage[];
+  messages: SerializedMessage[];
   exportedAt?: string;
 }
 
-function hydrateMessage(raw: SerializedChatMessage): ChatMessage {
+function hydrateMessage(raw: SerializedMessage): Message {
   return {
     id: raw.id,
-    type: raw.type as "user-message" | "agent-message" | "streaming-message",
-    text: raw.text,
-    createdAt: new Date(raw.createdAt),
-    isAgent: () => raw.type === "agent-message",
+    role: raw.role,
+    content: raw.content,
+    timestamp: raw.timestamp,
+    agentName: raw.agentName,
   };
 }
 
-function serializeMessage(message: ChatMessage): SerializedChatMessage {
+function serializeMessage(message: Message): SerializedMessage {
   return {
     id: message.id,
-    type: message.type,
-    text: message.text,
-    createdAt: message.createdAt.toISOString(),
+    role: message.role,
+    content: message.content,
+    timestamp: message.timestamp,
+    agentName: message.agentName,
   };
 }
 
@@ -79,7 +81,7 @@ function serializeDraft(draft: SavedDraft): SerializedDraft {
 /**
  * Save current chat conversation as a draft
  */
-export function saveDraft(messages: ChatMessage[], title?: string): SavedDraft {
+export function saveDraft(messages: Message[], title?: string): SavedDraft {
   const draftId = `draft-${Date.now()}`;
   const now = new Date().toISOString();
 

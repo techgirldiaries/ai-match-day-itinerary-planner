@@ -289,3 +289,185 @@ export function useSendMessage() {
 
   return { input, sendMessage };
 }
+
+/**
+ * NEW INTAKE FLOW FUNCTIONS
+ * For processing intake form data automatically on chat route mount
+ */
+
+// Import new signals and types for intake flow
+import {
+  intakeMessages,
+  isSending,
+  isAgentThinking,
+  isProcessingIntake,
+  hasUserMessageBeenAdded,
+  intakeFormData,
+  itineraryOutput,
+} from "../../core/signals";
+import type { IntakeMessage, IntakeMessageRole } from "../../core/types";
+import { buildIntakePrompt } from "../../core/intake-validation";
+import { useEffect } from "preact/hooks";
+
+// Called once when ChatRoute mounts — processes intake form
+// data automatically without user typing anything:
+export function useProcessIntakeOnMount(): void {
+  // Ref prevents StrictMode / HMR double-fire:
+  const hasProcessed = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (hasProcessed.current) return;
+    if (intakeFormData.value === null) return;
+
+    hasProcessed.current = true;
+    isProcessingIntake.value = true;
+    isAgentThinking.value = true;
+
+    const intakePrompt = buildIntakePrompt(intakeFormData.value);
+
+    // Add intake as a user message so it appears in chat:
+    const intakeUserMessage: IntakeMessage = {
+      id: crypto.randomUUID(),
+      role: "user" satisfies IntakeMessageRole,
+      content: intakePrompt,
+      timestamp: Date.now(),
+    };
+
+    const messageIds = new Set(
+      intakeMessages.value.map((m: IntakeMessage) => m.id),
+    );
+
+    if (!messageIds.has(intakeUserMessage.id)) {
+      intakeMessages.value = [...intakeMessages.value, intakeUserMessage];
+    }
+
+    // Call agent API with the full intake prompt:
+    callAgentAPINew(intakePrompt)
+      .then((responseContent: string): void => {
+        const agentMessage: IntakeMessage = {
+          id: crypto.randomUUID(),
+          role: "agent" satisfies IntakeMessageRole,
+          content: responseContent,
+          timestamp: Date.now(),
+          isItinerary: true, // Flags for ItineraryOutput renderer
+        };
+
+        const currentIds = new Set(
+          intakeMessages.value.map((m: IntakeMessage) => m.id),
+        );
+        if (!currentIds.has(agentMessage.id)) {
+          intakeMessages.value = [...intakeMessages.value, agentMessage];
+        }
+      })
+      .catch((error: Error): void => {
+        const errorMessage: IntakeMessage = {
+          id: crypto.randomUUID(),
+          role: "agent" satisfies IntakeMessageRole,
+          content: `Sorry, I couldn't generate your itinerary: 
+                    ${error.message}. Please try again.`,
+          timestamp: Date.now(),
+        };
+        intakeMessages.value = [...intakeMessages.value, errorMessage];
+      })
+      .finally((): void => {
+        isAgentThinking.value = false;
+        isProcessingIntake.value = false;
+        isSending.value = false;
+      });
+
+    // Empty deps — run once on mount only:
+  }, []);
+}
+
+// Standard send handler for follow-up chat messages:
+export function useSendMessageNew(): {
+  sendMessage: (input: string) => void;
+} {
+  const sendMessage = (input: string): void => {
+    if (isSending.value || input.trim() === "") return;
+
+    isSending.value = true;
+    hasUserMessageBeenAdded.value = false;
+
+    const userMessage: IntakeMessage = {
+      id: crypto.randomUUID(),
+      role: "user" satisfies IntakeMessageRole,
+      content: input.trim(),
+      timestamp: Date.now(),
+    };
+
+    const messageIds = new Set(
+      intakeMessages.value.map((m: IntakeMessage) => m.id),
+    );
+
+    if (!messageIds.has(userMessage.id)) {
+      intakeMessages.value = [...intakeMessages.value, userMessage];
+      hasUserMessageBeenAdded.value = true;
+    }
+
+    isAgentThinking.value = true;
+
+    callAgentAPINew(input.trim())
+      .then((responseContent: string): void => {
+        const agentMessage: IntakeMessage = {
+          id: crypto.randomUUID(),
+          role: "agent" satisfies IntakeMessageRole,
+          content: responseContent,
+          timestamp: Date.now(),
+        };
+        const currentIds = new Set(
+          intakeMessages.value.map((m: IntakeMessage) => m.id),
+        );
+        if (!currentIds.has(agentMessage.id)) {
+          intakeMessages.value = [...intakeMessages.value, agentMessage];
+        }
+      })
+      .catch((error: Error): void => {
+        const errorMessage: IntakeMessage = {
+          id: crypto.randomUUID(),
+          role: "agent" satisfies IntakeMessageRole,
+          content: `Sorry, something went wrong: ${error.message}`,
+          timestamp: Date.now(),
+        };
+        intakeMessages.value = [...intakeMessages.value, errorMessage];
+      })
+      .finally((): void => {
+        isAgentThinking.value = false;
+        isSending.value = false;
+        hasUserMessageBeenAdded.value = false;
+      });
+  };
+
+  return { sendMessage };
+}
+
+// Helper function to call agent API (to be integrated with Relevance AI SDK)
+async function callAgentAPINew(prompt: string): Promise<string> {
+  // Use the agent or workforce from signals to make the API call
+  if (!workforce.value && !agent.value) {
+    throw new Error("Agent or Workforce not initialized");
+  }
+
+  try {
+    const agentPromise = workforce.value
+      ? task.value
+        ? workforce.value.sendMessage(prompt, task.value)
+        : workforce.value.sendMessage(prompt)
+      : task.value
+        ? agent.value?.sendMessage(prompt, task.value)
+        : agent.value?.sendMessage(prompt);
+
+    const task_signal = await agentPromise;
+
+    if (task.value !== task_signal) {
+      task.value = task_signal as typeof task.value;
+    }
+
+    // For now, return a placeholder response
+    // The actual response will be handled by the task event listener
+    return Promise.resolve("Processing your intake form...");
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    throw new Error(`Agent API error: ${errorMsg}`);
+  }
+}
