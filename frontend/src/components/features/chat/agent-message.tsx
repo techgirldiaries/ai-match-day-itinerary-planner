@@ -88,234 +88,236 @@ function getJourneyTime(option: unknown): string | undefined {
 function itineraryToReadableText(data: ItineraryResponse): string {
   const sections: string[] = [];
 
-  // Header
-  sections.push("## 🧡 YOUR PERSONALISED LTFC MATCH DAY EXPERIENCE 🤍\n");
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MAIN HEADER
+  sections.push("# 🧡 Your Personalised LTFC Match Day Experience 🤍\n");
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MATCH SUMMARY
   if (data.match_summary) {
     const s = data.match_summary;
-    sections.push(`* ${s.opponent} vs Luton Town FC`);
+    sections.push("## 📅 Match Details\n");
+    sections.push(`**${s.opponent} vs Luton Town FC**\n`);
 
-    sections.push("\n## 📅 MATCH DETAILS\n");
-    sections.push(`* Date: ${(s as { date?: string }).date || "TBC"}`);
+    sections.push("| | |");
+    sections.push("|-|-|");
+    sections.push(`| **Date** | ${(s as { date?: string }).date || "TBC"} |`);
     sections.push(
-      `* Day: ${(s as { day_of_week?: string }).day_of_week || "TBC"}`,
+      `| **Day** | ${(s as { day_of_week?: string }).day_of_week || "TBC"} |`,
     );
-    sections.push(`* Kick-off: ${s.kick_off || "TBC"}`);
-    sections.push(`* Venue: ${s.venue || "Kenilworth Stadium, Luton"}`);
+    sections.push(`| **Kick-off** | ${s.kick_off || "TBC"} |`);
+    sections.push(`| **Venue** | ${s.venue || "Kenilworth Stadium, Luton"} |`);
     if (s.competition) {
-      sections.push(`* Competition: ${s.competition}`);
+      sections.push(`| **Competition** | ${s.competition} |`);
     }
+    sections.push("");
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WEATHER FORECAST
   const weather = (
     data as ItineraryResponse & { weather_forecast?: WeatherForecast }
   ).weather_forecast;
 
   if (weather) {
     const w = weather;
-    sections.push("\n## 🌦️ WEATHER FORECAST\n");
-    sections.push("**Match Day Weather:**\n");
+    sections.push("## 🌦️ Weather Forecast\n");
+
+    const weatherItems = [];
     if (w.temperature) {
-      sections.push(`* Temperature: ${w.temperature}`);
+      weatherItems.push(`**Temperature:** ${w.temperature}`);
     }
     if (w.conditions) {
-      sections.push(`* Conditions: ${w.conditions}`);
+      weatherItems.push(`**Conditions:** ${w.conditions}`);
     }
     if (w.precipitation) {
-      sections.push(`* Precipitation: ${w.precipitation}`);
+      weatherItems.push(`**Precipitation:** ${w.precipitation}`);
     }
+
+    if (weatherItems.length > 0) {
+      sections.push(weatherItems.join(" | "));
+      sections.push("");
+    }
+
     if (w.clothing_recommendation) {
-      sections.push(`* What to Wear: ${w.clothing_recommendation}`);
+      sections.push(`**What to Wear:** ${w.clothing_recommendation}\n`);
     }
+
+    const impactItems = [];
     if (w.travel_impact) {
-      sections.push(`* Travel Impact: ${w.travel_impact}`);
+      impactItems.push(`- Travel Impact: ${w.travel_impact}`);
     }
     if (w.stadium_info) {
-      sections.push(`* Stadium Info: ${w.stadium_info}`);
+      impactItems.push(`- Stadium Info: ${w.stadium_info}`);
     }
     if (w.live_disruption_alerts) {
-      sections.push(
-        `* Live Travel Disruption Alerts: ${w.live_disruption_alerts}`,
-      );
+      impactItems.push(`- Live Disruption: ${w.live_disruption_alerts}`);
+    }
+
+    if (impactItems.length > 0) {
+      sections.push(impactItems.join("\n"));
+      sections.push("");
     }
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TRAVEL OPTIONS
   if (data.transport_recommendation) {
-    sections.push("\n## 🚂 TRAVEL OPTIONS\n");
+    sections.push("## 🚂 Travel Options\n");
     const t = data.transport_recommendation;
 
-    if (t.best_value) {
-      const bv = t.best_value;
-      sections.push("**💰 Best Value Route**\n");
-      const routeDescription = getRouteDescription(bv);
-      if (routeDescription) {
-        sections.push(`* Route: ${routeDescription}`);
-      }
-      if (bv.cost) {
-        sections.push(`* Cost: ${bv.cost}`);
-      }
-      const journeyTime = getJourneyTime(bv);
-      if (journeyTime) {
-        sections.push(`* Journey Time: ${journeyTime}`);
-      }
-      if ("payment_methods" in bv && typeof bv.payment_methods === "string") {
-        sections.push(`* Payment Methods: ${bv.payment_methods}`);
-      }
-      if ("booking_info" in bv && typeof bv.booking_info === "string") {
-        sections.push(`* How to Book: ${bv.booking_info}`);
-      }
-      sections.push("");
-    }
+    const routeOptions = [
+      { title: "💰 Best Value", option: t.best_value },
+      { title: "⚡ Fastest", option: t.fastest },
+      {
+        title: "🔄 Fewest Transfers",
+        option: (t as { fewest_transfers?: unknown }).fewest_transfers,
+      },
+      {
+        title: "🚶 Least Walking",
+        option: (t as { least_walking?: unknown }).least_walking,
+      },
+    ];
 
-    if (t.fastest) {
-      const f = t.fastest;
-      sections.push("**⚡ Fastest Route**\n");
-      const routeDescription = getRouteDescription(f);
-      if (routeDescription) {
-        sections.push(`* Route: ${routeDescription}`);
-      }
-      if (f.cost) {
-        sections.push(`* Cost: ${f.cost}`);
-      }
-      const journeyTime = getJourneyTime(f);
-      if (journeyTime) {
-        sections.push(`* Journey Time: ${journeyTime}`);
-      }
-      if ("payment_methods" in f && typeof f.payment_methods === "string") {
-        sections.push(`* Payment Methods: ${f.payment_methods}`);
-      }
-      sections.push("");
-    }
+    routeOptions.forEach(({ title, option }) => {
+      if (!option || typeof option !== "object") return;
 
-    const fewestTransfers = (t as { fewest_transfers?: unknown })
-      .fewest_transfers;
-    if (fewestTransfers && typeof fewestTransfers === "object") {
-      const ft = fewestTransfers as {
+      sections.push(`### ${title}\n`);
+
+      const routeDescription = getRouteDescription(option);
+      if (routeDescription) {
+        sections.push(`> ${routeDescription}\n`);
+      }
+
+      const details = [];
+      const typedOption = option as {
         cost?: string;
-        payment_methods?: string;
         journey_time?: string;
         travel_time?: string;
         duration?: string;
-        route_description?: string;
-        route?: string;
-        description?: string;
-      };
-      sections.push("**🔄 Fewest Transfers**\n");
-      const routeDescription = getRouteDescription(ft);
-      if (routeDescription) {
-        sections.push(`* Route: ${routeDescription}`);
-      }
-      if (ft.cost) {
-        sections.push(`* Cost: ${ft.cost}`);
-      }
-      const journeyTime = getJourneyTime(ft);
-      if (journeyTime) {
-        sections.push(`* Journey Time: ${journeyTime}`);
-      }
-      if ("payment_methods" in ft && typeof ft.payment_methods === "string") {
-        sections.push(`* Payment Methods: ${ft.payment_methods}`);
-      }
-      sections.push("");
-    }
-
-    const leastWalking = (t as { least_walking?: unknown }).least_walking;
-    if (leastWalking && typeof leastWalking === "object") {
-      const lw = leastWalking as {
-        cost?: string;
         payment_methods?: string;
-        journey_time?: string;
-        travel_time?: string;
-        duration?: string;
-        route_description?: string;
-        route?: string;
-        description?: string;
+        booking_info?: string;
       };
-      sections.push("**🚶 Least Walking**\n");
-      const routeDescription = getRouteDescription(lw);
-      if (routeDescription) {
-        sections.push(`* Route: ${routeDescription}`);
+
+      if (typedOption.cost) {
+        details.push(`**💷 Cost:** ${typedOption.cost}`);
       }
-      if (lw.cost) {
-        sections.push(`* Cost: ${lw.cost}`);
-      }
-      const journeyTime = getJourneyTime(lw);
+
+      const journeyTime = getJourneyTime(option);
       if (journeyTime) {
-        sections.push(`* Journey Time: ${journeyTime}`);
+        details.push(`**⏱️ Time:** ${journeyTime}`);
       }
-      if ("payment_methods" in lw && typeof lw.payment_methods === "string") {
-        sections.push(`* Payment Methods: ${lw.payment_methods}`);
+
+      if (typedOption.payment_methods) {
+        details.push(`**💳 Payment:** ${typedOption.payment_methods}`);
       }
-      sections.push("");
-    }
+
+      if (typedOption.booking_info) {
+        details.push(`**📱 Booking:** ${typedOption.booking_info}`);
+      }
+
+      if (details.length > 0) {
+        sections.push(details.join(" | \n"));
+        sections.push("");
+      }
+    });
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ACCOMMODATION
   if (data.accommodation?.length) {
-    sections.push("\n## 🏨 ACCOMMODATION\n");
+    sections.push("## 🏨 Accommodation Options\n");
+
     data.accommodation.forEach((hotel: (typeof data.accommodation)[number]) => {
-      sections.push(`* ${hotel.name} - £${hotel.price_per_night} per night`);
+      sections.push(`### ${hotel.name}`);
+      sections.push(`- **Price:** £${hotel.price_per_night} per night`);
       if (hotel.distance_from_stadium) {
-        sections.push(`* ${hotel.distance_from_stadium} from stadium`);
+        sections.push(`- **Distance:** ${hotel.distance_from_stadium}`);
       }
       if (hotel.booking_info) {
-        sections.push(`* Book: ${hotel.booking_info}`);
+        sections.push(`- **Book:** ${hotel.booking_info}`);
       }
       sections.push("");
     });
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FOOD & DRINK
   if (data.food_and_drink?.length) {
-    sections.push("\n## 🍺 FOOD & DRINK RECOMMENDATIONS\n");
+    sections.push("## 🍺 Food & Drink Recommendations\n");
+
     data.food_and_drink.forEach(
       (place: (typeof data.food_and_drink)[number]) => {
-        sections.push(`* ${place.name}`);
+        sections.push(`### ${place.name}`);
+
         if (place.distance_from_stadium) {
-          sections.push(`* (${place.distance_from_stadium} from stadium)`);
+          sections.push(`📍 ${place.distance_from_stadium} from stadium`);
         }
+
         if (place.description) {
-          sections.push(`* ${place.description}`);
+          sections.push(`${place.description}`);
         }
         sections.push("");
       },
     );
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MATCH DAY TIMELINE
   if (data.timeline?.length) {
-    sections.push("\n## 🕐 YOUR MATCH DAY TIMELINE\n");
+    sections.push("## 🕐 Your Match Day Timeline\n");
+
     data.timeline.forEach((item: (typeof data.timeline)[number]) => {
-      const locationPart = item.location ? ` at ${item.location}` : "";
-      const notePart = item.notes ? ` (${item.notes})` : "";
+      const locationPart = item.location ? ` @ ${item.location}` : "";
+      const notePart = item.notes ? ` *(${item.notes})*` : "";
       sections.push(
-        `* ${item.time} – ${item.activity}${locationPart}${notePart}`,
+        `**${item.time}** – ${item.activity}${locationPart}${notePart}`,
       );
     });
-    sections.push("\nCome On You Hatters! 🧡\n");
+
+    sections.push("\n**Come On You Hatters! 🧡**");
+    sections.push("");
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COST BREAKDOWN
   if (data.cost_breakdown) {
-    sections.push("\n## 💰 COST BREAKDOWN\n");
-    sections.push("### Per Person:\n");
+    sections.push("## 💰 Cost Breakdown\n");
+
     const c = data.cost_breakdown;
     const currency = c.currency ?? "£";
 
-    c.items?.forEach((item: (typeof c.items)[number]) => {
-      sections.push(
-        `**${item.label}:** ${item.currency ?? currency}${item.amount}`,
-      );
-    });
+    if (c.items && c.items.length > 0) {
+      sections.push("### Per Person\n");
 
-    if (c.total != null) {
-      sections.push(`\n**TOTAL:** ${currency}${c.total}`);
+      c.items.forEach((item: (typeof c.items)[number]) => {
+        sections.push(
+          `- **${item.label}:** ${item.currency ?? currency}${item.amount}`,
+        );
+      });
+
+      if (c.total != null) {
+        sections.push(`\n**Total Cost:** ${currency}${c.total}`);
+      }
+      sections.push("");
     }
   }
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TOP TIPS
   if (data.top_tips?.length) {
-    sections.push("\n## 🎯 TOP TIPS\n");
+    sections.push("## 🎯 Top Tips for Match Day\n");
+
     data.top_tips.forEach((tip: string, idx: number) => {
       sections.push(`${idx + 1}. ${tip}`);
     });
+    sections.push("");
   }
 
-  sections.push("\n## Come On You Hatters! 🧡🤍");
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FOOTER
+  sections.push("---");
+  sections.push("**Come On You Hatters! 🧡🤍**");
 
   return sections.join("\n").trim();
 }
