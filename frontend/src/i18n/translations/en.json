@@ -128,5 +128,17 @@
   "rewardsTitle": "Exclusive Rewards",
   "rewardsDesc": "Redeem your points for merchandise, digital content, stadium tours, VIP hospitality packages, and season ticket discounts.",
   "leadsTitle": "Smart Targeting & Revenue Growth",
-  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you."
+  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you.",
+  "makeItEasierTitle": "Make It Simpler to Use",
+  "makeItEasierSubtitle": "We've got features to make your matchday experience even better for you",
+  "zoomTextSize": "Enlarge Text Size",
+  "zoomTextSizeDescription": "Make the text larger and easier to read throughout the application",
+  "boldColorsAndText": "Bold Colours & Text",
+  "boldColorsAndTextDescription": "Increase colour contrast to make everything stand out better",
+  "readAloudSupport": "Text-to-Speech Support",
+  "readAloudSupportDescription": "Have the application read text aloud for you as you navigate",
+  "keyboardNavigation": "Navigate Using Keyboard",
+  "keyboardNavigationDescription": "Use your keyboard to navigate the application instead of a mouse",
+  "quickTip": "💡 Helpful Tip",
+  "quickTipContent": "You can combine multiple accessibility features together to create the perfect setup for your needs. Try them out and discover what works best for you!"
 }

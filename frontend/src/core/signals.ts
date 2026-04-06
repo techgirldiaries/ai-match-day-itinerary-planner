@@ -199,6 +199,7 @@ export type AppPage =
   | "chat"
   | "drafts"
   | "coming-soon"
+  | "accessibility-mode"
   | "agents"
   | "heritage"
   | "fantasy"

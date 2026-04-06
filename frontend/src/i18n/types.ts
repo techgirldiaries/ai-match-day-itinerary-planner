@@ -143,4 +143,17 @@ export interface Translations {
   rewardsDesc: string;
   leadsTitle: string;
   leadsDesc: string;
+  // Accessibility Features
+  makeItEasierTitle: string;
+  makeItEasierSubtitle: string;
+  zoomTextSize: string;
+  zoomTextSizeDescription: string;
+  boldColorsAndText: string;
+  boldColorsAndTextDescription: string;
+  readAloudSupport: string;
+  readAloudSupportDescription: string;
+  keyboardNavigation: string;
+  keyboardNavigationDescription: string;
+  quickTip: string;
+  quickTipContent: string;
 }

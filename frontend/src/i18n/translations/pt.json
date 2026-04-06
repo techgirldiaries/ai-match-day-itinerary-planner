@@ -128,5 +128,17 @@
   "rewardsTitle": "Exclusive Rewards",
   "rewardsDesc": "Redeem your points for merchandise, digital content, stadium tours, VIP hospitality packages, and season ticket discounts.",
   "leadsTitle": "Smart Targeting & Revenue Growth",
-  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you."
+  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you.",
+  "makeItEasierTitle": "Facilite o uso",
+  "makeItEasierSubtitle": "Temos recursos para melhorar sua experiência no dia do jogo",
+  "zoomTextSize": "Ampliar tamanho do texto",
+  "zoomTextSizeDescription": "Aumente o tamanho do texto e facilite a leitura em todo o aplicativo",
+  "boldColorsAndText": "Cores e texto em negrito",
+  "boldColorsAndTextDescription": "Aumentar o contraste das cores para que tudo se destaque melhor",
+  "readAloudSupport": "Suporte de leitura em voz alta",
+  "readAloudSupportDescription": "Faça o aplicativo ler o texto em voz alta enquanto você navega",
+  "keyboardNavigation": "Navegue com o teclado",
+  "keyboardNavigationDescription": "Use seu teclado para navegar no aplicativo em vez do mouse",
+  "quickTip": "💡 Dica rápida",
+  "quickTipContent": "Você pode combinar vários recursos de acessibilidade para criar a configuração perfeita para suas necessidades. Experimente-os e encontre o que funciona melhor para você!"
 }

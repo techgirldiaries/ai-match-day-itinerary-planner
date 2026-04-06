@@ -1,6 +1,7 @@
 import {
   Clock3,
   Download,
+  Eye,
   History,
   Mail,
   Moon,
@@ -386,6 +387,28 @@ function DesktopSidebar() {
           <button
             type="button"
             class={[
+              "w-full min-h-11 flex items-center rounded-lg text-sm font-medium transition-colors",
+              "focus:outline-none focus:ring-2 focus:ring-orange-500",
+              "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800",
+              collapsed ? "justify-center px-2 py-2" : "gap-2 px-3 py-2",
+              currentPage.value === "accessibility-mode"
+                ? "bg-orange-500 text-white"
+                : "",
+            ].join(" ")}
+            onClick={() => {
+              currentPage.value = "accessibility-mode";
+              isSidebarOpen.value = false;
+            }}
+            aria-label="Accessibility Mode"
+            title={collapsed ? "Accessibility Mode" : undefined}
+          >
+            <Eye size={16} aria-hidden="true" />
+            {!collapsed && <span>Accessibility Mode</span>}
+          </button>
+
+          <button
+            type="button"
+            class={[
               "w-full flex items-center rounded-lg text-sm font-medium transition-colors",
               "text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800",
               "focus:outline-none focus:ring-2 focus:ring-orange-500",
@@ -531,6 +554,25 @@ function MobileSidebar() {
             >
               <Clock3 size={16} aria-hidden="true" />
               <span>{t("navComingSoon")}</span>
+            </button>
+
+            <button
+              type="button"
+              class={[
+                "w-full min-h-11 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                "focus:outline-none focus:ring-2 focus:ring-orange-500",
+                currentPage.value === "accessibility-mode"
+                  ? "bg-orange-500 text-white"
+                  : "text-gray-300 hover:bg-gray-800",
+              ].join(" ")}
+              onClick={() => {
+                currentPage.value = "accessibility-mode";
+                isSidebarOpen.value = false;
+              }}
+              aria-label="Accessibility Mode"
+            >
+              <Eye size={16} aria-hidden="true" />
+              <span>Accessibility Mode</span>
             </button>
 
             <button

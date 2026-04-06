@@ -111,5 +111,17 @@
   "rewardsTitle": "Exclusive Rewards",
   "rewardsDesc": "Redeem your points for merchandise, digital content, stadium tours, VIP hospitality packages, and season ticket discounts.",
   "leadsTitle": "Smart Targeting & Revenue Growth",
-  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you."
+  "leadsDesc": "Your quiz responses help us understand your interests better. We'll use this to offer you truly personalized experiences and exclusive deals that matter to you.",
+  "makeItEasierTitle": "جعلها أسهل في الاستخدام",
+  "makeItEasierSubtitle": "لدينا ميزات لتحسين تجربة يوم المrapو الخاص بك",
+  "zoomTextSize": "تكبير حجم النص",
+  "zoomTextSizeDescription": "اجعل النص أكبر وأسهل في القراءة في جميع أنحاء التطبيق",
+  "boldColorsAndText": "ألوان وألوان غامقة",
+  "boldColorsAndTextDescription": "زيادة تباين اللون لجعل كل شيء يبرز بشكل أفضل",
+  "readAloudSupport": "دعم القراءة بصوت عالٍ",
+  "readAloudSupportDescription": "اجعل التطبيق يقرأ النص بصوت عالٍ أثناء الملاحة",
+  "keyboardNavigation": "التنقل باستخدام لوحة المفاتيح",
+  "keyboardNavigationDescription": "استخدم لوحة المفاتيح للتنقل في التطبيق بدلاً من الماوس",
+  "quickTip": "💡 نصيحة سريعة",
+  "quickTipContent": "يمكنك دمج عدة ميزات إمكانية وصول لإنشاء الإعداد المثالي لاحتياجاتك. جربها واعثر على ما يناسبك بشكل أفضل!"
 }

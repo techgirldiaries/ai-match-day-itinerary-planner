@@ -13,6 +13,7 @@ import { ChatRoute } from "@/components/pages/app-routes/chat-route";
 import { AgentsRoute } from "@/components/pages/app-routes/agents-route";
 import { DraftsRoute } from "@/components/pages/app-routes/drafts-route";
 import { ComingSoonRoute } from "@/components/pages/app-routes/coming-soon-route";
+import { AccessibilityModeRoute } from "@/components/pages/app-routes/accessibility-mode-route";
 import { HeritageRoute } from "@/components/pages/app-routes/heritage-route";
 import { FantasyRoute } from "@/components/pages/app-routes/fantasy-route";
 import { SocialRoute } from "@/components/pages/app-routes/social-route";
@@ -89,6 +90,7 @@ export function App() {
       {page === "agents" && <AgentsRoute />}
       {page === "drafts" && <DraftsRoute />}
       {page === "coming-soon" && <ComingSoonRoute />}
+      {page === "accessibility-mode" && <AccessibilityModeRoute />}
       {page === "heritage" && <HeritageRoute />}
       {page === "fantasy" && <FantasyRoute />}
       {page === "social" && <SocialRoute />}

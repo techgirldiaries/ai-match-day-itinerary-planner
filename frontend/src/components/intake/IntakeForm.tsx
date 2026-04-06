@@ -148,7 +148,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Match Date */}
           <div class="flex flex-col gap-1">
-            <label for="matchDate" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="matchDate"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Match Date *
             </label>
             <input
@@ -171,7 +174,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Kickoff Time */}
           <div class="flex flex-col gap-1">
-            <label for="kickoffTime" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="kickoffTime"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Kickoff Time *
             </label>
             <input
@@ -194,7 +200,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Opponent */}
           <div class="flex flex-col gap-1">
-            <label for="opponent" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="opponent"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Opponent *
             </label>
             <input
@@ -218,7 +227,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Ticket Type */}
           <div class="flex flex-col gap-1">
-            <label for="ticketType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="ticketType"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Ticket Type *
             </label>
             <select
@@ -244,7 +256,10 @@ export const IntakeForm: FunctionComponent = () => {
 
           {/* Fan Type */}
           <div class="flex flex-col gap-1">
-            <label for="fanType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              for="fanType"
+              class="text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Your Fan Story *
             </label>
             <select
@@ -279,7 +294,10 @@ export const IntakeForm: FunctionComponent = () => {
           {/* Group Type + Size — side by side on sm+ */}
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-1">
-              <label for="groupType" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                for="groupType"
+                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Group Type *
               </label>
               <select
@@ -293,8 +311,8 @@ export const IntakeForm: FunctionComponent = () => {
                   )
                 }
                 class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
-                       rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
-                       focus:border-orange-500 dark:focus:border-orange-400 outline-none"
+                      rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
+                      focus:border-orange-500 dark:focus:border-orange-400 outline-none"
               >
                 <option value="solo">Solo</option>
                 <option value="couple">Couple</option>
@@ -311,7 +329,10 @@ export const IntakeForm: FunctionComponent = () => {
             </div>
 
             <div class="flex flex-col gap-1">
-              <label for="groupSize" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                for="groupSize"
+                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Group Size *
               </label>
               <input
@@ -372,7 +393,9 @@ export const IntakeForm: FunctionComponent = () => {
           <div class="flex flex-col gap-1">
             <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Travel Mode *{" "}
-              <span class="text-xs text-gray-500 dark:text-gray-400">(Select all that apply)</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">
+                (Select all that apply)
+              </span>
             </label>
             <div class="flex flex-wrap gap-2">
               {TRANSPORT_OPTIONS.map(({ value, emoji, label }) => {
@@ -497,7 +520,7 @@ export const IntakeForm: FunctionComponent = () => {
                   }
                   class="w-4 h-4 accent-orange-500"
                 />
-                Location history
+                Heritage & Storytelling
               </label>
               <label
                 class="flex items-center gap-3 
@@ -582,7 +605,10 @@ export const IntakeForm: FunctionComponent = () => {
               </p>
               <ul class="list-disc list-inside">
                 {validationErrors.map((error) => (
-                  <li key={error.field} class="text-xs text-red-600 dark:text-red-300">
+                  <li
+                    key={error.field}
+                    class="text-xs text-red-600 dark:text-red-300"
+                  >
                     {error.message}
                   </li>
                 ))}

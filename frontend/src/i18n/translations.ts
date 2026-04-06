@@ -12,15 +12,15 @@ import hiJSON from "./translations/hi.json";
 import zhJSON from "./translations/zh.json";
 
 export const translations: Partial<Record<string, Partial<Translations>>> = {
-  en: enJSON,
-  es: esJSON,
-  fr: frJSON,
-  pl: plJSON,
-  ar: arJSON,
-  bn: bnJSON,
-  pt: ptJSON,
-  de: deJSON,
-  it: itJSON,
-  hi: hiJSON,
-  zh: zhJSON,
+  en: enJSON as Partial<Translations>,
+  es: esJSON as Partial<Translations>,
+  fr: frJSON as Partial<Translations>,
+  pl: plJSON as Partial<Translations>,
+  ar: arJSON as Partial<Translations>,
+  bn: bnJSON as Partial<Translations>,
+  pt: ptJSON as Partial<Translations>,
+  de: deJSON as Partial<Translations>,
+  it: itJSON as Partial<Translations>,
+  hi: hiJSON as Partial<Translations>,
+  zh: zhJSON as Partial<Translations>,
 };
