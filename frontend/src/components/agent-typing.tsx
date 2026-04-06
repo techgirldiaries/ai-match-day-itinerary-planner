@@ -34,8 +34,7 @@ export function AgentTyping() {
             {agentName}
           </span>{" "}
           <span class="text-[#1a1f3c] dark:text-orange-200 transition-colors font-medium">
-            {t("agentPlanningTrip")} – Planning your matchday at Kenilworth
-            Stadium Road! COYH 🟠⚪
+            {t("agentPlanningTrip")} – Planning your match-day experience 🟠⚪
           </span>
         </small>
         <div class="py-3 px-4 rounded-3xl rounded-tl-xs bg-[#f5820d]/10 dark:bg-[#1a1f3c] transition-colors border border-[#f5820d] dark:border-orange-400">

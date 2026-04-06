@@ -16,11 +16,74 @@ import {
 } from "@/core/signals";
 import { CSS_CLASSES } from "@/config/formConfig";
 import type { ItineraryResponse } from "@/core/types";
+import { JSX } from "preact";
 
 type ParsedResponse =
   | { type: "itinerary"; data: ItineraryResponse }
   | { type: "failed"; error?: string }
   | { type: "text" };
+
+type WeatherForecast = {
+  temperature?: string;
+  conditions?: string;
+  precipitation?: string;
+  clothing_recommendation?: string;
+  travel_impact?: string;
+  stadium_info?: string;
+  live_disruption_alerts?: string;
+};
+
+function getRouteDescription(option: unknown): string | undefined {
+  if (!option || typeof option !== "object") {
+    return undefined;
+  }
+
+  const candidate = option as {
+    route_description?: unknown;
+    route?: unknown;
+    description?: unknown;
+  };
+
+  if (typeof candidate.route_description === "string") {
+    return candidate.route_description;
+  }
+
+  if (typeof candidate.route === "string") {
+    return candidate.route;
+  }
+
+  if (typeof candidate.description === "string") {
+    return candidate.description;
+  }
+
+  return undefined;
+}
+
+function getJourneyTime(option: unknown): string | undefined {
+  if (!option || typeof option !== "object") {
+    return undefined;
+  }
+
+  const candidate = option as {
+    journey_time?: unknown;
+    travel_time?: unknown;
+    duration?: unknown;
+  };
+
+  if (typeof candidate.journey_time === "string") {
+    return candidate.journey_time;
+  }
+
+  if (typeof candidate.travel_time === "string") {
+    return candidate.travel_time;
+  }
+
+  if (typeof candidate.duration === "string") {
+    return candidate.duration;
+  }
+
+  return undefined;
+}
 
 function itineraryToReadableText(data: ItineraryResponse): string {
   const sections: string[] = [];
@@ -33,8 +96,10 @@ function itineraryToReadableText(data: ItineraryResponse): string {
     sections.push(`* ${s.opponent} vs Luton Town FC`);
 
     sections.push("\n## 📅 MATCH DETAILS\n");
-    sections.push(`* Date: ${s.date || "TBC"}`);
-    sections.push(`* Day: ${s.day_of_week || "TBC"}`);
+    sections.push(`* Date: ${(s as { date?: string }).date || "TBC"}`);
+    sections.push(
+      `* Day: ${(s as { day_of_week?: string }).day_of_week || "TBC"}`,
+    );
     sections.push(`* Kick-off: ${s.kick_off || "TBC"}`);
     sections.push(`* Venue: ${s.venue || "Kenilworth Stadium, Luton"}`);
     if (s.competition) {
@@ -42,8 +107,12 @@ function itineraryToReadableText(data: ItineraryResponse): string {
     }
   }
 
-  if (data.weather_forecast) {
-    const w = data.weather_forecast;
+  const weather = (
+    data as ItineraryResponse & { weather_forecast?: WeatherForecast }
+  ).weather_forecast;
+
+  if (weather) {
+    const w = weather;
     sections.push("\n## 🌦️ WEATHER FORECAST\n");
     sections.push("**Match Day Weather:**\n");
     if (w.temperature) {
@@ -78,19 +147,21 @@ function itineraryToReadableText(data: ItineraryResponse): string {
     if (t.best_value) {
       const bv = t.best_value;
       sections.push("**💰 Best Value Route**\n");
-      if (bv.route_description) {
-        sections.push(`* Route: ${bv.route_description}`);
+      const routeDescription = getRouteDescription(bv);
+      if (routeDescription) {
+        sections.push(`* Route: ${routeDescription}`);
       }
       if (bv.cost) {
         sections.push(`* Cost: ${bv.cost}`);
       }
-      if (bv.journey_time) {
-        sections.push(`* Journey Time: ${bv.journey_time}`);
+      const journeyTime = getJourneyTime(bv);
+      if (journeyTime) {
+        sections.push(`* Journey Time: ${journeyTime}`);
       }
-      if (bv.payment_methods) {
+      if ("payment_methods" in bv && typeof bv.payment_methods === "string") {
         sections.push(`* Payment Methods: ${bv.payment_methods}`);
       }
-      if (bv.booking_info) {
+      if ("booking_info" in bv && typeof bv.booking_info === "string") {
         sections.push(`* How to Book: ${bv.booking_info}`);
       }
       sections.push("");
@@ -99,69 +170,82 @@ function itineraryToReadableText(data: ItineraryResponse): string {
     if (t.fastest) {
       const f = t.fastest;
       sections.push("**⚡ Fastest Route**\n");
-      if (f.route_description) {
-        sections.push(`* Route: ${f.route_description}`);
+      const routeDescription = getRouteDescription(f);
+      if (routeDescription) {
+        sections.push(`* Route: ${routeDescription}`);
       }
       if (f.cost) {
         sections.push(`* Cost: ${f.cost}`);
       }
-      if (f.journey_time) {
-        sections.push(`* Journey Time: ${f.journey_time}`);
+      const journeyTime = getJourneyTime(f);
+      if (journeyTime) {
+        sections.push(`* Journey Time: ${journeyTime}`);
       }
-      if (f.payment_methods) {
+      if ("payment_methods" in f && typeof f.payment_methods === "string") {
         sections.push(`* Payment Methods: ${f.payment_methods}`);
       }
       sections.push("");
     }
 
-    if (t.fewest_transfers) {
-      const ft = t.fewest_transfers;
+    const fewestTransfers = (t as { fewest_transfers?: unknown })
+      .fewest_transfers;
+    if (fewestTransfers && typeof fewestTransfers === "object") {
+      const ft = fewestTransfers as {
+        cost?: string;
+        payment_methods?: string;
+        journey_time?: string;
+        travel_time?: string;
+        duration?: string;
+        route_description?: string;
+        route?: string;
+        description?: string;
+      };
       sections.push("**🔄 Fewest Transfers**\n");
-      if (ft.route_description) {
-        sections.push(`* Route: ${ft.route_description}`);
+      const routeDescription = getRouteDescription(ft);
+      if (routeDescription) {
+        sections.push(`* Route: ${routeDescription}`);
       }
       if (ft.cost) {
         sections.push(`* Cost: ${ft.cost}`);
       }
-      if (ft.journey_time) {
-        sections.push(`* Journey Time: ${ft.journey_time}`);
+      const journeyTime = getJourneyTime(ft);
+      if (journeyTime) {
+        sections.push(`* Journey Time: ${journeyTime}`);
       }
-      if (ft.payment_methods) {
+      if ("payment_methods" in ft && typeof ft.payment_methods === "string") {
         sections.push(`* Payment Methods: ${ft.payment_methods}`);
       }
       sections.push("");
     }
 
-    if (t.least_walking) {
-      const lw = t.least_walking;
+    const leastWalking = (t as { least_walking?: unknown }).least_walking;
+    if (leastWalking && typeof leastWalking === "object") {
+      const lw = leastWalking as {
+        cost?: string;
+        payment_methods?: string;
+        journey_time?: string;
+        travel_time?: string;
+        duration?: string;
+        route_description?: string;
+        route?: string;
+        description?: string;
+      };
       sections.push("**🚶 Least Walking**\n");
-      if (lw.route_description) {
-        sections.push(`* Route: ${lw.route_description}`);
+      const routeDescription = getRouteDescription(lw);
+      if (routeDescription) {
+        sections.push(`* Route: ${routeDescription}`);
       }
       if (lw.cost) {
         sections.push(`* Cost: ${lw.cost}`);
       }
-      if (lw.journey_time) {
-        sections.push(`* Journey Time: ${lw.journey_time}`);
+      const journeyTime = getJourneyTime(lw);
+      if (journeyTime) {
+        sections.push(`* Journey Time: ${journeyTime}`);
       }
-      if (lw.payment_methods) {
+      if ("payment_methods" in lw && typeof lw.payment_methods === "string") {
         sections.push(`* Payment Methods: ${lw.payment_methods}`);
       }
       sections.push("");
-    }
-
-    if (t.detailed_directions) {
-      sections.push("### 🗺️ DETAILED DIRECTIONS\n");
-      const d = t.detailed_directions;
-      if (d.public_transport) {
-        sections.push(`* Public Transport: ${d.public_transport}`);
-      }
-      if (d.driving) {
-        sections.push(`* Driving Route: ${d.driving}`);
-      }
-      if (d.walking_cycling) {
-        sections.push(`* Walking/Cycling: ${d.walking_cycling}`);
-      }
     }
   }
 
@@ -234,7 +318,7 @@ function itineraryToReadableText(data: ItineraryResponse): string {
   return sections.join("\n").trim();
 }
 
-function StructuredTextDocument({ text }: { text: string }) {
+function StructuredTextDocument({ text }: { text: string }): JSX.Element {
   const blocks = text
     .split(/\n\s*\n/)
     .map((block) => block.trim())
@@ -334,7 +418,7 @@ function renderHeading(
   level: 1 | 2 | 3 | 4 | 5 | 6,
   content: string | JSX.Element[],
   className: string,
-  key: React.Key,
+  key: string | number,
 ) {
   switch (level) {
     case 1:
@@ -376,7 +460,7 @@ function renderHeading(
   }
 }
 
-function renderMarkdown(text: string) {
+function renderMarkdown(text: string): string | JSX.Element[] {
   const parts: (string | JSX.Element)[] = [];
   let lastIndex = 0;
 
@@ -446,7 +530,7 @@ function parseResponse(text: string): ParsedResponse {
   return { type: "text" };
 }
 
-function AgentAvatar() {
+function AgentAvatar(): JSX.Element {
   return (
     <Avatar.Root>
       <Avatar.Image

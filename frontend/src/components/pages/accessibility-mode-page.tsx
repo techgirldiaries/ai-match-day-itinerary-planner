@@ -1,16 +1,3 @@
-interface AccessibilityFeature {
-  titleKey:
-    | "zoomTextSize"
-    | "boldColorsAndText"
-    | "readAloudSupport"
-    | "keyboardNavigation";
-  descKey:
-    | "zoomTextSizeDescription"
-    | "boldColorsAndTextDescription"
-    | "readAloudSupportDescription"
-    | "keyboardNavigationDescription";
-}
-
 export function AccessibilityModePage() {
   return (
     <div class="max-w-4xl mx-auto px-4 py-6">

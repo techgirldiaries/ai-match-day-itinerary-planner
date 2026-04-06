@@ -215,7 +215,7 @@ export function AgentsOverviewPage() {
         <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
           Every itinerary is powered by a coordinated team of specialist agents
           working together. The first 6 are core agents active on every plan.
-          Agents 7–12 are new v3.0 capabilities — tap any card to explore their
+          Agents 7–12 are new v3.0 capabilities, tap any card to explore their
           features.
         </p>
       </div>

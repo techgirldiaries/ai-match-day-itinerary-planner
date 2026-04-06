@@ -79,9 +79,18 @@ export interface TransportOption {
   notes?: string | null;
 }
 
+export interface DetailedDirections {
+  public_transport?: string | null;
+  driving?: string | null;
+  walking_cycling?: string | null;
+}
+
 export interface TransportRecommendation {
   best_value?: TransportOption | null;
   fastest?: TransportOption | null;
+  fewest_transfers?: TransportOption | null;
+  least_walking?: TransportOption | null;
+  detailed_directions?: DetailedDirections | null;
 }
 
 export interface CostBreakdownItem {
@@ -103,6 +112,19 @@ export interface BookingLink {
   category?: string | null;
 }
 
+export interface Hotel {
+  name: string;
+  price_per_night: string | number;
+  distance_from_stadium?: string | null;
+  booking_info?: string | null;
+}
+
+export interface FoodAndDrink {
+  name: string;
+  distance_from_stadium?: string | null;
+  description?: string | null;
+}
+
 export interface ItineraryResponse {
   match_summary?: MatchSummary | null;
   timeline?: TimelineEntry[] | null;
@@ -111,6 +133,8 @@ export interface ItineraryResponse {
   cost_breakdown?: CostBreakdown | null;
   top_tips?: string[] | null;
   booking_links?: BookingLink[] | null;
+  accommodation?: Hotel[] | null;
+  food_and_drink?: FoodAndDrink[] | null;
   confidence?: "low" | "medium" | "high" | null;
 }
 

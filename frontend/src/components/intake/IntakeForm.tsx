@@ -341,12 +341,10 @@ export const IntakeForm: FunctionComponent = () => {
                 min={1}
                 max={50}
                 value={formState.groupSize}
-                onInput={(e) =>
-                  updateField(
-                    "groupSize",
-                    parseInt((e.target as HTMLInputElement).value, 10),
-                  )
-                }
+                onInput={(e) => {
+                  const val = (e.target as HTMLInputElement).value;
+                  updateField("groupSize", val === "" ? 1 : parseInt(val, 10));
+                }}
                 class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
                        rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
                        focus:border-orange-500 dark:focus:border-orange-400 outline-none"
@@ -372,12 +370,13 @@ export const IntakeForm: FunctionComponent = () => {
               type="number"
               min={0}
               value={formState.budgetPerPerson}
-              onInput={(e) =>
+              onInput={(e) => {
+                const val = (e.target as HTMLInputElement).value;
                 updateField(
                   "budgetPerPerson",
-                  parseFloat((e.target as HTMLInputElement).value),
-                )
-              }
+                  val === "" ? 20 : parseFloat(val),
+                );
+              }}
               class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 
                     rounded-lg px-3 py-2 text-gray-900 dark:text-white text-sm
                     focus:border-orange-500 dark:focus:border-orange-400 outline-none"
