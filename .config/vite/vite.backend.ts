@@ -13,7 +13,8 @@ export default mergeConfig(baseConfig, {
     lib: {
       entry: path.resolve(__dirname, "../../backend/src/index.ts"),
       name: "ltfc-backend",
-      fileName: (format: string) => `index.${format === "es" ? "js" : "cjs"}`,
+      formats: ["es"],
+      fileName: () => "index.js",
     },
     outDir: "../../build/backend",
     emptyOutDir: true,
