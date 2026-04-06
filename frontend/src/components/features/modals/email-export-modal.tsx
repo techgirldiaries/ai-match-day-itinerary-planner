@@ -93,7 +93,7 @@ export function EmailExportModal({ draftId }: EmailExportModalProps) {
       <div class={MODAL_CONTENT_CLASS} onClick={(e) => e.stopPropagation()}>
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-extrabold text-[#f5820d] dark:text-orange-200">
-            {t("emailExportSubject")} â€“ Share your Hatters itinerary!
+            {t("emailExportSubject")} – Share your Hatters itinerary!
           </h2>
           <button
             onClick={handleClose}
@@ -122,7 +122,7 @@ export function EmailExportModal({ draftId }: EmailExportModalProps) {
               autoFocus
             />
             <p class="text-xs text-[#f5820d] dark:text-orange-300 mt-2 font-medium">
-              Weâ€™ll send your itinerary to this email. No account needed. See
+              We'll send your itinerary to this email. No account needed. See
               you at Kenilworth Stadium Road! COYH 🟧⚪
             </p>
           </div>

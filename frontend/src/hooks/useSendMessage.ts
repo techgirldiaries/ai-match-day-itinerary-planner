@@ -454,8 +454,8 @@ async function callAgentAPINew(prompt: string): Promise<string> {
       task.value = task_signal as typeof task.value;
     }
 
-    // Wait for the actual agent response from the task
-    // The task will emit "message" events with the response
+    // Wait for the agent response by monitoring the intakeMessages signal
+    // The message syncing effect will add the agent's response to intakeMessages
     return await new Promise<string>((resolve, reject) => {
       const RESPONSE_TIMEOUT = 35000; // 35 seconds (safe buffer from 30s API limit)
       const timeout = setTimeout(
@@ -463,17 +463,25 @@ async function callAgentAPINew(prompt: string): Promise<string> {
         RESPONSE_TIMEOUT,
       );
 
-      const handleMessage = (msg: any) => {
-        // Check if this is the final itinerary response
-        if (msg.content && typeof msg.content === "string") {
-          clearTimeout(timeout);
-          (task_signal as any).removeEventListener("message", handleMessage);
-          resolve(msg.content);
+      // Get the current message count before we send
+      const initialCount = intakeMessages.value.length;
+
+      // Watch for new agent messages
+      const checkForResponse = () => {
+        const messages = intakeMessages.value;
+        // Check if there's a new agent message after our original count
+        for (let i = initialCount; i < messages.length; i++) {
+          if (messages[i].role === "agent" && messages[i].content) {
+            clearTimeout(timeout);
+            resolve(messages[i].content);
+            return;
+          }
         }
+        // Keep checking every 100ms
+        setTimeout(checkForResponse, 100);
       };
 
-      // Listen for message events on the task
-      (task_signal as any).addEventListener("message", handleMessage);
+      checkForResponse();
     });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);

@@ -75,7 +75,7 @@ function NetworkIcon() {
   return (
     <span
       class="flex items-center gap-1 text-xs text-zinc-400 dark:text-zinc-500 animate-pulse"
-      aria-label="Connectingâ€¦"
+      aria-label="Connecting…"
     >
       <Wifi size={16} strokeWidth={1.5} aria-hidden="true" />
       <span class="hidden sm:inline">{t("connecting")}</span>

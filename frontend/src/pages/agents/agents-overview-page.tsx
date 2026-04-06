@@ -41,7 +41,7 @@ const AGENTS: AgentCard[] = [
     name: "Food & Venues Agent",
     role: "Pubs, restaurants & attractions",
     description:
-      "Fan-friendly pubs, restaurants, shopping and local attractions â€” both at Kenilworth Road and away grounds.",
+      "Fan-friendly pubs, restaurants, shopping and local attractions – both at Kenilworth Road and away grounds.",
   },
   {
     number: 5,
@@ -72,7 +72,7 @@ const AGENTS: AgentCard[] = [
   {
     page: "fantasy",
     number: 8,
-    icon: "âš½",
+    icon: "⚽",
     name: "Fantasy & Prediction",
     role: "Predictions & gamification",
     description:
@@ -112,7 +112,7 @@ const AGENTS: AgentCard[] = [
   {
     page: "weather",
     number: 12,
-    icon: "â˜ï¸",
+    icon: "☀️",
     name: "Weather Agent",
     role: "Forecasts & travel impact",
     description:
@@ -167,7 +167,7 @@ function AgentGridCard({
       </p>
       {clickable && (
         <p class="text-xs font-medium text-zinc-400 dark:text-zinc-500 mt-2">
-          View details â†’
+          View details →
         </p>
       )}
     </>
@@ -215,7 +215,7 @@ export function AgentsOverviewPage() {
         <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
           Every itinerary is powered by a coordinated team of specialist agents
           working together. The first 6 are core agents active on every plan.
-          Agents 7â€“12 are new v3.0 capabilities, tap any card to explore their
+          Agents 7–12 are new v3.0 capabilities, tap any card to explore their
           features.
         </p>
       </div>
@@ -223,7 +223,7 @@ export function AgentsOverviewPage() {
       {/* Core agents label */}
       <div class="flex items-center gap-2 mb-3">
         <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-          Core Agents (1â€“6)
+          Core Agents (1–6)
         </span>
         <div class="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
       </div>
@@ -237,7 +237,7 @@ export function AgentsOverviewPage() {
       {/* New agents v3.0 label */}
       <div class="flex items-center gap-2 mb-3">
         <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-          New Agents v3.0 (7â€“12)
+          New Agents v3.0 (7–12)
         </span>
         <div class="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
         <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#F5820D] text-[#1a1f3c]">

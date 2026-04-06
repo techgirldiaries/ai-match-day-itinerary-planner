@@ -57,7 +57,7 @@ export function AgentDetailPage({
         }}
         class="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 mb-5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5820D] rounded-lg px-1"
       >
-        â† All Agents
+        ← All Agents
       </button>
 
       {/* Hero card */}

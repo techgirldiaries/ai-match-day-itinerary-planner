@@ -15,20 +15,20 @@ console.log("🚀 Index.tsx loading, attempting to mount app...");
   const allValid = Object.values(checks).every(Boolean);
 
   if (allValid) {
-    console.log("âœ… All critical imports validated successfully");
+    console.log("✅ All critical imports validated successfully");
   } else {
     const failed = Object.entries(checks)
       .filter(([_, valid]) => !valid)
       .map(([name]) => name);
     console.warn(
-      `âš ï¸ Import validation warning: Missing initialization for: ${failed.join(", ")}`,
+      `⚠️ Import validation warning: Missing initialization for: ${failed.join(", ")}`,
     );
   }
 })();
 
 const appElement = document.getElementById("app");
 if (!appElement) {
-  console.error("âŒ Could not find #app element in DOM");
+  console.error("❌ Could not find #app element in DOM");
   document.body.innerHTML =
     '<div style="color: red; padding: 20px;">ERROR: Could not mount app - #app element not found</div>';
 } else {
@@ -39,9 +39,9 @@ if (!appElement) {
       </Suspense>,
       appElement,
     );
-    console.log("âœ… App mounted successfully");
+    console.log("✅ App mounted successfully");
   } catch (error) {
-    console.error("âŒ Error mounting app:", error);
+    console.error("❌ Error mounting app:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
     appElement.innerHTML = `<div style="color: red; padding: 20px;">ERROR: ${errorMessage}</div>`;
   }

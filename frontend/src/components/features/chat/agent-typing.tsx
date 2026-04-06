@@ -34,20 +34,20 @@ export function AgentTyping() {
             {agentName}
           </span>{" "}
           <span class="text-[#1a1f3c] dark:text-orange-200 transition-colors font-medium">
-            {t("agentPlanningTrip")} â€“ Planning your match-day experience 🟧⚪
+            {t("agentPlanningTrip")} – Planning your match-day experience 🟧⚪
           </span>
         </small>
         <div class="py-3 px-4 rounded-3xl rounded-tl-xs bg-[#f5820d]/10 dark:bg-[#1a1f3c] transition-colors border border-[#f5820d] dark:border-orange-400">
           <div class="flex items-center gap-2">
             <div class="flex" aria-hidden="true">
               <span class="typing-dot text-[#f5820d] dark:text-orange-300">
-                â€¢
+                •
               </span>
               <span class="typing-dot typing-dot-delay-1 text-[#f5820d] dark:text-orange-300">
-                â€¢
+                •
               </span>
               <span class="typing-dot typing-dot-delay-2 text-[#f5820d] dark:text-orange-300">
-                â€¢
+                •
               </span>
             </div>
             <span class="text-xs text-zinc-500 dark:text-zinc-400">
