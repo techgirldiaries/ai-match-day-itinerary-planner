@@ -307,11 +307,6 @@ function DesktopSidebar() {
 
         {/* Navigation block */}
         <div>
-          {!collapsed && (
-            <p class="text-lg tracking-wider text-orange-500 dark:text-orange-400 mb-5 font-extrabold px-1">
-              Navigation Menu
-            </p>
-          )}
           <nav class="space-y-1" aria-label="Sidebar navigation">
             {NAV_ITEMS.map((item) => (
               <NavTab key={item.page} {...item} collapsed={collapsed} />
@@ -466,9 +461,6 @@ function MobileSidebar() {
             </button>
           </div>
 
-          <p class="text-xs uppercase tracking-wider text-gray-700 dark:text-gray-400 mb-2 font-semibold px-1">
-            Navigation
-          </p>
           <nav class="space-y-1" aria-label="Mobile sidebar navigation">
             {NAV_ITEMS.map((item) => (
               <NavTab key={item.page} {...item} collapsed={false} />

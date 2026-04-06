@@ -148,6 +148,88 @@ LTFC Brand Palette
   @apply text-3xl font-bold text-[#1a1f3c] dark:text-white mb-4 mt-6 pb-2 border-b-2 border-[#f5820d];
 }
 
+/* =====================================
+DATE & TIME INPUT STYLING
+===================================== */
+/* Calendar and clock picker icons visibility in light mode */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: brightness(0);
+  margin-right: 4px;
+}
+
+/* Dark mode adjustment for icons */
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: brightness(2.5);
+}
+
+/* Hover and focus states for date/time inputs */
+input[type="date"]:hover::-webkit-calendar-picker-indicator,
+input[type="time"]:hover::-webkit-calendar-picker-indicator {
+  filter: brightness(0);
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+input[type="date"]:focus::-webkit-calendar-picker-indicator,
+input[type="time"]:focus::-webkit-calendar-picker-indicator {
+  filter: brightness(0);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode hover/focus states */
+.dark input[type="date"]:hover::-webkit-calendar-picker-indicator,
+.dark input[type="time"]:hover::-webkit-calendar-picker-indicator {
+  filter: brightness(2.5);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark input[type="date"]:focus::-webkit-calendar-picker-indicator,
+.dark input[type="time"]:focus::-webkit-calendar-picker-indicator {
+  filter: brightness(2.5);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* =====================================
+CHECKBOX STYLING
+===================================== */
+/* Make checkboxes visible in light mode */
+input[type="checkbox"] {
+  accent-color: #f5820d;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #f5820d;
+  box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.1);
+}
+
+input[type="checkbox"]:checked {
+  background-color: #f5820d;
+  border-color: #f5820d;
+}
+
+/* Dark mode checkbox styling */
+.dark input[type="checkbox"] {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.dark input[type="checkbox"]:hover {
+  border-color: #f5820d;
+  box-shadow: 0 0 0 2px rgba(245, 130, 13, 0.2);
+}
+
+.dark input[type="checkbox"]:checked {
+  background-color: #f5820d;
+  border-color: #f5820d;
+}
+
 .doc-h2 {
   @apply text-2xl font-bold text-[#1a1f3c] dark:text-orange-300 mb-3 mt-5;
 }
