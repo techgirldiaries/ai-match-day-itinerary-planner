@@ -12,5 +12,8 @@
     "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
     "dev:backend": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend"
+  },
+  "devDependencies": {
+    "terser": "^5.31.0"
   }
 }
