@@ -1,6 +1,7 @@
 import { AlertTriangle } from "lucide-preact";
 import type { JSX } from "preact";
 import { useEffect } from "preact/hooks";
+import { marked, type Token } from "marked";
 import { Avatar } from "@/components/common";
 import { CSS_CLASSES } from "@/config/formConfig";
 import {
@@ -248,96 +249,106 @@ function itineraryToReadableText(data: ItineraryResponse): string {
 }
 
 function StructuredTextDocument({ text }: { text: string }): JSX.Element {
-  const blocks = text
-    .split(/\n\s*\n/)
-    .map((block) => block.trim())
-    .filter(Boolean);
+  // Use marked to parse all block-level elements
+  const tokens = marked.lexer(text) as Token[];
 
-  if (blocks.length === 0) {
+  if (tokens.length === 0) {
     return <p class="doc-paragraph">{renderMarkdown(text)}</p>;
   }
 
   return (
     <article class="doc-output" aria-label="Assistant response document">
-      {blocks.map((block, index) => {
-        // Detect heading levels (# ## ### etc.)
-        const headingMatch = block.match(/^(#{1,6})\s+(.+)$/);
-        if (headingMatch) {
-          const level = headingMatch[1].length as 1 | 2 | 3 | 4 | 5 | 6;
-          const content = headingMatch[2].trim();
-          const headingClass = `doc-h${level}`;
-          const renderedContent = renderMarkdown(content);
+      {tokens.map((token, index) => {
+        switch (token.type) {
+          case "heading": {
+            const heading = token as any;
+            const level = Math.min(Math.max(heading.depth, 1), 6) as
+              | 1
+              | 2
+              | 3
+              | 4
+              | 5
+              | 6;
+            const headingClass = `doc-h${level}`;
+            const renderedContent = renderMarkdown(heading.text);
+            return renderHeading(level, renderedContent, headingClass, index);
+          }
 
-          return renderHeading(level, renderedContent, headingClass, index);
+          case "code": {
+            const code = token as any;
+            return (
+              <pre key={`code-${index}`} class="doc-code">
+                <code class="block bg-gray-100 dark:bg-gray-900 p-4 rounded text-sm overflow-x-auto">
+                  {code.text}
+                </code>
+              </pre>
+            );
+          }
+
+          case "list": {
+            const list = token as any;
+            if (list.ordered) {
+              return (
+                <ol key={`list-${index}`} class="doc-list doc-list-ordered">
+                  {list.items.map((item: any, i: number) => (
+                    <li key={`item-${i}`} class="doc-list-item">
+                      {renderMarkdown(item.text)}
+                    </li>
+                  ))}
+                </ol>
+              );
+            } else {
+              return (
+                <ul key={`list-${index}`} class="doc-list doc-list-unordered">
+                  {list.items.map((item: any, i: number) => (
+                    <li key={`item-${i}`} class="doc-list-item">
+                      {renderMarkdown(item.text)}
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
+          }
+
+          case "blockquote": {
+            const quote = token as any;
+            return (
+              <blockquote key={`quote-${index}`} class="doc-blockquote">
+                {renderMarkdown(quote.text)}
+              </blockquote>
+            );
+          }
+
+          case "paragraph": {
+            const para = token as any;
+            return (
+              <p key={`paragraph-${index}`} class="doc-paragraph">
+                {renderMarkdown(para.text)}
+              </p>
+            );
+          }
+
+          case "hr": {
+            return <hr key={`hr-${index}`} class="doc-hr my-4" />;
+          }
+
+          case "br": {
+            return <br key={`br-${index}`} />;
+          }
+
+          default: {
+            // For any other token type, try to render as text
+            const other = token as any;
+            if (other.text) {
+              return (
+                <p key={`para-${index}`} class="doc-paragraph">
+                  {renderMarkdown(other.text)}
+                </p>
+              );
+            }
+            return null;
+          }
         }
-
-        // Detect unordered list items (- or *)
-        if (/^[-*]\s+/.test(block)) {
-          // Split by lines that start with - or *
-          const items = block
-            .split("\n")
-            .filter((line) => line.trim())
-            .reduce((acc, line) => {
-              // Check if line starts a new list item
-              if (/^[-*]\s+/.test(line)) {
-                acc.push(line.replace(/^[-*]\s+/, "").trim());
-              } else if (acc.length > 0) {
-                // Append continuation to previous item
-                acc[acc.length - 1] += " " + line.trim();
-              }
-              return acc;
-            }, [] as string[]);
-
-          return (
-            <ul key={`list-${index}`} class="doc-list doc-list-unordered">
-              {items.map((item, i) => (
-                <li key={`item-${i}`}>{renderMarkdown(item)}</li>
-              ))}
-            </ul>
-          );
-        }
-
-        // Detect ordered list items (1. 2. 3. etc.)
-        if (/^\d+\.\s+/.test(block)) {
-          const items = block
-            .split("\n")
-            .filter((line) => line.trim())
-            .reduce((acc, line) => {
-              // Check if line starts a new list item
-              if (/^\d+\.\s+/.test(line)) {
-                acc.push(line.replace(/^\d+\.\s+/, "").trim());
-              } else if (acc.length > 0) {
-                // Append continuation to previous item
-                acc[acc.length - 1] += " " + line.trim();
-              }
-              return acc;
-            }, [] as string[]);
-
-          return (
-            <ol key={`list-${index}`} class="doc-list doc-list-ordered">
-              {items.map((item, i) => (
-                <li key={`item-${i}`}>{renderMarkdown(item)}</li>
-              ))}
-            </ol>
-          );
-        }
-
-        // Detect blockquotes (> at start)
-        if (/^>\s+/.test(block)) {
-          const content = block.replace(/^>\s+/, "").trim();
-          return (
-            <blockquote key={`quote-${index}`} class="doc-blockquote">
-              {renderMarkdown(content)}
-            </blockquote>
-          );
-        }
-
-        // Default to paragraph
-        return (
-          <p key={`paragraph-${index}`} class="doc-paragraph">
-            {renderMarkdown(block)}
-          </p>
-        );
       })}
     </article>
   );
@@ -391,46 +402,48 @@ function renderHeading(
 
 function renderMarkdown(text: string): (string | JSX.Element)[] {
   const parts: (string | JSX.Element)[] = [];
-  let lastIndex = 0;
 
-  // Match bold (**text**), italic (*text* or _text_), and links
-  const regex = /(\*\*(.+?)\*\*)|(\*(.+?)\*)|(_(.+?)_)|(\[(.+?)\]\((.+?)\))/g;
-  let match;
+  // Use marked.lexer with default options to tokenize inline elements
+  const tokens = marked.lexer(text) as Token[];
 
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(text.substring(lastIndex, match.index));
-    }
+  // If marked returns no tokens, just render as plain text
+  if (!tokens || tokens.length === 0) {
+    return [text];
+  }
 
-    if (match[2]) {
-      // Bold
-      parts.push(<strong>{match[2]}</strong>);
-    } else if (match[4]) {
-      // Italic with *
-      parts.push(<em>{match[4]}</em>);
-    } else if (match[6]) {
-      // Italic with _
-      parts.push(<em>{match[6]}</em>);
-    } else if (match[8] && match[9]) {
-      // Link
+  tokens.forEach((token) => {
+    if (token.type === "text") {
+      parts.push(token.text);
+    } else if (token.type === "strong") {
+      const content = renderMarkdown((token as any).text);
+      parts.push(<strong>{content}</strong>);
+    } else if (token.type === "em") {
+      const content = renderMarkdown((token as any).text);
+      parts.push(<em>{content}</em>);
+    } else if (token.type === "codespan") {
+      parts.push(
+        <code class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">
+          {token.text}
+        </code>,
+      );
+    } else if (token.type === "link") {
+      const link = token as any;
       parts.push(
         <a
-          href={match[9]}
+          href={link.href}
           target="_blank"
           rel="noopener noreferrer"
           class="text-orange-500 hover:text-orange-600 underline"
+          title={link.title || ""}
         >
-          {match[8]}
+          {renderMarkdown(link.text)}
         </a>,
       );
+    } else {
+      // Fallback for other token types
+      parts.push((token as any).text || "");
     }
-
-    lastIndex = regex.lastIndex;
-  }
-
-  if (lastIndex < text.length) {
-    parts.push(text.substring(lastIndex));
-  }
+  });
 
   return parts.length === 0 ? [text] : parts;
 }
