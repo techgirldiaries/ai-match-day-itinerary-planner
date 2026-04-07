@@ -333,7 +333,7 @@ effect(() => {
       role: "agent" satisfies IntakeMessageRole,
       content: lastMessage.text,
       timestamp: Date.now(),
-      isItinerary: true, // Mark as itinerary output for rendering
+      // isItinerary is never true - all responses are markdown, not JSON
     };
 
     intakeMessages.value = [...intakeMessages.value, intakeMessage];
