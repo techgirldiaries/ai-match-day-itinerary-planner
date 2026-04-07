@@ -4,56 +4,62 @@
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
 #
-# name: "CodeQL Advanced"
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+name: "CodeQL Advanced"
 
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#   schedule:
-#     - cron: '33 21 * * 0'
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "33 21 * * 0"
 
-# jobs:
-#   analyze:
-#     name: Analyze (${{ matrix.language }})
-#     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-#     permissions:
-#       security-events: write
-#       packages: read
-#       actions: read
-#       contents: read
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
 
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         include:
-#         - language: javascript-typescript
-#           build-mode: none
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
 
-#     steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-#     - name: Setup Node.js
-#       uses: actions/setup-node@v5
-#       with:
-#         node-version: '22'
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
 
-#     - name: Install dependencies
-#       run: |
-#         npm install            # root
-#         npm install --prefix frontend
-#         npm install --prefix backend
+      - name: Install dependencies
+        run: |
+          npm install --legacy-peer-deps            # root
+          npm install --legacy-peer-deps --prefix frontend
+          npm install --legacy-peer-deps --prefix backend
 
-#     - name: Initialize CodeQL
-#       uses: github/codeql-action/init@v4
-#       with:
-#         languages: ${{ matrix.language }}
-#         build-mode: ${{ matrix.build-mode }}
-#         queries: security-extended,security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: security-extended,security-and-quality
 
-#     - name: Perform CodeQL Analysis
-#       uses: github/codeql-action/analyze@v4
-#       with:
-#         category: "/language:${{ matrix.language }}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
