@@ -1,7 +1,7 @@
 import { computed, effect, signal } from "@preact/signals";
 import { Agent, type Client, type Task, Workforce } from "@relevanceai/sdk";
 import { AGENT_ID, WORKFORCE_ID } from "@/core/constant";
-import type { ChatMessage } from "@/core/types";
+import type { ChatMessage, IntakeMessageRole } from "@/core/types";
 import { getOrCreateUserId } from "@/core/user";
 import type { SavedDraft } from "@/storage/draft-storage";
 import { getAllDrafts } from "@/storage/draft-storage";
@@ -33,11 +33,11 @@ function checkStorageHealth() {
     if (stored !== "1") {
       throw new Error("Storage read/write mismatch");
     }
-    debugLog("✅ localStorage health check passed");
+    debugLog("localStorage health check passed");
     return true;
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    debugError(`⚠️ localStorage unavailable or quota exceeded: ${errorMsg}`);
+    debugError(`localStorage unavailable or quota exceeded: ${errorMsg}`);
     return false;
   }
 }

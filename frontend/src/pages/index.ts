@@ -11,6 +11,3 @@ export { SocialImpactAgentPage } from "./agents/social-impact-agent-page";
 export { WeatherAgentPage } from "./agents/weather-agent-page";
 export { YouthAgentPage } from "./agents/youth-agent-page";
 export { SharedItineraryPage } from "./agents/shared-itinerary-page";
-
-// Router
-export { AppRouter } from "./agents/AppRouter";

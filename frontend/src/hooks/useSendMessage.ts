@@ -13,7 +13,7 @@ import {
   workforce,
 } from "@/core/state";
 
-const AGENT_TIMEOUT_MS = 120000; // 120 seconds (agent timeout disabled on Relevance AI plan)
+const AGENT_TIMEOUT_MS = 25000; // 25 seconds (hard limit - Relevance API platform limit is 30s)
 
 /**
  * Extracts key travel details from user message for quick processing
@@ -181,7 +181,7 @@ export function useSendMessage() {
       if (isTimeout && attemptNumber < 2) {
         // Timeout on first attempt - retry with simplified message
         console.warn(
-          "⏱️ Agent timeout (attempt 1), retrying with simplified request...",
+          "Agent timeout (attempt 1), retrying with simplified request...",
         );
 
         retryCount.current[msgHash] = 2;
@@ -197,7 +197,7 @@ export function useSendMessage() {
             {
               id: retryKeyId,
               type: "agent-message" as const,
-              text: "⏱️ Request taking longer than expected. Retrying with streamlined approach...",
+              text: "Request taking longer than expected. Retrying with streamlined approach...",
               createdAt: new Date(),
               isAgent: () => true,
             } as ChatMessage,
@@ -223,11 +223,11 @@ export function useSendMessage() {
         await sendMessage(simplifiedMsg, false);
       } else if (isTimeout && attemptNumber >= 2) {
         // Timeout on retry - provide cached fallback data
-        console.error("❌ Agent timeout on retry, using cached data fallback");
+        console.error("Agent timeout on retry, using cached data fallback");
 
         const details = extractTravelDetails(message);
         let fallbackMessage =
-          "⚠️ Response taking too long. Here's quick info from our cached data:\n\n";
+          "Response taking too long. Here's quick info from our cached data:\n\n";
 
         if (details.origin) {
           const route = getCachedRoute(details.origin, "Luton");
@@ -243,7 +243,7 @@ export function useSendMessage() {
           "\n**Popular venues near stadium:**\n" +
           "- Bricklayers Arms (fan pub)\n" +
           "- Painters Arms (match day atmosphere)\n\n" +
-          "📱 For full details, try refreshing or asking again in a moment.";
+          "For full details, try refreshing or asking again in a moment.";
 
         messages.value = [
           ...messages.value,
@@ -259,7 +259,7 @@ export function useSendMessage() {
         retryCount.current[msgHash] = 0;
       } else {
         // Non-timeout error
-        console.error("❌ Error sending message:", error);
+        console.error("Error sending message:", error);
         const errorMsg = error instanceof Error ? error.message : String(error);
 
         messages.value = [
@@ -267,7 +267,7 @@ export function useSendMessage() {
           {
             id: `error-${Date.now()}`,
             type: "agent-message" as const,
-            text: `❌ Error: ${errorMsg}\n\nPlease try again.`,
+            text: `Error: ${errorMsg}\n\nPlease try again.`,
             createdAt: new Date(),
             isAgent: () => true,
           } as ChatMessage,
@@ -347,7 +347,7 @@ export function useProcessIntakeOnMount(): void {
       .then((): void => {
         // Response is now in the messages signal via the task event listener
         // The syncing effect will mirror it to intakeMessages automatically
-        console.log("✅ Intake processing complete");
+        console.log("Intake processing complete");
       })
       .catch((error: Error): void => {
         const errorMessage: IntakeMessage = {
@@ -457,7 +457,7 @@ async function callAgentAPINew(prompt: string): Promise<string> {
     // Wait for the agent response by monitoring the intakeMessages signal
     // The message syncing effect will add the agent's response to intakeMessages
     return await new Promise<string>((resolve, reject) => {
-      const RESPONSE_TIMEOUT = 35000; // 35 seconds (safe buffer from 30s API limit)
+      const RESPONSE_TIMEOUT = 26000; // 26 seconds (within 30s Relevance API hard limit, 1s buffer)
       const timeout = setTimeout(
         () => reject(new Error("Agent response timeout waiting for itinerary")),
         RESPONSE_TIMEOUT,

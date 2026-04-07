@@ -15,13 +15,23 @@
 } from "lucide-preact";
 import {
   type AppPage,
+  agentTypingTimedOut,
   currentPage,
   draftMessage,
   hasMessages,
+  hasUserMessageBeenAdded,
   isDarkMode,
+  intakeFormData,
   intakeMessages,
+  isAgentThinking,
+  isAgentTyping,
+  isIntakeComplete,
+  isIntakeSubmitting,
+  isProcessingIntake,
+  isSending,
   isSidebarCollapsed,
   isSidebarOpen,
+  itineraryOutput,
   messages,
   savedDrafts,
   showEmailExportModal,
@@ -114,14 +124,35 @@ function NewChatTab({ collapsed }: { collapsed: boolean }) {
     <button
       type="button"
       onClick={() => {
+        // Clear chat state
         messages.value = [];
         intakeMessages.value = [];
         draftMessage.value = "";
+
+        // Reset UI states
         showEmailExportModal.value = false;
+        isSidebarOpen.value = false;
+
+        // Clear storage
         clearSessionMessages();
         clearIntakeMessages();
+
+        // Reset agent/chat interaction states
+        isAgentTyping.value = false;
+        agentTypingTimedOut.value = false;
+        isAgentThinking.value = false;
+        isSending.value = false;
+        hasUserMessageBeenAdded.value = false;
+
+        // Reset intake form states
+        isIntakeSubmitting.value = false;
+        isIntakeComplete.value = false;
+        isProcessingIntake.value = false;
+        intakeFormData.value = null;
+        itineraryOutput.value = null;
+
+        // Set page to chat
         currentPage.value = "chat";
-        isSidebarOpen.value = false;
       }}
       class={[
         "w-full min-h-11 flex items-center rounded-lg text-sm font-bold transition-colors shadow-sm",

@@ -1,7 +1,7 @@
 /**
  * LTFC Itinerary Planner - Secure Agent Configuration
  *
- * ⚠️  SECURITY: All credentials loaded from environment variables only
+ * SECURITY: All credentials loaded from environment variables only
  * NEVER hardcode: VITE_AGENT_ID, VITE_PROJECT, VITE_REGION, VITE_WORKFORCE_ID
  *
  * Source: Frontend environment variables (.env)

@@ -6,7 +6,7 @@ This guide explains how to build, deploy and scale the Match-Day Itinerary Plann
 
 The project consists of two independent workspaces that can be built separately and deployed to different infrastructure:
 
-- **Frontend**: Static JavaScript application served via CDN or web server
+- **Frontend**: Static TypeScript application served via CDN or web server
 - **Backend**: Node.js API server handling requests and data persistence
 
 ## Building Workspaces Separately
@@ -34,7 +34,7 @@ npm run build:backend
 
 ### Rebuild Outputs
 
-- **Frontend**: HTML, CSS, JavaScript bundles optimised with Vite
+- **Frontend**: HTML, CSS, TypeScript bundles optimised with Vite
 - **Backend**: Compiled TypeScript and bundled dependencies
 - **Size**: Frontend ~50-100KB gzipped, Backend ~2-5MB depending on dependencies
 
@@ -300,7 +300,7 @@ Configuration for Cloudflare Pages:
 ```toml
 # wrangler.toml
 name = "match-day-itinerary"
-type = "javascript"
+type = "typescript"
 
 [build]
 command = "npm install && npm run build:frontend"
