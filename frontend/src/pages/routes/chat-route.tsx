@@ -1,6 +1,5 @@
 import { For, Show } from "@preact/signals/utils";
-import type * as preact from "preact";
-import type { FunctionComponent } from "preact";
+import type { FunctionComponent, VNode } from "preact";
 import { AgentMessage } from "@/components/features/chat";
 import {
   AgentTyping as AgentThinkingBubble,
@@ -9,7 +8,6 @@ import {
 } from "@/components/features/chat";
 import { EmailExportModal } from "@/components/features/modals";
 import { Footer } from "@/components/layout";
-import { ItineraryRenderer } from "@/components/features/itinerary";
 import {
   useProcessIntakeOnMount,
   useSendMessageNew,
@@ -30,14 +28,10 @@ import {
   messages,
   showEmailExportModal,
 } from "@/core/state";
-import type {
-  IntakeMessage,
-  IntakeMessageRole,
-  ItineraryResponse,
-} from "@/core/types/types";
+import type { IntakeMessage, IntakeMessageRole } from "@/core/types/types";
 
-// Render message with exhaustive type checking:
-const renderMessage = (message: IntakeMessage): preact.VNode<unknown> => {
+// Render message with exhaustive type checking and explicit TSX return type
+const renderMessage = (message: IntakeMessage): VNode => {
   const role: IntakeMessageRole = message.role;
   switch (role) {
     case "user":
@@ -60,36 +54,6 @@ const renderMessage = (message: IntakeMessage): preact.VNode<unknown> => {
         </div>
       );
     case "agent":
-      // Check if this is an itinerary response
-      if (message.isItinerary) {
-        try {
-          const itineraryData = JSON.parse(
-            message.content,
-          ) as ItineraryResponse;
-          // Update current itinerary signal for sharing/modals
-          currentItinerary.value = itineraryData;
-          return (
-            <div
-              key={message.id}
-              class="flex items-start gap-x-2 w-full self-start flex-row"
-            >
-              <div class="shrink-0 w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white text-sm font-bold">
-                AI
-              </div>
-              <div class="flex flex-col gap-y-1 items-start max-w-full w-full">
-                <small class="text-gray-500 text-xs">
-                  {new Date(message.timestamp).toLocaleTimeString()}
-                </small>
-                <ItineraryRenderer itinerary={itineraryData} />
-              </div>
-            </div>
-          );
-        } catch (e) {
-          console.error("Failed to parse itinerary JSON:", e);
-          // Fall through to plain text rendering on parse error
-        }
-      }
-      // Plain text rendering for regular agent messages or parse failures
       return (
         <div
           key={message.id}
@@ -99,7 +63,7 @@ const renderMessage = (message: IntakeMessage): preact.VNode<unknown> => {
             AI
           </div>
           <div class="flex flex-col gap-y-1 items-start max-w-full">
-            <div class="bg-gray-800 text-gray-100 rounded-lg px-4 py-2 text-sm">
+            <div class="bg-gray-800 text-gray-100 rounded-lg px-4 py-2 text-sm whitespace-pre-wrap break-all leading-relaxed">
               {message.content}
             </div>
             <small class="text-gray-500 text-xs">
