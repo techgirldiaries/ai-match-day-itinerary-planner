@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
-    "@hono/node-server": "^1.19.11",
+    "@hono/node-server": "^1.19.13",
     "@types/sql.js": "^1.4.9",
     "@types/node": "^24.5.1",
     "@types/uuid": "^9.0.7",
