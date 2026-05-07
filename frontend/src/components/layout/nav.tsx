@@ -290,6 +290,12 @@ function ActionTab({
   );
 }
 
+function secureRandomHex(byteLength = 8): string {
+  const bytes = new Uint8Array(byteLength);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 function downloadItinerary() {
   const start = parseMatchDateTimeFromMessages() ?? new Date();
   const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
@@ -301,7 +307,7 @@ function downloadItinerary() {
       .map((m) => `[${new Date(m.createdAt).toLocaleString()}] ${m.text}`)
       .join("\n")}`,
   );
-  const uid = `${Date.now()}-${Math.random().toString(16).slice(2)}@hatters-away`;
+const uid = `${Date.now()}-${secureRandomHex()}@hatters-away`;
 
   const content = [
     "BEGIN:VCALENDAR",
