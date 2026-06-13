@@ -1,8 +1,8 @@
 # AI Match-Day Itinerary Planner
 
-> Agentic AI match day planning for LTFC football fans ⚽
+> Agentic AI match day planning for Luton Town Football Club supporters ⚽
 
-A full-stack TypeScript monorepo that generates personalised match-day itineraries using Relevance AI. Includes group sharing, real-time updates, and multi-language support.
+A full-stack TypeScript monorepo that generates personalised match-day itineraries using Relevance AI. Includes group sharing, real-time updates and multi-language support.
 
 ## Quick Start
 
@@ -28,9 +28,9 @@ npm run dev  # Frontend: localhost:5173, Backend: localhost:3000
 
 ## Documentation
 
-- **[Development Workflow](docs/DEVELOPMENT.md)** — Architecture, commands, code standards
-- **[Testing Guide](docs/TESTING.md)** — Unit, component, and E2E tests
-- **[Deployment](docs/DEPLOY.md)** — Production setup and CI/CD
+- **[Development Workflow](docs/DEVELOPMENT.md)** - Architecture, commands, code standards
+- **[Testing Guide](docs/TESTING.md)** - Unit, component and E2E tests
+- **[Deployment](docs/DEPLOY.md)** - Production setup and CI/CD
 
 ## Tech Stack
 
@@ -44,20 +44,20 @@ npm run dev  # Frontend: localhost:5173, Backend: localhost:3000
 ```
 ├── frontend/                  # Preact SPA
 │   └── src/
-│       ├── components/        # Feature-organized UI components
+│       ├── components/        # Feature-organised UI components
 │       ├── pages/             # Page-level components & routing
 │       ├── core/              # State management, types, constants
 │       ├── services/          # API client, external integrations
 │       ├── storage/           # localStorage persistence
 │       ├── utils/             # Shared utilities & validators
-│       ├── i18n/              # 11-language localization
+│       ├── i18n/              # 11-language localisation
 │       └── index.tsx          # App entry point
 │
 ├── backend/                   # Hono API server
 │   ├── src/
 │   │   ├── routes/            # API endpoints (conversations, shares)
 │   │   ├── services/          # Business logic
-│   │   ├── db/                # Database initialization & queries
+│   │   ├── db/                # Database initialisation & queries
 │   │   ├── types/             # Shared TypeScript types
 │   │   └── index.ts           # Server entry point
 │   └── data/
@@ -83,9 +83,9 @@ Component organization follows a feature-based pattern:
 - **`components/features/`** — Feature groups (chat, intake, itinerary, modals, panels)
 - **`pages/`** — Page-level components and routing logic
 - **`core/`** — Global state (Preact Signals), types, constants
-- **`services/`** — Relevance AI SDK initialization and API clients
+- **`services/`** — Relevance AI SDK initialisation and API clients
 - **`storage/`** — localStorage persistence (drafts, messages, preferences)
-- **`i18n/`** — 11-language localization setup
+- **`i18n/`** — 11-language localisation setup
 - **`utils/`** — Shared helpers and validators
 
 See [DEVELOPMENT.md](docs/DEVELOPMENT.md#frontend-architecture) for detailed component structure.
@@ -94,7 +94,7 @@ See [DEVELOPMENT.md](docs/DEVELOPMENT.md#frontend-architecture) for detailed com
 
 - **`routes/`** — API endpoints (conversations, shares)
 - **`services/`** — Business logic and Relevance AI integration
-- **`db/`** — sql.js database initialization and queries
+- **`db/`** — sql.js database initialisation and queries
 - **`types/`** — Shared TypeScript definitions
 
 ### Database
