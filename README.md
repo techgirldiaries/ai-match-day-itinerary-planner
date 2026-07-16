@@ -1,46 +1,42 @@
-# LTFC AI Match-Day Itinerary Planner
+# LTFC AI Match-Day Itinerary Planner 
 
-The LTFC AI Match-Day Itinerary Planner is a full-stack AI chat application that generates personalised football match-day itineraries using an orchestrated multi-agent architecture. Developed as a 10-week Agile project, the platform helps supporters plan their entire match-day experience by combining live transport information, weather forecasts, venue recommendations, accommodation options and fixture updates into a single personalised itinerary. At the core of the application is an **Orchestrator Agent** that coordinates **11 specialised AI agents** running in parallel. Each agent is responsible for a specific task before their outputs are merged into a comprehensive itinerary tailored to the user's preferences.
+The LTFC AI Match-Day Itinerary Planner is a full-stack AI application that helps football supporters organise every stage of their match-day journey through a single conversational interface. Built as a 10-week Agile project, the platform combines a modern TypeScript monorepo with Relevance AI to provide intelligent travel planning, live fixture information, weather forecasts, venue recommendations, accommodation suggestions and collaborative trip planning. An orchestration layer coordinates multiple specialised AI agents to generate a single personalised itinerary in real time. 
 
----
+--- 
 
-## Overview
+## Overview 
 
-The application enables supporters to plan every aspect of their match-day through a single conversational interface.
+Planning a football match day often requires switching between multiple applications for transport, weather, maps, restaurants and fixture information. This project brings those services together into one AI-powered assistant. User requests are analysed by an orchestration layer, delegated to specialised agents and combined into a structured itinerary that can be viewed, shared and updated throughout the day. 
 
-An **Orchestrator Agent** coordinates **11 specialised AI agents** running in parallel to collect information from multiple external services before generating a personalised itinerary tailored to the user's preferences.
+--- 
 
----
+## Features 
 
-# Features
+### Match-Day Planning 
 
-## AI Orchestration
-
-- Orchestrator-driven multi-agent workflows
-- Parallel execution of specialised AI agents
-- Context-aware itinerary generation
-- Intelligent recommendations
-- Modular agent architecture
-
-## Match-Day Planning
-
+- Personalised match-day itineraries
 - Live fixture information
-- Travel and route planning
+- Transport and route planning
 - Parking recommendations
 - Walking directions
 - Restaurant and attraction discovery
-- Accommodation planning
-- Packing recommendations
-- Fantasy predictions
+- Accommodation suggestions
+- Weather-aware packing lists
+- Fantasy match predictions
 
-## User Experience
+### Collaboration
 
-- Responsive chat interface
-- Local storage persistence
-- Real-time updates
+- Group itinerary sharing
 - Push notifications
-- Group planning
-- Multi-language localisation (11 languages)
+- Local storage persistence
+- Multi-language support (11 languages)
+
+### AI Platform 
+
+- Orchestrated multi-agent workflows
+- Parallel execution of specialised AI agents
+- Context-aware recommendations
+- Modular and extensible architecture
 
 ---
 
@@ -79,13 +75,13 @@ Travel   Weather    Match      Food      Community
           Personalised Match-Day Itinerary
 ```
 
-The Orchestrator Agent coordinates specialised agents, executes them in parallel where appropriate and combines their outputs into a single structured response.
+The orchestration layer distributes user requests across domain-specific AI agents, aggregates their responses and returns a unified itinerary. The modular design enables additional agents and services to be introduced without changing the overall workflow.
 
 ---
 
-# Technology Stack
+## Technology Stack
 
-## Frontend
+### Frontend
 
 - Preact
 - Preact Signals
@@ -93,20 +89,20 @@ The Orchestrator Agent coordinates specialised agents, executes them in parallel
 - Vite 7
 - TypeScript 5.9
 
-## Backend
+### Backend
 
 - Hono.js
 - TypeScript
 - sql.js (SQLite)
 - REST APIs
 
-## AI Platform
+### AI Platform
 
 - Relevance AI
 - Relevance AI SDK
 - Model Context Protocol (MCP)
 
-## External APIs
+### External APIs
 
 - Google Maps Places API
 - OpenWeather API
@@ -117,7 +113,7 @@ The Orchestrator Agent coordinates specialised agents, executes them in parallel
 
 ---
 
-# Repository Structure
+## Repository Structure
 
 ```text
 ai-match-day-itinerary-planner/
@@ -245,19 +241,18 @@ For detailed setup instructions, development workflow and troubleshooting, see *
 
 # Project Management
 
-This project was delivered by a five-person Agile team over a 10-week development cycle using Scrum.
+This project was delivered by a five-person Agile team over a ten-week development cycle using Scrum. 
 
-As the Project Manager, responsibilities included:
+As Project Manager, I was responsible for: 
 
-- Leading sprint planning, reviews and retrospectives
-- Managing eight Agile sprints
-- Facilitating daily stand-ups
-- Managing GitLab Kanban workflows
-- Coordinating stakeholder communication
-- Applying MoSCoW prioritisation after stakeholder feedback
-- Coordinating frontend and AI integration
+- Sprint planning, reviews and retrospectives
+- Agile delivery across eight development sprints
+- GitLab Kanban and backlog management
+- Stakeholder communication and scope management
+- MoSCoW prioritisation following changing requirements
+- Coordinating frontend, backend and AI integration
 - Supporting Relevance AI SDK implementation
-- Integrating Weather, Maps and Transport services
+- Integrating Maps, Weather and Transport services
 - Promoting GDPR, WCAG accessibility and responsible AI practices
 
 ---
@@ -266,13 +261,13 @@ As the Project Manager, responsibilities included:
 
 Key engineering challenges included:
 
-- Multi-agent orchestration
-- Trigger-then-poll asynchronous workflows
-- SDK timeout handling
-- API rate limiting
-- Mid-project scope changes
-- Frontend integration with Relevance AI
-- Delivering a production-ready MVP within a fixed 10-week schedule
+- Coordinating concurrent multi-agent workflows
+- Implementing asynchronous trigger-then-poll execution
+- Managing SDK request timeouts
+- Handling third-party API rate limits
+- Integrating multiple external services
+- Responding to mid-project scope changes
+- Delivering a production-ready MVP within a fixed ten-week schedule
 
 ---
 
@@ -315,4 +310,4 @@ Developed as part of the **CIS047-3 Agile Project Management** module at the **U
 
 This project was developed for educational purposes. 
 
-Copyright © 2026 Group 8 - Luton Power (UoB).
+Copyright © 2026 Group 8 - Luton Power (University of Bedfordshire).
