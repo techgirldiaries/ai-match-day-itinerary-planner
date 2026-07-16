@@ -79,7 +79,7 @@ Travel   Weather    Match      Food      Community
           Personalised Match-Day Itinerary
 ```
 
-The Orchestrator Agent coordinates specialised agents, executes them in parallel where appropriate, and combines their outputs into a single structured response.
+The Orchestrator Agent coordinates specialised agents, executes them in parallel where appropriate and combines their outputs into a single structured response.
 
 ---
 
