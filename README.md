@@ -1,6 +1,6 @@
 # LTFC AI Match-Day Itinerary Planner
 
-The LTFC AI Match-Day Itinerary Planner is a full-stack AI chat application that generates personalised football match-day itineraries using an orchestrated multi-agent architecture. Developed as a 10-week Agile project, the platform helps supporters plan their entire match-day experience by combining live transport information, weather forecasts, venue recommendations, accommodation options and fixture updates into a single personalised itinerary. At the core of the application is an **Orchestrator Agent** that coordinates **11 specialised AI agents** running in parallel. Each agent is responsible for a specific domain before their outputs are merged into a comprehensive itinerary tailored to the user's preferences.
+The LTFC AI Match-Day Itinerary Planner is a full-stack AI chat application that generates personalised football match-day itineraries using an orchestrated multi-agent architecture. Developed as a 10-week Agile project, the platform helps supporters plan their entire match-day experience by combining live transport information, weather forecasts, venue recommendations, accommodation options and fixture updates into a single personalised itinerary. At the core of the application is an **Orchestrator Agent** that coordinates **11 specialised AI agents** running in parallel. Each agent is responsible for a specific task before their outputs are merged into a comprehensive itinerary tailored to the user's preferences.
 
 ---
 
