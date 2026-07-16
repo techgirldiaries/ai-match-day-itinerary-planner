@@ -247,7 +247,7 @@ For detailed setup instructions, development workflow and troubleshooting, see *
 
 This project was delivered by a five-person Agile team over a 10-week development cycle using Scrum.
 
-As Project Manager, responsibilities included:
+As the Project Manager, responsibilities included:
 
 - Leading sprint planning, reviews and retrospectives
 - Managing eight Agile sprints
