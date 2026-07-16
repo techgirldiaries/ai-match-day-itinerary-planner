@@ -57,7 +57,7 @@ An **Orchestrator Agent** coordinates **11 specialised AI agents** running in pa
 
                          │
 
- ┌──────────┬──────────┬──────────┬──────────┬──────────┐
+ ┌──────────┬──────────┬──────────┬──────────┐
 
  ▼          ▼          ▼          ▼          ▼
 
