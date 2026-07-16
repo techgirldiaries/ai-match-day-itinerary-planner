@@ -1,8 +1,27 @@
-# AI Match-Day Itinerary Planner
+# LTFC AI Match-Day Itinerary Planner
 
-> Agentic AI match day planning for Luton Town Football Club supporters ⚽
+> AI-powered multi-agent match-day planning platform built for Luton Town Football Club supporters.⚽
 
-A full-stack TypeScript monorepo that generates personalised match-day itineraries using Relevance AI. Includes group sharing, real-time updates and multi-language support.
+The LTFC AI Match-Day Itinerary Planner is a full-stack chat application that generates personalised football match-day itineraries using a coordinated multi-agent architecture. 
+
+An Orchestrator Agent coordinates 11 specialised AI agents running in parallel to produce tailored travel plans, weather recommendations, restaurant suggestions, accommodation options, match information, community coordination and live updates.
+
+The application also supports:
+- Live travel recommendations
+- Weather-aware packing suggestions
+- Real-time venue discovery
+- Group itinerary sharing
+- Push notifications
+- Live match updates
+- Calendar integration 
+- Personalised fan experiences
+
+## Tech Stack
+
+- **Frontend**: Preact, Preact Signals, Tailwind CSS, Vite
+- **Backend**: Hono.js, TypeScript
+- **Database**: sql.js (pure JavaScript SQLite)
+- **Testing**: Jest, Playwright
 
 ## Quick Start
 
@@ -31,13 +50,6 @@ npm run dev  # Frontend: localhost:5173, Backend: localhost:3000
 - **[Development Workflow](docs/DEVELOPMENT.md)** - Architecture, commands, code standards
 - **[Testing Guide](docs/TESTING.md)** - Unit, component and E2E tests
 - **[Deployment](docs/DEPLOY.md)** - Production setup and CI/CD
-
-## Tech Stack
-
-- **Frontend**: Preact, Preact Signals, Tailwind CSS, Vite
-- **Backend**: Hono.js, TypeScript
-- **Database**: sql.js (pure JavaScript SQLite)
-- **Testing**: Jest, Playwright
 
 ## Project Structure
 
