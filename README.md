@@ -303,11 +303,11 @@ Planned improvements include:
 
 Developed as part of the **CIS047-3 Agile Project Management** module at the **University of Bedfordshire** in collaboration with **Luton Town Football Club**.
 
-- Ibukun Shalom Olowo (Start-up Manager)
-- Oluwakemi Obadeyi (Project Manager)
-- Abimbola Agbeleye (Schedule Manager)
-- Kwasi/Kwesi Serebuor (Quality Manager)
-- Mawuli L Worlanyo (Risk Manager)
+- [Ibukun Shalom Olowo](https://github.com/IbukunOlowo): Start-up Manager
+- [Oluwakemi Obadeyi](https://github.com/techgirldiaries): Project Manager
+- [Abimbola Agbeleye](https://github.com/Abimbola06): Schedule Manager
+- [Kwasi/Kwesi Serebuor](https://github.com/serKwesi): Quality Manager
+- [Mawuli L Worlanyo](https://github.com/mdzidulla): Risk Manager
 
 --- 
 
