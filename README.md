@@ -301,7 +301,7 @@ Planned improvements include:
 
 ## Authors
 
-Developed as part of the **CIS047-3 Agile Project Management** module at the **University of Bedfordshire**. 
+Developed as part of the **CIS047-3 Agile Project Management** module at the **University of Bedfordshire** in collaboration with **Luton Town Football Club**.
 
 - Ibukun Shalom Olowo (Start-up Manager)
 - Oluwakemi Obadeyi (Project Manager)
