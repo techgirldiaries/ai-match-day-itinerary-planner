@@ -299,10 +299,15 @@ Planned improvements include:
 
 ---
 
-## Team 
+## Authors
 
 Developed as part of the **CIS047-3 Agile Project Management** module at the **University of Bedfordshire**. 
-**Role:** Project Manager 
+
+- Ibukun Shalom Olowo (Start-up Manager)
+- Oluwakemi Obadeyi (Project Manager)
+- Abimbola Agbeleye (Schedule Manager)
+- Kwasi/Kwesi Serebuor (Quality Manager)
+- Mawuli L Worlanyo (Risk Manager)
 
 --- 
 
